@@ -1,0 +1,11 @@
+Idee
+- Menu avec image , appuyer sur start (souris)
+La séléction des personnages se fait de la manière suivante : 
+
+- Ils sont tous alignés sur la première page, et on choisi celui qu'on veut avec déplacement de l'icone "?"
+
+- Une fois séléctionné, les deux joueurs vont sur la deuxième map pour chercher leurs pokémon
+
+- Après avoir choisi leur 3 pokémons le combat peut commencer, on se retrouve dans l'arène 
+
+- Les joueurs prennent le controle des pokémons pour le combat, les actions se feront à l'aide de clavier, chaque touche correspondant à une attaque spécifique
