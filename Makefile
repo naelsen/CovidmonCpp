@@ -7,7 +7,7 @@ EXEC = prog
 all: $(EXEC)
 
 $(EXEC): $(OBJ)
-	$(CC) $^ -o $@ -lsfml-graphics -lsfml-window -lsfml-system
+	$(CC) $^ -o $@ -lsfml-graphics -lsfml-window -lsfml-system -lsfml-network -lsfml-audio
 
 %.o : %.cc
 	$(CC) $(CCFLAGS) -o $@ -c $<

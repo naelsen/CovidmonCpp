@@ -1,150 +1,94 @@
 <?xml version="1.0" encoding="UTF-8"?><diagram program="umlet" version="13.3">
-  <zoom_level>8</zoom_level>
+  <zoom_level>7</zoom_level>
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>120</x>
-      <y>136</y>
-      <w>168</w>
-      <h>200</h>
+      <x>413</x>
+      <y>28</y>
+      <w>154</w>
+      <h>175</h>
     </coordinates>
     <panel_attributes>entite
 --
--position
--image
+#position
+#image
 --
-+move()
-
-</panel_attributes>
++move() : void
++animation() : void</panel_attributes>
     <additional_attributes/>
   </element>
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>8</x>
-      <y>400</y>
-      <w>168</w>
-      <h>96</h>
+      <x>161</x>
+      <y>322</y>
+      <w>196</w>
+      <h>119</h>
     </coordinates>
     <panel_attributes>Personnage
 --
-pokeballs
+-direction : Direction
+-vitesse
 --
-+switch_pokemon(pok1,pok2)
-+attraper_pokemon
--lancer_pokeball()
++switch_pokemons(pok1,pok2) : void
++attraper_pokemon : void
+-lancer_pokeball() : void
 </panel_attributes>
     <additional_attributes/>
   </element>
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>440</x>
-      <y>400</y>
-      <w>168</w>
-      <h>96</h>
+      <x>434</x>
+      <y>329</y>
+      <w>147</w>
+      <h>105</h>
     </coordinates>
     <panel_attributes>Pokemon
 --
-attaques
-pv
-type
+pv_max : float
+pv_courant : float
+type : Type
+vitesse : float
 --
-attaquer(&amp;pokemon)
-recevoir_degat()</panel_attributes>
+attaquer(&amp;pokemon) : void
+recevoir_degat() : void</panel_attributes>
     <additional_attributes/>
   </element>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>16</x>
-      <y>120</y>
-      <w>72</w>
-      <h>32</h>
+      <x>336</x>
+      <y>196</y>
+      <w>217</w>
+      <h>77</h>
     </coordinates>
-    <panel_attributes/>
-    <additional_attributes>10.0;20.0;70.0;20.0</additional_attributes>
+    <panel_attributes>lt=&lt;&lt;-</panel_attributes>
+    <additional_attributes>210.0;10.0;290.0;90.0;10.0;70.0</additional_attributes>
   </element>
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>232</x>
-      <y>400</y>
-      <w>168</w>
-      <h>96</h>
-    </coordinates>
-    <panel_attributes>Pokeball
---
-contiens
---
-</panel_attributes>
-    <additional_attributes/>
-  </element>
-  <element>
-    <id>UMLClass</id>
-    <coordinates>
-      <x>720</x>
-      <y>400</y>
-      <w>168</w>
-      <h>64</h>
+      <x>658</x>
+      <y>329</y>
+      <w>147</w>
+      <h>77</h>
     </coordinates>
     <panel_attributes>Attaque
 --
-type
-pas_efficace_contre
-efficace_contre
-degats</panel_attributes>
+-type : Type
+-pas_efficace_contre : 
+-efficace_contre
+-dégats</panel_attributes>
     <additional_attributes/>
   </element>
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>264</x>
-      <y>632</y>
-      <w>168</w>
-      <h>56</h>
-    </coordinates>
-    <panel_attributes>pokemon_vol
---
-pas_efficace_contre
-efficace_contre</panel_attributes>
-    <additional_attributes/>
-  </element>
-  <element>
-    <id>UMLClass</id>
-    <coordinates>
-      <x>464</x>
-      <y>632</y>
-      <w>168</w>
-      <h>56</h>
-    </coordinates>
-    <panel_attributes>pokemon_feu
---
-pas_efficace_contre
-efficace_contre</panel_attributes>
-    <additional_attributes/>
-  </element>
-  <element>
-    <id>UMLClass</id>
-    <coordinates>
-      <x>672</x>
-      <y>632</y>
-      <w>168</w>
-      <h>56</h>
-    </coordinates>
-    <panel_attributes>pokemon_eau
---
-pas_efficace_contre
-efficace_contre</panel_attributes>
-    <additional_attributes/>
-  </element>
-  <element>
-    <id>UMLClass</id>
-    <coordinates>
-      <x>872</x>
-      <y>632</y>
-      <w>168</w>
-      <h>56</h>
+      <x>742</x>
+      <y>574</y>
+      <w>147</w>
+      <h>49</h>
     </coordinates>
     <panel_attributes>pokemon_plante
 --
@@ -155,89 +99,205 @@ efficace_contre</panel_attributes>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>600</x>
-      <y>408</y>
-      <w>136</w>
-      <h>24</h>
+      <x>574</x>
+      <y>364</y>
+      <w>98</w>
+      <h>21</h>
     </coordinates>
     <panel_attributes>lt=&lt;&lt;&lt;&lt;-</panel_attributes>
-    <additional_attributes>150.0;10.0;10.0;10.0</additional_attributes>
+    <additional_attributes>10.0;10.0;120.0;10.0</additional_attributes>
   </element>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>88</x>
-      <y>328</y>
-      <w>144</w>
-      <h>88</h>
+      <x>273</x>
+      <y>196</y>
+      <w>280</w>
+      <h>140</h>
     </coordinates>
     <panel_attributes>lt=&lt;&lt;-</panel_attributes>
-    <additional_attributes>160.0;10.0;160.0;50.0;10.0;90.0</additional_attributes>
+    <additional_attributes>300.0;10.0;380.0;90.0;10.0;180.0</additional_attributes>
   </element>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>208</x>
-      <y>328</y>
-      <w>328</w>
-      <h>88</h>
+      <x>476</x>
+      <y>196</y>
+      <w>77</w>
+      <h>147</h>
     </coordinates>
     <panel_attributes>lt=&lt;&lt;-</panel_attributes>
-    <additional_attributes>10.0;10.0;10.0;50.0;390.0;90.0</additional_attributes>
+    <additional_attributes>10.0;10.0;90.0;90.0;40.0;190.0</additional_attributes>
   </element>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>208</x>
-      <y>328</y>
-      <w>120</w>
-      <h>88</h>
+      <x>469</x>
+      <y>427</y>
+      <w>49</w>
+      <h>161</h>
     </coordinates>
     <panel_attributes>lt=&lt;&lt;-</panel_attributes>
-    <additional_attributes>10.0;10.0;10.0;50.0;130.0;90.0</additional_attributes>
+    <additional_attributes>50.0;10.0;50.0;60.0;10.0;210.0</additional_attributes>
   </element>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>512</x>
-      <y>488</y>
-      <w>56</w>
-      <h>160</h>
+      <x>287</x>
+      <y>427</y>
+      <w>231</w>
+      <h>161</h>
     </coordinates>
     <panel_attributes>lt=&lt;&lt;-</panel_attributes>
-    <additional_attributes>10.0;10.0;50.0;180.0</additional_attributes>
+    <additional_attributes>310.0;10.0;310.0;60.0;10.0;210.0</additional_attributes>
   </element>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>344</x>
-      <y>488</y>
-      <w>208</w>
-      <h>160</h>
+      <x>497</x>
+      <y>427</y>
+      <w>147</w>
+      <h>161</h>
     </coordinates>
     <panel_attributes>lt=&lt;&lt;-</panel_attributes>
-    <additional_attributes>220.0;10.0;240.0;100.0;10.0;180.0</additional_attributes>
+    <additional_attributes>10.0;10.0;10.0;60.0;190.0;210.0</additional_attributes>
   </element>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>512</x>
-      <y>488</y>
-      <w>248</w>
-      <h>160</h>
+      <x>497</x>
+      <y>427</y>
+      <w>329</w>
+      <h>161</h>
     </coordinates>
     <panel_attributes>lt=&lt;&lt;-</panel_attributes>
-    <additional_attributes>10.0;10.0;30.0;100.0;290.0;180.0</additional_attributes>
+    <additional_attributes>10.0;10.0;10.0;60.0;450.0;210.0</additional_attributes>
   </element>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>512</x>
-      <y>488</y>
-      <w>456</w>
-      <h>160</h>
+      <x>350</x>
+      <y>371</y>
+      <w>98</w>
+      <h>21</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;&lt;&lt;-</panel_attributes>
+    <additional_attributes>10.0;10.0;120.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>196</x>
+      <y>203</y>
+      <w>147</w>
+      <h>77</h>
+    </coordinates>
+    <panel_attributes>pokeball
+--
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>210</x>
+      <y>273</y>
+      <w>21</w>
+      <h>63</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;&lt;&lt;-</panel_attributes>
+    <additional_attributes>10.0;70.0;10.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLNote</id>
+    <coordinates>
+      <x>784</x>
+      <y>84</y>
+      <w>217</w>
+      <h>147</h>
+    </coordinates>
+    <panel_attributes>Rappel
+bg=pink
+
+Les fleches  :
+Signifie contient, mais quand la classe pointer par le         est détruite l'autre classe ne se détruit pas
+
+* Type: sera definit avec un typedef enum
+* Direction: sera definit avec un typedef enum</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>861</x>
+      <y>133</y>
+      <w>28</w>
+      <h>21</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;&lt;&lt;-</panel_attributes>
+    <additional_attributes>20.0;10.0;10.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>854</x>
+      <y>105</y>
+      <w>84</w>
+      <h>28</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;&lt;&lt;-</panel_attributes>
+    <additional_attributes>10.0;10.0;100.0;20.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>476</x>
+      <y>196</y>
+      <w>266</w>
+      <h>147</h>
     </coordinates>
     <panel_attributes>lt=&lt;&lt;-</panel_attributes>
-    <additional_attributes>10.0;10.0;30.0;100.0;550.0;180.0</additional_attributes>
+    <additional_attributes>10.0;10.0;90.0;90.0;360.0;190.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>567</x>
+      <y>574</y>
+      <w>147</w>
+      <h>49</h>
+    </coordinates>
+    <panel_attributes>pokemon_eau
+--
+pas_efficace_contre
+efficace_contre</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>399</x>
+      <y>574</y>
+      <w>147</w>
+      <h>49</h>
+    </coordinates>
+    <panel_attributes>pokemon_feu
+--
+pas_efficace_contre
+efficace_contre</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>217</x>
+      <y>574</y>
+      <w>147</w>
+      <h>49</h>
+    </coordinates>
+    <panel_attributes>pokemon_vol
+--
+type:vol</panel_attributes>
+    <additional_attributes/>
   </element>
 </diagram>

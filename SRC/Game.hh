@@ -1,30 +1,49 @@
 #pragma once
 
-#include "Image.hh"
+#include <iostream>
+#include <map>
+#include <SFML/Graphics.hpp>
+#include <string>
+#include <vector>
+
 #include "define.hh"
-
-
-typedef enum Map
+#include "Dresseur.hh"
+#include "Image.hh"
+#include "Player.hh"
+typedef enum Bg
 {
 	menu,
-	personnage,
-	pokemon,
+	choix_personnage,
+	choix_pokemon,
 	arene
-} Map;
+} Bg;
+
+typedef std::pair<std::string, Image> couple;
 
 class Game
 {
 private:
-	Image menu_game;
-	Map map;
+	std::map<std::string, Image> _backgrounds;
+	std::vector<Dresseur> _dresseurs;
+	std::vector<Player> _players;
+	Bg _current_background;
+	
 	// Attribut SFML
-	sf::RenderWindow window;
-	sf::Event event;
+	sf::RenderWindow _window;
+	sf::Event _event;
+
+
+	bool _get_current_background() const;
+	void _set_current_background(Bg);
+	void _draw();
+	void _draw_bg();
+	void _draw_dresseur();
+	void _manage();
+	void _manage_bg();
+	void _manage_dresseur();
+	void _choisir_dresseur();
 public:
 	Game();
 	~Game();
-	bool get_map() const;
-	void set_map(Map);
 	void run();
-	void draw();
 };

@@ -1,18 +1,51 @@
 #include "Image.hh"
 
-Image::Image(std::string nom_image): position_x(0), position_y(0)
+Image::Image()
 {
-	if (!this->texture_image.loadFromFile(nom_image))
-        std::cout << "Le menu n'a pas été chargé correctement" << std::endl;
-    this->sprite_image.setTexture(this->texture_image);
-    this->sprite_image.setPosition(sf::Vector2f(this->position_x,this->position_y));
+	std::cout << "Initialisation Image vide à remplacer . . ." << std::endl;
+}
+
+Image::Image(std::string nom_image): __position_x(0), __position_y(0)
+{
+	if (!this->__texture_image.loadFromFile(nom_image))
+        std::cout << nom_image << " n'a pas été chargé correctement" << std::endl;
+	this->__sprite_image.setTexture(this->__texture_image);
+    this->__sprite_image.setPosition(sf::Vector2f(this->__position_x,this->__position_y));
+}
+
+Image::Image(Image const& im): __position_x(im.__position_x), __position_y(im.__position_y)
+{
+	this->__texture_image = im.__texture_image;
+    this->__sprite_image.setTexture(this->__texture_image);
+    this->__sprite_image.setPosition(sf::Vector2f(this->__position_x,this->__position_y));
 }
 
 Image::~Image()
 {
 }
 
+int Image::get_position_x() const
+{
+    return this->__position_x;
+}
+
+int Image::get_position_y() const
+{
+    return this->__position_y;
+}
+
+void Image::set_position_x(float x)
+{
+    this->__position_x = x;
+}
+
+void Image::set_position_y(float y)
+{
+    this->__position_y = y;
+}
+
 void Image::draw(sf::RenderWindow &window)
 {
-	window.draw(this->sprite_image);
+    this->__sprite_image.setPosition(sf::Vector2f(this->__position_x,this->__position_y));
+	window.draw(this->__sprite_image);
 }
