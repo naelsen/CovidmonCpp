@@ -1,0 +1,17 @@
+Donc du coup on doit importer des données de la base de donnée d'intermarché sur python, les analyser, puis les nettoyer
+
+
+Donc deja je pense que l'analyse c'est la phase la plus importe
+c'est assez vague donc je vais un peu preciser a quoi ca sert.
+On va analyser les données importer a l'oeil et voir si ya des anomalies.
+On va essayer de visualiser les données, on va se rendre compte que certaine méthode de visualisation ne marche pas, et une fois qu'on aura aussi analyser les informations general on pourra se penser
+Nous on a des données qui peuvent se répeter 100 fois de suite et le but c'est de corrigé ce problème.
+Y'aura aussi une phase ou on va penser a la methode de visualisation selon la forme de nos données
+
+Avant de les utiliser on doit les nettoyer
+Pourquoi ? :
+On rentre en phase d'analyse
+
+Certaine fois il y a des problemes
+
+c'etait assez facile pdt l'entrainement mais la maintenant on se consacre a la realité, on est confronté a bcp de donné qualitative ce qui est bcp plus difficle a gerer que des 

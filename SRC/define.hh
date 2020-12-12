@@ -1,0 +1,7 @@
+#pragma once
+
+#define WINDOW_WIDTH 800
+#define WINDOW_HEIGHT 800
+#define SIZE_BLOCK_POKEMON 64
+#define SIZE_HEIGHT_DRESSEUR 72
+#define SIZE_WIDTH_DRESSEUR 68
