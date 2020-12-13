@@ -7,7 +7,7 @@ Player::Player()
 
 Player::Player(Dresseur& dresseur) : _dresseur(&dresseur)
 {
-    this->IP = sf::IpAddress::getLocalAddress();
+    this->IP = sf::IpAddress::getPublicAddress();
 }
 
 Player::Player(Player const& P):
