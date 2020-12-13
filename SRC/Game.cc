@@ -2,6 +2,7 @@
 
 Game::Game():
 _current_background(menu),
+_selec(false),
 _window(sf::VideoMode(WINDOW_WIDTH, WINDOW_HEIGHT), "Le monde d'apres ...")
 {
 	this->_backgrounds.insert(couple("menu",Image("Images/Backgrounds/menu.png")));
@@ -9,17 +10,18 @@ _window(sf::VideoMode(WINDOW_WIDTH, WINDOW_HEIGHT), "Le monde d'apres ...")
 	this->_backgrounds.insert(couple("choix_pokemon",Image("Images/Backgrounds/choix_pokemon.png")));
 	this->_backgrounds.insert(couple("arene",Image("Images/Backgrounds/arene.png")));
     
-	this->_dresseurs.push_back(Dresseur("Images/Personnages/G_gaby.png"));
-	this->_dresseurs.push_back(Dresseur("Images/Personnages/G_joelle.png"));
-	this->_dresseurs.push_back(Dresseur("Images/Personnages/G_red.png"));
-	this->_dresseurs.push_back(Dresseur("Images/Personnages/G_chauve.png"));
-	this->_dresseurs.push_back(Dresseur("Images/Personnages/R_butch.png"));
-	this->_dresseurs.push_back(Dresseur("Images/Personnages/R_cassidy.png"));
-	this->_dresseurs.push_back(Dresseur("Images/Personnages/R_cyrus.png"));
-	this->_dresseurs.push_back(Dresseur("Images/Personnages/R_james.png"));
+	this->_dresseurs.push_back(Dresseur("Images/Personnages/G_gaby.png","gaby"));
+	this->_dresseurs.push_back(Dresseur("Images/Personnages/G_joelle.png","joelle"));
+	this->_dresseurs.push_back(Dresseur("Images/Personnages/G_red.png","red"));
+	this->_dresseurs.push_back(Dresseur("Images/Personnages/G_chauve.png","le chauve"));
+	this->_dresseurs.push_back(Dresseur("Images/Personnages/R_butch.png","butch"));
+	this->_dresseurs.push_back(Dresseur("Images/Personnages/R_cassidy.png","cassidy"));
+	this->_dresseurs.push_back(Dresseur("Images/Personnages/R_cyrus.png","cyrus"));
+	this->_dresseurs.push_back(Dresseur("Images/Personnages/R_james.png","james"));
+
 	// Placement des personnages sur la carte
-	int i = 1;
-	int j = 1;
+	sf::Uint16 i = 1;
+	sf::Uint16 j = 1;
 	for(auto it = this->_dresseurs.begin(); it != this->_dresseurs.end(); it++)
 	{
 		if(i <= 4)
@@ -35,7 +37,6 @@ _window(sf::VideoMode(WINDOW_WIDTH, WINDOW_HEIGHT), "Le monde d'apres ...")
 			j++;
 		}
 	}
-
 	this->_window.setFramerateLimit(60);
 }
 
@@ -66,9 +67,7 @@ void Game::run()
             }
         }
 		this->_choisir_dresseur();
-        this->_window.clear();
         this->_manage();
-		this->_window.clear();
 		this->_draw();
     	this->_window.display();
     }
@@ -102,7 +101,6 @@ void Game::_draw_dresseur()
 			it->_animate();
 		}
 	}
-
 }
 
 void Game::_manage()
@@ -121,18 +119,28 @@ void Game::_manage_dresseur()
 {
 	if(this->_current_background==choix_personnage)
 	{
-		for(auto it = this->_dresseurs.begin(); it != this->_dresseurs.end(); it++)
+		for(auto it = this->_players.begin(); it != this->_players.end(); it++)
 		{
-			if(it->get_choisi())
-				it->move();
+			it->send();
+			it->receive(this->_dresseurs);
+			it->get_dresseur()->move();
 		}
 	}
 }
 
 void Game::_choisir_dresseur()
 {
-	for(auto it = this->_dresseurs.begin(); it != this->_dresseurs.end(); it++)
+	if(this->_selec==false)
 	{
-		it->got_a_clic(this->_window);
+		for(auto it = this->_dresseurs.begin(); it != this->_dresseurs.end(); it++)
+		{
+			it->got_a_clic(this->_window);
+			if(it->get_choisi())
+			{
+				Player P(*it);
+				this->_selec = true;
+				this->_players.push_back(P);
+			}
+		}
 	}
 }

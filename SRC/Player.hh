@@ -3,16 +3,21 @@
 #include <iostream>
 #include <SFML/Network.hpp>
 #include <string>
-
 #include "Dresseur.hh"
 
-class Player : public Dresseur
+class Player
 {
 private:
-    sf::UdpSocket socket;
-    sf::Socket::Status status;
     sf::IpAddress IP;
+    sf::TcpSocket socket;
+    Dresseur* _dresseur;
+    static int numero_joueur;
 public:
-    Player(std::string);
+    Player();
+    Player(Dresseur&);
+    Player(Player const&);
     ~Player();
+    Dresseur* get_dresseur() const;
+    void receive(std::vector<Dresseur>&);
+    void send();
 };

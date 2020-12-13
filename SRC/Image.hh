@@ -17,8 +17,8 @@ typedef enum Direction
 class Image
 {
 protected:
-	float __position_x;
-	float __position_y;
+	sf::Uint16 __position_x;
+	sf::Uint16 __position_y;
 	// Attributs SFML
 	sf::Texture __texture_image;
 	sf::Sprite __sprite_image;
@@ -28,10 +28,10 @@ public:
 	Image(std::string);
 	Image(Image const&);
 	~Image();
-	int get_position_x() const;
-	int get_position_y() const;
-	void set_position_x(float);
-	void set_position_y(float);
+	sf::Uint16 get_position_x() const;
+	sf::Uint16 get_position_y() const;
+	void set_position_x(sf::Uint16);
+	void set_position_y(sf::Uint16);
 	void draw(sf::RenderWindow&);
 	// On declare la surcharge en friend pour acceder au valeur proteger de la classe
 	friend bool operator==(Image const& im1, Image const& im2);
@@ -41,10 +41,10 @@ public:
 // Operateur de comparaison entre image pour les collisions
 inline bool operator==(Image const& im1, Image const& im2)
 {
-	float dx = im1.__position_x - im2.__position_x;
-	float dy = im1.__position_y - im2.__position_y;
-	bool collision_x = dx*dx < (SIZE_HEIGHT_DRESSEUR/2.f)*(SIZE_HEIGHT_DRESSEUR/2.f);
-	bool collision_y = dy*dy < (SIZE_HEIGHT_DRESSEUR/2.f)*(SIZE_HEIGHT_DRESSEUR/2.f);
+	sf::Uint16 dx = im1.__position_x - im2.__position_x;
+	sf::Uint16 dy = im1.__position_y - im2.__position_y;
+	bool collision_x = dx*dx < (SIZE_HEIGHT_DRESSEUR/2)*(SIZE_HEIGHT_DRESSEUR/2);
+	bool collision_y = dy*dy < (SIZE_HEIGHT_DRESSEUR/2)*(SIZE_HEIGHT_DRESSEUR/2);
 	if(collision_x && collision_y)
 		return true;
     else

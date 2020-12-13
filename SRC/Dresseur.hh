@@ -12,8 +12,9 @@ private:
     sf::Clock _clock;
     sf::SoundBuffer _buffer;
     sf::Sound _sound;
+    std::string _nom;
 
-    float _speed;    
+    sf::Uint16 _speed;    
     Direction _direction;
     int _animation;
     bool _choisi;
@@ -23,14 +24,16 @@ private:
     void _move_right();
     void _move_left();
 public:
-    Dresseur(std::string);
+    Dresseur(std::string,std::string);
     Dresseur(Dresseur const&);
     ~Dresseur();
-    float get_speed() const;
+    std::string get_nom() const;
+    sf::Uint16 get_speed() const;
     Direction get_direction() const;
     int get_animation() const;
     bool get_choisi() const;
-    void set_speed(float);
+    void set_nom(std::string);
+    void set_speed(sf::Uint16);
     void set_direction(Direction);
     void set_choisi(bool);
     void set_animation(int);
