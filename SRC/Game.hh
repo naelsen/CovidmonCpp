@@ -10,6 +10,7 @@
 #include "Dresseur.hh"
 #include "Image.hh"
 #include "Player.hh"
+#include "pokemon.hh"
 
 typedef enum Bg
 {
@@ -26,6 +27,7 @@ class Game
 private:
 	std::map<std::string, Image> _backgrounds;
 	std::vector<Dresseur> _dresseurs;
+	std::vector<Pokemon> _pokemons;
 	std::vector<Player> _players;
 
 	Bg _current_background;
@@ -43,6 +45,7 @@ private:
 	void _manage_bg();
 	void _manage_dresseur();
 	void _choisir_dresseur();
+	void _draw_pokemon();
 public:
 	Game();
 	~Game();

@@ -39,5 +39,7 @@ public:
     void set_animation(int);
     void _animate();
     void got_a_clic(sf::RenderWindow&);
+    bool is_out();
+
     void move();
 };

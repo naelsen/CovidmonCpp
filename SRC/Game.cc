@@ -3,7 +3,7 @@
 Game::Game():
 _current_background(menu),
 _selec(false),
-_window(sf::VideoMode(WINDOW_WIDTH, WINDOW_HEIGHT), "Le monde d'apres ...")
+_window(sf::VideoMode(WINDOW_WIDTH, WINDOW_HEIGHT), "LE MONDE D'APRÈS ...")
 {
 	this->_backgrounds.insert(couple("menu",Image("Images/Backgrounds/menu.png")));
 	this->_backgrounds.insert(couple("choix_personnage",Image("Images/Backgrounds/choix_personnage.png")));
@@ -19,6 +19,22 @@ _window(sf::VideoMode(WINDOW_WIDTH, WINDOW_HEIGHT), "Le monde d'apres ...")
 	this->_dresseurs.push_back(Dresseur("Images/Personnages/R_cyrus.png","cyrus"));
 	this->_dresseurs.push_back(Dresseur("Images/Personnages/R_james.png","james"));
 
+	this->_pokemons.push_back(Pokemon("Images/Pokemons/articodin.png" ,"Articodin" ));
+	this->_pokemons.push_back(Pokemon("Images/Pokemons/canartichaud.png" ,"Canartichaud" ));
+	this->_pokemons.push_back(Pokemon("Images/Pokemons/darumaka.png" ,"Darumaka" ));
+	this->_pokemons.push_back(Pokemon("Images/Pokemons/feneukin.png" ,"Feneukin" ));
+	this->_pokemons.push_back(Pokemon("Images/Pokemons/galacvole.png" ,"Galacvole" ));
+	this->_pokemons.push_back(Pokemon("Images/Pokemons/galarian.png" ,"Galarian" ));
+	this->_pokemons.push_back(Pokemon("Images/Pokemons/gardevoir.png" ,"Gardevoir" ));
+	this->_pokemons.push_back(Pokemon("Images/Pokemons/gloupix.png" ,"Gloupix" ));
+	this->_pokemons.push_back(Pokemon("Images/Pokemons/lubegon.png" ,"Lubegon" ));
+	this->_pokemons.push_back(Pokemon("Images/Pokemons/mageau.png" ,"Mageau" ));
+	this->_pokemons.push_back(Pokemon("Images/Pokemons/mrmime.png" ,"Mrmime" ));
+	this->_pokemons.push_back(Pokemon("Images/Pokemons/noixbat.png" ,"NoixBat" ));
+	this->_pokemons.push_back(Pokemon("Images/Pokemons/oh-oh.png" ,"Oh-Oh" ));
+	this->_pokemons.push_back(Pokemon("Images/Pokemons/pandours.png" ,"Pandours" ));
+	this->_pokemons.push_back(Pokemon("Images/Pokemons/ponyta.png" ,"Ponyta" ));
+	this->_pokemons.push_back(Pokemon("Images/Pokemons/skeleton.png" ,"Skeleton" )); 
 	// Placement des personnages sur la carte
 	sf::Uint16 i = 1;
 	sf::Uint16 j = 1;
@@ -36,6 +52,35 @@ _window(sf::VideoMode(WINDOW_WIDTH, WINDOW_HEIGHT), "Le monde d'apres ...")
 			it->set_position_y(700.f - SIZE_HEIGHT_DRESSEUR);
 			j++;
 		}
+	}
+	//Placement des pokémons
+	/*sf::Uint16 k = 1;
+	sf::Uint16 l = 1;
+	for(auto it = this->_pokemons.begin(); it != this->_pokemons.end(); it++)
+	{
+		if(k <= 3)
+		{
+			it->set_position_x(100+k*WINDOW_WIDTH/6);
+			it->set_position_y(30.f);
+			k++;
+		}
+		else if(k <= 7)
+		{
+			it->set_position_x((k-3)*WINDOW_WIDTH/6);
+			it->set_position_y(100.f);
+			k++;
+		}
+		else
+		{
+			it->set_position_x(l*WINDOW_WIDTH/6);
+			it->set_position_y(700.f - SIZE_BLOCK_POKEMON);
+			l++;
+		}
+	}*/
+	for(auto it = this->_pokemons.begin(); it != this->_pokemons.end(); it++)
+	{
+		it->set_position_x(SIZE_BLOCK_POKEMON + rand() % (WINDOW_WIDTH - SIZE_BLOCK_POKEMON));
+		it->set_position_y(SIZE_BLOCK_POKEMON + rand() % (WINDOW_HEIGHT - SIZE_BLOCK_POKEMON));
 	}
 	this->_window.setFramerateLimit(60);
 }
@@ -77,6 +122,7 @@ void Game::_draw()
 {
 	this->_draw_bg();
 	this->_draw_dresseur();
+	this->_draw_pokemon();
 }
 
 void Game::_draw_bg()
@@ -101,8 +147,29 @@ void Game::_draw_dresseur()
 			it->_animate();
 		}
 	}
+	if(this->_current_background == choix_pokemon)
+	{
+		for(auto it = this->_dresseurs.begin(); it != this->_dresseurs.end(); it++)
+		{
+			if(it->get_choisi()){
+				it->draw(this->_window);
+				it->_animate();
+			}
+		}
+	}
 }
 
+void Game::_draw_pokemon()
+{
+	if(this->_current_background == choix_pokemon)
+	{
+		for(auto it = this->_pokemons.begin(); it != this->_pokemons.end(); it++)
+		{
+				it->draw(this->_window);
+				it->_animate();
+		}
+	}
+}
 void Game::_manage()
 {
 	this->_manage_bg();
@@ -112,7 +179,16 @@ void Game::_manage()
 void Game::_manage_bg()
 {
 	if(sf::Keyboard::isKeyPressed(sf::Keyboard::Return) && _current_background==menu)
-		this->_current_background = choix_personnage;
+		_set_current_background(choix_personnage);
+
+	for(auto it = this->_dresseurs.begin(); it != this->_dresseurs.end(); it++)
+		{
+			if(it->is_out()){
+				_set_current_background(choix_pokemon);
+				it->set_position_x(0);
+				it->set_position_y(WINDOW_HEIGHT/2);
+			}
+		}
 }
 
 void Game::_manage_dresseur()
@@ -126,6 +202,8 @@ void Game::_manage_dresseur()
 			it->get_dresseur()->move();
 		}
 	}
+	if(this->_current_background==choix_pokemon)
+		this->_players[0].get_dresseur()->move();
 }
 
 void Game::_choisir_dresseur()

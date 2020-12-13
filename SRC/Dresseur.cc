@@ -81,6 +81,19 @@ void Dresseur::_animate()
     this->__sprite_image.setTextureRect(sf::IntRect(SIZE_WIDTH_DRESSEUR*this->_animation, SIZE_HEIGHT_DRESSEUR *this->_direction, SIZE_WIDTH_DRESSEUR, SIZE_HEIGHT_DRESSEUR));
 }
 
+bool Dresseur::is_out()
+{
+    sf::Uint16 dx = WINDOW_WIDTH - this->__position_x;
+    sf::Uint16 dy = WINDOW_HEIGHT/2 - this->__position_y;
+
+    bool collision_x = dx < SIZE_HEIGHT_DRESSEUR;
+    bool collision_y = dy < SIZE_WIDTH_DRESSEUR;
+    if(collision_x && collision_y)
+        return true;
+
+    return false;
+}
+
 void Dresseur::got_a_clic(sf::RenderWindow& window)
 {
     sf::Vector2i pos = sf::Mouse::getPosition(window);
@@ -115,6 +128,8 @@ void Dresseur::move()
         _move_right();
     if(sf::Keyboard::isKeyPressed(sf::Keyboard::Left))
         _move_left();
+    std::cout << this->__position_x<<std::endl;
+    std::cout << this->__position_y<<std::endl;
 }
 
 
@@ -189,7 +204,7 @@ void Dresseur::_move_left()
     if(this->__position_x > 0)
     {
         this->__position_x -= this->_speed;
-        if(this->__position_x<0)
+        if(this->__position_x<0 || this->__position_x > 65000)
             this->__position_x = 0;
     }
 }
