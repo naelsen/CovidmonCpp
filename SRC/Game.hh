@@ -10,6 +10,7 @@
 #include "Dresseur.hh"
 #include "Image.hh"
 #include "Player.hh"
+
 typedef enum Bg
 {
 	menu,
@@ -26,12 +27,12 @@ private:
 	std::map<std::string, Image> _backgrounds;
 	std::vector<Dresseur> _dresseurs;
 	std::vector<Player> _players;
+
 	Bg _current_background;
-	
+	bool _selec;
 	// Attribut SFML
 	sf::RenderWindow _window;
 	sf::Event _event;
-
 
 	bool _get_current_background() const;
 	void _set_current_background(Bg);

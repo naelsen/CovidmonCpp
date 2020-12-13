@@ -24,28 +24,28 @@ Image::~Image()
 {
 }
 
-int Image::get_position_x() const
+sf::Uint16 Image::get_position_x() const
 {
     return this->__position_x;
 }
 
-int Image::get_position_y() const
+sf::Uint16 Image::get_position_y() const
 {
     return this->__position_y;
 }
 
-void Image::set_position_x(float x)
+void Image::set_position_x(sf::Uint16 x)
 {
     this->__position_x = x;
 }
 
-void Image::set_position_y(float y)
+void Image::set_position_y(sf::Uint16 y)
 {
     this->__position_y = y;
 }
 
 void Image::draw(sf::RenderWindow &window)
 {
-    this->__sprite_image.setPosition(sf::Vector2f(this->__position_x,this->__position_y));
+    this->__sprite_image.setPosition(this->__position_x,this->__position_y);
 	window.draw(this->__sprite_image);
 }

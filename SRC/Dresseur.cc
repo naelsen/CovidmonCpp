@@ -1,8 +1,9 @@
 #include "Dresseur.hh"
 
-Dresseur::Dresseur(std::string image):
+Dresseur::Dresseur(std::string image,std::string nom):
 Image(image),
- _speed(2.5f),
+_nom(nom),
+ _speed(2),
  _direction(Down),
  _animation(0),
  _choisi(false)
@@ -16,6 +17,7 @@ Image(image),
 
 Dresseur::Dresseur(Dresseur const& dresseur):
 Image(dresseur),
+_nom(dresseur._nom),
 _speed(dresseur._speed),
 _direction(dresseur._direction),
 _animation(dresseur._animation),
@@ -23,10 +25,14 @@ _choisi(dresseur._choisi)
 {}
 
 Dresseur::~Dresseur()
+{}
+
+std::string Dresseur::get_nom() const
 {
+    return this->_nom;
 }
 
-float Dresseur::get_speed() const
+sf::Uint16 Dresseur::get_speed() const
 {
     return _speed;
 }
@@ -46,7 +52,12 @@ bool Dresseur::get_choisi() const
     return _choisi;
 }
 
-void Dresseur::set_speed(float speed)
+void Dresseur::set_nom(std::string nom)
+{
+    this->_nom = nom; 
+}
+
+void Dresseur::set_speed(sf::Uint16 speed)
 {
     this->_speed = speed;
 }
@@ -73,10 +84,10 @@ void Dresseur::_animate()
 void Dresseur::got_a_clic(sf::RenderWindow& window)
 {
     sf::Vector2i pos = sf::Mouse::getPosition(window);
-    float dx = pos.x - (this->__position_x + SIZE_WIDTH_DRESSEUR/2.f);
-	float dy = pos.y - (this->__position_y + SIZE_HEIGHT_DRESSEUR/2.f);
-	bool collision_x = dx*dx < (SIZE_WIDTH_DRESSEUR/2.f)*(SIZE_WIDTH_DRESSEUR/2.f);
-	bool collision_y = dy*dy < (SIZE_HEIGHT_DRESSEUR/2.f)*(SIZE_HEIGHT_DRESSEUR/2.f);
+    sf::Uint16 dx = pos.x - this->__position_x;
+	sf::Uint16 dy = pos.y - this->__position_y;
+	bool collision_x = dx < SIZE_WIDTH_DRESSEUR;
+	bool collision_y = dy < SIZE_WIDTH_DRESSEUR;
     if (sf::Mouse::isButtonPressed(sf::Mouse::Right) || sf::Mouse::isButtonPressed(sf::Mouse::Left))
     {
         if(collision_x && collision_y)
