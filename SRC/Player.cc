@@ -1,6 +1,5 @@
 #include "Player.hh"
-
-int Player::numero_joueur = 0;
+#include <SFML/Graphics.hpp>
 
 Player::Player()
 {
@@ -8,7 +7,6 @@ Player::Player()
 
 Player::Player(Dresseur& dresseur) : _dresseur(&dresseur)
 {
-    this->numero_joueur++;
     this->IP = sf::IpAddress::getLocalAddress();
 }
 

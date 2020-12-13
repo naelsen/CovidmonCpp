@@ -70,7 +70,6 @@ int main()
 							receivePacket >> nom >> dir >> animation >> x >> y;
 							sf::Packet sendPacket;
 							sendPacket << nom << dir << animation << x << y;
-                            std::cout << nom << " : " << x << " : " << y << std::endl;
 							// On envoie le paquet a tout les autres clients pour qu'ils savent ce que l'autre client a envoyé au serveur
 							for(std::size_t j = 0; j < Clients.size(); j++)
 							{
