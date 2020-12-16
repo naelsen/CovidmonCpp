@@ -7,13 +7,7 @@ _nom(nom),
  _direction(Down),
  _animation(0),
  _choisi(false)
-{
-    if (!this->_buffer.loadFromFile("Sons/b.wav"))
-    {
-        std::cout << "Erreur Buffer" << std::endl;
-    }
-    this->_sound.setBuffer(_buffer);
-}
+{}
 
 Dresseur::Dresseur(Dresseur const& dresseur):
 Image(dresseur),
@@ -81,6 +75,19 @@ void Dresseur::_animate()
     this->__sprite_image.setTextureRect(sf::IntRect(SIZE_WIDTH_DRESSEUR*this->_animation, SIZE_HEIGHT_DRESSEUR *this->_direction, SIZE_WIDTH_DRESSEUR, SIZE_HEIGHT_DRESSEUR));
 }
 
+bool Dresseur::is_out()
+{
+    sf::Uint16 dx = WINDOW_WIDTH - this->__position_x;
+    sf::Uint16 dy = WINDOW_HEIGHT/2 - this->__position_y;
+
+    bool collision_x = dx < SIZE_HEIGHT_DRESSEUR;
+    bool collision_y = dy < SIZE_WIDTH_DRESSEUR;
+    if(collision_x && collision_y)
+        return true;
+
+    return false;
+}
+
 void Dresseur::got_a_clic(sf::RenderWindow& window)
 {
     sf::Vector2i pos = sf::Mouse::getPosition(window);
@@ -93,8 +100,6 @@ void Dresseur::got_a_clic(sf::RenderWindow& window)
         if(collision_x && collision_y)
         {
             _choisi = true;
-            if (this->_sound.getStatus() != sf::Sound::Playing)
-                    this->_sound.play();
         }
         else
             _choisi = false;

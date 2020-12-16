@@ -10,8 +10,6 @@ class Dresseur: public Image
 {
 private:
     sf::Clock _clock;
-    sf::SoundBuffer _buffer;
-    sf::Sound _sound;
     std::string _nom;
 
     sf::Uint16 _speed;    
@@ -39,5 +37,7 @@ public:
     void set_animation(int);
     void _animate();
     void got_a_clic(sf::RenderWindow&);
+    bool is_out();
+
     void move();
 };
