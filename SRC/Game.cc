@@ -43,13 +43,13 @@ _window(sf::VideoMode(WINDOW_WIDTH, WINDOW_HEIGHT), "LE MONDE D'APRÈS ...")
 		if(i <= 4)
 		{
 			it->set_position_x(i*WINDOW_WIDTH/6);
-			it->set_position_y(100.f);
+			it->set_position_y(85.f);
 			i++;
 		}
 		else
 		{
 			it->set_position_x(j*WINDOW_WIDTH/6);
-			it->set_position_y(700.f - SIZE_HEIGHT_DRESSEUR);
+			it->set_position_y(620.f - SIZE_HEIGHT_DRESSEUR);
 			j++;
 		}
 	}
@@ -63,25 +63,25 @@ _window(sf::VideoMode(WINDOW_WIDTH, WINDOW_HEIGHT), "LE MONDE D'APRÈS ...")
 		if(i <= 4)
 		{
 			it->set_position_x(i*WINDOW_WIDTH/6);
-			it->set_position_y(30.f);
+			it->set_position_y(25.f);
 			i++;
 		}
 		else if(j <= 4)
 		{
 			it->set_position_x(j*WINDOW_WIDTH/6);
-			it->set_position_y(100.f);
+			it->set_position_y(85.f);
 			j++;
 		}
 		else if(k <= 4)
 		{
 			it->set_position_x(k*WINDOW_WIDTH/6);
-			it->set_position_y(700.f - SIZE_BLOCK_POKEMON);
+			it->set_position_y(620.f - SIZE_BLOCK_POKEMON);
 			k++;
 		}
 		else if(l <= 4)
 		{
 			it->set_position_x(l*WINDOW_WIDTH/6);
-			it->set_position_y(780.f - SIZE_BLOCK_POKEMON);
+			it->set_position_y(690.f - SIZE_BLOCK_POKEMON);
 			l++;
 		}
 	}
