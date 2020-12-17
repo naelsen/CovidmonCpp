@@ -27,7 +27,7 @@ _dresseur(P._dresseur)
     }
     else
     {
-        std::cout << "Serveur pas encore créer, lancer le dans un autre terminal !" << std::endl;
+        std::cout << "Serveur pas encore crée, lancez le dans un autre terminal !" << std::endl;
         exit(0);
     }
     // Afin de ne pas bloquer le programme quand on attend une socket

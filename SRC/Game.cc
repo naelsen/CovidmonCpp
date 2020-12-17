@@ -1,12 +1,12 @@
 #include "Game.hh"
 
 Game::Game():
-_current_background(menu),
+_current_background(intro),
 _selec(false),
-_window(sf::VideoMode(WINDOW_WIDTH, WINDOW_HEIGHT), "LE MONDE D'APRÈS ...")
+_window(sf::VideoMode(WINDOW_WIDTH, WINDOW_HEIGHT), "LE MONDE D'APRES ...")
 {
 	this->_backgrounds.insert(couple("intro",Image("Images/Backgrounds/Intro.png")));
-	this->_backgrounds.insert(couple("menu",Image("Images/Backgrounds/Intro.png")));
+	this->_backgrounds.insert(couple("menu",Image("Images/Backgrounds/menu.png")));
 	this->_backgrounds.insert(couple("choix_personnage",Image("Images/Backgrounds/choix_personnage.png")));
 	this->_backgrounds.insert(couple("choix_pokemon",Image("Images/Backgrounds/choix_pokemon.png")));
 	this->_backgrounds.insert(couple("arene",Image("Images/Backgrounds/arene.png")));
@@ -131,14 +131,19 @@ void Game::_draw()
 
 void Game::_draw_bg()
 {
-	if(this->_current_background == menu)
-		this->_backgrounds["menu"].draw(this->_window);
-	if(_current_background==choix_personnage)
-		this->_backgrounds["choix_personnage"].draw(this->_window);
-	if(this->_current_background == choix_pokemon)
-		this->_backgrounds["choix_pokemon"].draw(this->_window);
-	if(_current_background==arene)
-		this->_backgrounds["arene"].draw(this->_window);
+	switch(this->_current_background){
+	case intro:
+		this->_backgrounds["intro"].draw(this->_window); break;
+	case menu:
+		this->_backgrounds["menu"].draw(this->_window); break;
+	case choix_personnage:
+		this->_backgrounds["choix_personnage"].draw(this->_window); break;
+	case choix_pokemon :
+		this->_backgrounds["choix_pokemon"].draw(this->_window);break;
+	case arene : 
+		this->_backgrounds["arene"].draw(this->_window); break;
+	default: break;
+	}
 }
 
 void Game::_draw_dresseur()
@@ -183,11 +188,14 @@ void Game::_manage()
 
 void Game::_manage_bg()
 {
-	if(sf::Keyboard::isKeyPressed(sf::Keyboard::Return) && _current_background==intro)
-		_set_current_background(menu);
-	
-	if(sf::Keyboard::isKeyPressed(sf::Keyboard::Return) && _current_background==menu)
-		_set_current_background(choix_personnage);
+
+	if(sf::Keyboard::isKeyPressed(sf::Keyboard::Return) && _current_background==intro){
+		_set_current_background(menu);	
+		this->_clock.restart();
+	}
+	if(this->_clock.getElapsedTime().asSeconds() > 1.10f)
+		if(sf::Keyboard::isKeyPressed(sf::Keyboard::Return) && _current_background==menu)
+			_set_current_background(choix_personnage);
 
 	for(auto it = this->_dresseurs.begin(); it != this->_dresseurs.end(); it++)
 	{

@@ -36,6 +36,7 @@ private:
 	// Attribut SFML
 	sf::RenderWindow _window;
 	sf::Event _event;
+	sf::Clock _clock;
 
 	bool _get_current_background() const;
 	void _set_current_background(Bg);
