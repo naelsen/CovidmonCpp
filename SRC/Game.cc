@@ -49,7 +49,7 @@ _window(sf::VideoMode(WINDOW_WIDTH, WINDOW_HEIGHT), "LE MONDE D'APRÈS ...")
 		else
 		{
 			it->set_position_x(j*WINDOW_WIDTH/6);
-			it->set_position_y(620.f - SIZE_HEIGHT_DRESSEUR);
+			it->set_position_y(620.f - SIZE_HEIGHT_PERSO);
 			j++;
 		}
 	}
@@ -147,7 +147,7 @@ void Game::_draw_dresseur()
 		for(auto it = this->_dresseurs.begin(); it != this->_dresseurs.end(); it++)
 		{
 			it->draw(this->_window);
-			it->_animate();
+			it->animate();
 		}
 	}
 	if(this->_current_background == choix_pokemon)
@@ -157,7 +157,7 @@ void Game::_draw_dresseur()
 			if(it->get_choisi())
 			{
 				it->draw(this->_window);
-				it->_animate();
+				it->animate();
 			}
 		}
 	}
@@ -170,7 +170,7 @@ void Game::_draw_pokemon()
 		for(auto it = this->_pokemons.begin(); it != this->_pokemons.end(); it++)
 		{
 				it->draw(this->_window);
-				it->_animate();
+				it->animate();
 		}
 	}
 }

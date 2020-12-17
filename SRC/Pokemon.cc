@@ -1,36 +1,23 @@
-#include "Dresseur.hh"
+#include "Pokemon.hh"
 
-Dresseur::Dresseur(std::string image,std::string nom):
+Pokemon::Pokemon(std::string image,std::string nom):
 Personnage(image,nom)
 {}
 
-Dresseur::Dresseur(Dresseur const& dresseur):
-Personnage(dresseur)
+Pokemon::Pokemon(Pokemon const& pokemon):
+Personnage::Personnage(pokemon)
 {}
 
-Dresseur::~Dresseur()
+Pokemon::~Pokemon()
 {}
 
-void Dresseur::animate()
+void Pokemon::animate()
 {
-    this->__sprite_image.setTextureRect(sf::IntRect(SIZE_WIDTH_PERSO*this->_animation,
-     SIZE_HEIGHT_PERSO *this->_direction, SIZE_WIDTH_PERSO, SIZE_HEIGHT_PERSO));
+    this->__sprite_image.setTextureRect(sf::IntRect(SIZE_BLOCK_POKEMON*this->_animation,
+     SIZE_BLOCK_POKEMON *this->_direction,SIZE_BLOCK_POKEMON,SIZE_BLOCK_POKEMON));
 }
 
-bool Dresseur::is_out()
-{
-    sf::Uint16 dx = WINDOW_WIDTH - this->__position_x;
-    sf::Uint16 dy = WINDOW_HEIGHT/2 - this->__position_y;
-
-    bool collision_x = dx < 2;
-    bool collision_y = dy < SIZE_WIDTH_PERSO;
-    if(collision_x && collision_y)
-        return true;
-
-    return false;
-}
-
-void Dresseur::_move_up()
+void Pokemon::_move_up()
 {
     if(this->_clock.getElapsedTime().asSeconds() > 0.10f)
     {
@@ -49,7 +36,7 @@ void Dresseur::_move_up()
     }
 }
 
-void Dresseur::_move_down()
+void Pokemon::_move_down()
 {
     if(this->_clock.getElapsedTime().asSeconds() > 0.10f)
     {
@@ -60,15 +47,15 @@ void Dresseur::_move_down()
         this->_clock.restart();
     }
     this->_direction = Down;
-    if(this->__position_y < WINDOW_HEIGHT - SIZE_HEIGHT_PERSO)
+    if(this->__position_y < WINDOW_HEIGHT - SIZE_BLOCK_POKEMON)
     {
         this->__position_y += this->_speed;
-        if(this->__position_y > WINDOW_HEIGHT - SIZE_HEIGHT_PERSO)
-            this->__position_y = WINDOW_HEIGHT - SIZE_HEIGHT_PERSO;
+        if(this->__position_y > WINDOW_HEIGHT - SIZE_BLOCK_POKEMON)
+            this->__position_y = WINDOW_HEIGHT - SIZE_BLOCK_POKEMON;
     }
 }
 
-void Dresseur::_move_right()
+void Pokemon::_move_right()
 {
     if(this->_clock.getElapsedTime().asSeconds() > 0.10f)
     {
@@ -79,15 +66,15 @@ void Dresseur::_move_right()
         this->_clock.restart();
     }
     this->_direction = Right;
-    if(this->__position_x < WINDOW_HEIGHT - SIZE_WIDTH_PERSO)
+    if(this->__position_x < WINDOW_HEIGHT - SIZE_BLOCK_POKEMON)
     {
         this->__position_x += this->_speed;
-        if(this->__position_x> WINDOW_HEIGHT - SIZE_WIDTH_PERSO)
-            this->__position_x = WINDOW_HEIGHT - SIZE_WIDTH_PERSO;
+        if(this->__position_x> WINDOW_HEIGHT - SIZE_BLOCK_POKEMON)
+            this->__position_x = WINDOW_HEIGHT - SIZE_BLOCK_POKEMON;
     }
 }
 
-void Dresseur::_move_left()
+void Pokemon::_move_left()
 {
     if(this->_clock.getElapsedTime().asSeconds() > 0.10f)
     {

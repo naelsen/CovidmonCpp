@@ -10,7 +10,7 @@
 #include "Dresseur.hh"
 #include "Image.hh"
 #include "Player.hh"
-#include "pokemon.hh"
+#include "Pokemon.hh"
 
 typedef enum Bg
 {
