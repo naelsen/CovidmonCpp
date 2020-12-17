@@ -5,7 +5,8 @@ _current_background(menu),
 _selec(false),
 _window(sf::VideoMode(WINDOW_WIDTH, WINDOW_HEIGHT), "LE MONDE D'APRÈS ...")
 {
-	this->_backgrounds.insert(couple("menu",Image("Images/Backgrounds/menu.png")));
+	this->_backgrounds.insert(couple("intro",Image("Images/Backgrounds/Intro.png")));
+	this->_backgrounds.insert(couple("menu",Image("Images/Backgrounds/Intro.png")));
 	this->_backgrounds.insert(couple("choix_personnage",Image("Images/Backgrounds/choix_personnage.png")));
 	this->_backgrounds.insert(couple("choix_pokemon",Image("Images/Backgrounds/choix_pokemon.png")));
 	this->_backgrounds.insert(couple("arene",Image("Images/Backgrounds/arene.png")));
@@ -182,6 +183,9 @@ void Game::_manage()
 
 void Game::_manage_bg()
 {
+	if(sf::Keyboard::isKeyPressed(sf::Keyboard::Return) && _current_background==intro)
+		_set_current_background(menu);
+	
 	if(sf::Keyboard::isKeyPressed(sf::Keyboard::Return) && _current_background==menu)
 		_set_current_background(choix_personnage);
 

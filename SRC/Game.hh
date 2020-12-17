@@ -14,6 +14,7 @@
 
 typedef enum Bg
 {
+	intro,
 	menu,
 	choix_personnage,
 	choix_pokemon,
