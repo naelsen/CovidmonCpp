@@ -6,7 +6,7 @@
 
 #include "Image.hh"
 #include "define.hh"
-class Personnage: public Image
+class Entite: public Image
 {
 protected:
     sf::Clock _clock;
@@ -22,9 +22,9 @@ protected:
     virtual void _move_right() = 0;
     virtual void _move_left() = 0;
 public:
-    Personnage(std::string,std::string);
-    Personnage(Personnage const&);
-    ~Personnage();
+    Entite(std::string,std::string);
+    Entite(Entite const&);
+    ~Entite();
     std::string get_nom() const;
     sf::Uint16 get_speed() const;
     Direction get_direction() const;
@@ -35,8 +35,7 @@ public:
     void set_direction(Direction);
     void set_choisi(bool);
     void set_animation(int);
-    virtual void animate();
+    virtual void animate()=0;
     void got_a_clic(sf::RenderWindow&);
-
     void move();
 };

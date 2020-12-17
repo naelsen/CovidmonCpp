@@ -1,7 +1,7 @@
 #pragma once
-#include "Personnage.hh"
+#include "Entite.hh"
 
-class Dresseur: public Personnage
+class Dresseur: public Entite
 {
 private : 
     void _move_up();

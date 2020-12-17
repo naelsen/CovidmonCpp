@@ -1,8 +1,8 @@
 #pragma once
 
-#include "Personnage.hh"
+#include "Entite.hh"
 
-class Pokemon : public Personnage
+class Pokemon : public Entite
 {
 private : 
     void _move_up();

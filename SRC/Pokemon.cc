@@ -1,11 +1,11 @@
 #include "Pokemon.hh"
 
 Pokemon::Pokemon(std::string image,std::string nom):
-Personnage(image,nom)
+Entite(image,nom)
 {}
 
 Pokemon::Pokemon(Pokemon const& pokemon):
-Personnage::Personnage(pokemon)
+Entite::Entite(pokemon)
 {}
 
 Pokemon::~Pokemon()

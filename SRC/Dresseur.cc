@@ -1,11 +1,11 @@
 #include "Dresseur.hh"
 
 Dresseur::Dresseur(std::string image,std::string nom):
-Personnage(image,nom)
+Entite(image,nom)
 {}
 
 Dresseur::Dresseur(Dresseur const& dresseur):
-Personnage(dresseur)
+Entite(dresseur)
 {}
 
 Dresseur::~Dresseur()
@@ -22,8 +22,9 @@ bool Dresseur::is_out()
     sf::Uint16 dx = WINDOW_WIDTH - this->__position_x;
     sf::Uint16 dy = WINDOW_HEIGHT/2 - this->__position_y;
 
-    bool collision_x = dx < 2;
+    bool collision_x = dx < 64;
     bool collision_y = dy < SIZE_WIDTH_PERSO;
+    std::cout << dx << dy << std::endl;
     if(collision_x && collision_y)
         return true;
 
