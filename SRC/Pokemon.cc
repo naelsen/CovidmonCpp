@@ -92,3 +92,21 @@ void Pokemon::_move_left()
             this->__position_x = 0;
     }
 }
+
+void Pokemon::got_a_clic(sf::RenderWindow& window)
+{
+    sf::Vector2i pos = sf::Mouse::getPosition(window);
+    sf::Uint16 dx = pos.x - this->__position_x;
+	sf::Uint16 dy = pos.y - this->__position_y;
+	bool collision_x = dx < SIZE_BLOCK_POKEMON;
+	bool collision_y = dy < SIZE_BLOCK_POKEMON;
+    if (sf::Mouse::isButtonPressed(sf::Mouse::Right) || sf::Mouse::isButtonPressed(sf::Mouse::Left))
+    {
+        if(collision_x && collision_y)
+        {
+            _choisi = true;
+        }
+        else
+            _choisi = false;
+    }
+}

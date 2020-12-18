@@ -72,21 +72,6 @@ void Entite::set_animation(int animation)
 
 void Entite::got_a_clic(sf::RenderWindow& window)
 {
-    sf::Vector2i pos = sf::Mouse::getPosition(window);
-    sf::Uint16 dx = pos.x - this->__position_x;
-	sf::Uint16 dy = pos.y - this->__position_y;
-	bool collision_x = dx < SIZE_WIDTH_PERSO;
-	bool collision_y = dy < SIZE_HEIGHT_PERSO;
-    if (sf::Mouse::isButtonPressed(sf::Mouse::Right) || sf::Mouse::isButtonPressed(sf::Mouse::Left))
-    {
-        if(collision_x && collision_y)
-        {
-            _choisi = true;
-        }
-        else
-            _choisi = false;
-    }
-
 }
 
 void Entite::move()

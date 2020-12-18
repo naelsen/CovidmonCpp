@@ -32,13 +32,14 @@ private:
 	std::vector<Player> _players;
 
 	Bg _current_background;
-	bool _selec;
+	bool _selec_dresseur;
+	bool _selec_pokemon;
 	// Attribut SFML
 	sf::RenderWindow _window;
 	sf::Event _event;
 	sf::Clock _clock;
 
-	bool _get_current_background() const;
+	Bg _get_current_background() const;
 	void _set_current_background(Bg);
 	void _draw();
 	void _draw_bg();
@@ -47,9 +48,11 @@ private:
 	void _manage_bg();
 	void _manage_dresseur();
 	void _choisir_dresseur();
+	void _choisir_pokemon();
 	void _draw_pokemon();
 public:
 	Game();
 	~Game();
 	void run();
 };
+

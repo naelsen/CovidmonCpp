@@ -5,14 +5,15 @@ Player::Player()
 {
 }
 
-Player::Player(Dresseur& dresseur) : _dresseur(&dresseur)
+Player::Player(Dresseur& dresseur) : _dresseur(&dresseur), _pokeball("Images/pokeball.png")
 {
     this->IP = sf::IpAddress::getLocalAddress();
 }
 
 Player::Player(Player const& P):
 IP(P.IP),
-_dresseur(P._dresseur)
+_dresseur(P._dresseur),
+_pokeball(P._pokeball)
 {
     short int port = 30000;
     // Le client se connecte au port avec son IP a condition que le serveur ai deja été lancé
@@ -38,9 +39,26 @@ Player::~Player()
 {
 }
 
+void Player::set_pokemon(Pokemon& pok)
+{
+    this->_pokemon = &pok;
+}
+
 Dresseur* Player::get_dresseur() const
 {
     return this->_dresseur;
+}
+
+Pokemon* Player::get_pokemon() const
+{
+    return this->_pokemon;
+}
+
+void Player::pop_pokeball(sf::RenderWindow& window)
+{
+    this->_pokeball.set_position_x(this->_dresseur->get_position_x()+SIZE_WIDTH_PERSO/2 - SIZE_BLOCK_POKEBALL/2);
+    this->_pokeball.set_position_y(this->_dresseur->get_position_y()-SIZE_BLOCK_POKEBALL/2);
+    this->_pokeball.draw(window);
 }
 
 void Player::receive(std::vector<Dresseur>& dresseurs)

@@ -2,7 +2,8 @@
 
 Game::Game():
 _current_background(intro),
-_selec(false),
+_selec_dresseur(false),
+_selec_pokemon(false),
 _window(sf::VideoMode(WINDOW_WIDTH, WINDOW_HEIGHT), "LE MONDE D'APRES ...")
 {
 	this->_backgrounds.insert(couple("intro",Image("Images/Backgrounds/Intro.png")));
@@ -93,7 +94,7 @@ Game::~Game()
 {
 }
 
-bool Game::_get_current_background() const
+Bg Game::_get_current_background() const
 {
 	return this->_current_background;
 }
@@ -116,6 +117,7 @@ void Game::run()
             }
         }
 		this->_choisir_dresseur();
+		this->_choisir_pokemon();
         this->_manage();
 		this->_draw();
     	this->_window.display();
@@ -127,6 +129,8 @@ void Game::_draw()
 	this->_draw_bg();
 	this->_draw_dresseur();
 	this->_draw_pokemon();
+	if(this->_selec_pokemon)
+		this->_players[0].pop_pokeball(this->_window);
 }
 
 void Game::_draw_bg()
@@ -175,8 +179,11 @@ void Game::_draw_pokemon()
 	{
 		for(auto it = this->_pokemons.begin(); it != this->_pokemons.end(); it++)
 		{
+			if(!it->get_choisi())
+			{
 				it->draw(this->_window);
 				it->animate();
+			}
 		}
 	}
 }
@@ -188,22 +195,25 @@ void Game::_manage()
 
 void Game::_manage_bg()
 {
-
-	if(sf::Keyboard::isKeyPressed(sf::Keyboard::Return) && _current_background==intro){
+	if(sf::Keyboard::isKeyPressed(sf::Keyboard::Return) && _current_background==intro)
+	{
 		_set_current_background(menu);	
 		this->_clock.restart();
 	}
-	if(this->_clock.getElapsedTime().asSeconds() > 1.10f)
-		if(sf::Keyboard::isKeyPressed(sf::Keyboard::Return) && _current_background==menu)
-			_set_current_background(choix_personnage);
-
-	for(auto it = this->_dresseurs.begin(); it != this->_dresseurs.end(); it++)
+	else if(sf::Keyboard::isKeyPressed(sf::Keyboard::Return) && _current_background==menu)
 	{
-		if(it->is_out())
+		if(this->_clock.getElapsedTime().asSeconds() > 0.5f)
+			_set_current_background(choix_personnage);
+	}
+	else if(this->_selec_dresseur)
+	{
+		if(this->_players[0].get_dresseur()->is_out())
 		{
-			_set_current_background(choix_pokemon);
-			it->set_position_x(0);
-			it->set_position_y(WINDOW_HEIGHT/2);
+			if(this->_current_background == choix_personnage)
+				_set_current_background(choix_pokemon);
+			else if(this->_current_background == choix_pokemon)
+				_set_current_background(arene);
+			this->_players[0].get_dresseur()->set_position_x(0);
 		}
 	}
 }
@@ -220,12 +230,14 @@ void Game::_manage_dresseur()
 		}
 	}
 	if(this->_current_background==choix_pokemon)
+	{
 		this->_players[0].get_dresseur()->move();
+	}
 }
 
 void Game::_choisir_dresseur()
 {
-	if(this->_selec==false)
+	if(!this->_selec_dresseur && this->_current_background == choix_personnage)
 	{
 		for(auto it = this->_dresseurs.begin(); it != this->_dresseurs.end(); it++)
 		{
@@ -233,8 +245,24 @@ void Game::_choisir_dresseur()
 			if(it->get_choisi())
 			{
 				Player P(*it);
-				this->_selec = true;
+				this->_selec_dresseur = true;
 				this->_players.push_back(P);
+			}
+		}
+	}
+}
+
+void Game::_choisir_pokemon()
+{
+	if(!this->_selec_pokemon && this->_current_background == choix_pokemon)
+	{
+		for(auto it = this->_pokemons.begin(); it != this->_pokemons.end(); it++)
+		{
+			it->got_a_clic(this->_window);
+			if(it->get_choisi())
+			{
+				this->_players[0].set_pokemon(*it);
+				this->_selec_pokemon = true;
 			}
 		}
 	}

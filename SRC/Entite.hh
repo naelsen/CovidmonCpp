@@ -36,6 +36,6 @@ public:
     void set_choisi(bool);
     void set_animation(int);
     virtual void animate()=0;
-    void got_a_clic(sf::RenderWindow&);
+    virtual void got_a_clic(sf::RenderWindow&)=0;
     void move();
 };

@@ -18,5 +18,6 @@ public:
     ~Pokemon();
 
     void animate();
+    void got_a_clic(sf::RenderWindow&);
     //void attaque()
 };
