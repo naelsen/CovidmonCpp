@@ -4,6 +4,8 @@ Game::Game():
 _current_background(intro),
 _selec_dresseur(false),
 _selec_pokemon(false),
+_sound_switched(false),
+_sound_switched2(false),
 _window(sf::VideoMode(WINDOW_WIDTH, WINDOW_HEIGHT), "LE MONDE D'APRES ...")
 {
 	this->_backgrounds.insert(couple("intro",Image("Images/Backgrounds/Intro.png")));
@@ -90,6 +92,7 @@ _window(sf::VideoMode(WINDOW_WIDTH, WINDOW_HEIGHT), "LE MONDE D'APRES ...")
 		}
 	}
 	this->_clock.restart();
+	this->_clock2.restart();
 	this->_window.setFramerateLimit(60);
 }
 
@@ -130,14 +133,18 @@ void Game::run()
 
 // La fonction joue le son du fichier placé en paramètre
 // Il faut faire attention au clock.restart() et aux conditions
-void Game::play_sound(std::string fichier)
+void Game::_switch_sound(std::string fichier)
 {
-	this->_clock.restart();
     if (!this->_buffer.loadFromFile(fichier))
 		std::cout<<"Erreur chargement son"<<std::endl;
-
 	this->_sound.setBuffer(_buffer);
-	this->_sound.play();
+}
+
+void Game::_switch_sound2(std::string fichier)
+{
+    if (!this->_buffer2.loadFromFile(fichier))
+		std::cout<<"Erreur chargement son"<<std::endl;
+	this->_sound2.setBuffer(_buffer2);
 }
 
 void Game::_draw()
@@ -175,7 +182,7 @@ void Game::_draw_dresseur()
 			if(it->get_choisi())
 			{
 				it->print_name(this->_window);
-				play_sound("Sons/eheh.wav");
+				//play_sound("Sons/eheh.wav");
 			}
 			it->draw(this->_window);
 			it->animate();
@@ -190,6 +197,19 @@ void Game::_draw_dresseur()
 				it->print_name(this->_window);
 				it->draw(this->_window);
 				it->animate();
+			}
+		}
+	}
+	if(this->_current_background == arene)
+	{
+		for(auto it = this->_dresseurs.begin(); it != this->_dresseurs.end(); it++)
+		{
+			if(it->get_choisi())
+			{
+				it->print_name(this->_window);
+				it->draw(this->_window);
+				it->animate();
+
 			}
 		}
 	}
@@ -219,15 +239,62 @@ void Game::_manage()
 // jsp pourquoi
 void Game::_manage_sound()
 {
-	if(_current_background==intro && this->_clock.getElapsedTime().asSeconds() < 0.01f)
-		play_sound("Sons/film.wav");
-
-	if(sf::Keyboard::isKeyPressed(sf::Keyboard::Return) && this->_clock.getElapsedTime().asSeconds() > 1.0f)
-		play_sound("Sons/b.wav");
-
-	if(this->_players[0].is_moving() && this->_clock.getElapsedTime().asSeconds() > 0.3f)
-		play_sound("Sons/pas.wav");
-
+	if(_current_background!=arene)
+	{
+		if(_sound_switched2 == false)
+		{
+			this->_switch_sound2("Sons/musique.wav");
+			this->_sound_switched2 = true;
+			this->_clock2.restart();
+			this->_sound2.play();
+		}
+		else if(this->_clock2.getElapsedTime().asMilliseconds() > 31500)
+		{
+			this->_clock2.restart();
+			this->_sound2.play();
+		}
+	}
+	else
+	{
+		if(_sound_switched2 == true)
+		{
+			this->_switch_sound2("Sons/musique_arene1.wav");
+			this->_sound_switched2 = false;
+			this->_clock2.restart();
+			this->_sound2.play();
+		}
+		else if(this->_clock2.getElapsedTime().asMilliseconds() > 31500)
+		{
+			this->_clock2.restart();
+			this->_sound2.play();
+		}
+	}
+	
+	if(sf::Keyboard::isKeyPressed(sf::Keyboard::Return) &&  this->_current_background != arene && this->_clock.getElapsedTime().asMilliseconds() > 200)
+	{
+		if(this->_sound_switched == false)
+		{
+			_switch_sound("Sons/b.wav");
+			this->_sound_switched = true;
+			this->_clock.restart();
+			this->_sound.play();
+		}
+	}
+	else if(this->_players[0].is_moving() && this->_clock.getElapsedTime().asMilliseconds() > 800)
+	{
+		if(this->_sound_switched == true)
+		{
+			this->_switch_sound("Sons/footstep.wav");
+			this->_sound_switched = false;
+			this->_clock.restart();
+			this->_sound.play();
+		}
+		else
+		{
+			this->_clock.restart();
+			this->_sound.play();
+		}
+	}
 }
 
 void Game::_manage_bg()
@@ -239,7 +306,7 @@ void Game::_manage_bg()
 	}
 	else if(sf::Keyboard::isKeyPressed(sf::Keyboard::Return) && _current_background==menu)
 	{
-		if(this->_clock.getElapsedTime().asSeconds() > 0.5f)
+		if(this->_clock.getElapsedTime().asMilliseconds() > 200)
 			_set_current_background(choix_personnage);
 	}
 	else if(this->_selec_dresseur)
@@ -270,6 +337,13 @@ void Game::_manage_dresseur()
 	{
 		this->_players[0].get_dresseur()->move();
 	}
+	if(this->_current_background==arene)
+	{
+		if(this->_players[0].get_dresseur()->get_position_y() != WINDOW_WIDTH/2 - 100)
+			this->_players[0].get_dresseur()->set_position_y(WINDOW_WIDTH/2 - 100);
+		if(this->_players[0].get_dresseur()->get_animation() != 0)
+			this->_players[0].get_dresseur()->set_animation(0);
+	}
 }
 
 void Game::_choisir_dresseur()
@@ -284,6 +358,7 @@ void Game::_choisir_dresseur()
 				Player P(*it);
 				this->_selec_dresseur = true;
 				this->_players.push_back(P);
+
 			}
 		}
 	}

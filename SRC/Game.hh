@@ -36,12 +36,18 @@ private:
 	Bg _current_background;
 	bool _selec_dresseur;
 	bool _selec_pokemon;
+	bool _sound_switched;
+	bool _sound_switched2;
 	// Attribut SFML
 	sf::RenderWindow _window;
 	sf::Event _event;
 	sf::Clock _clock;
 	sf::SoundBuffer _buffer;
 	sf::Sound _sound;
+	sf::SoundBuffer _buffer2;
+	sf::Sound _sound2;
+	sf::Clock _clock2;
+	sf::Font _font;
 
 	Bg _get_current_background() const;
 	void _set_current_background(Bg);
@@ -55,7 +61,9 @@ private:
 	void _choisir_dresseur();
 	void _choisir_pokemon();
 	void _draw_pokemon();
-	void play_sound(std::string);
+	void _switch_sound(std::string);
+	void _switch_sound2(std::string);
+
 public:
 	Game();
 	~Game();

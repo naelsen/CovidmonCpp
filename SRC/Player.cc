@@ -44,11 +44,11 @@ bool Player::is_moving()
 {
 	if(sf::Keyboard::isKeyPressed(sf::Keyboard::Right))
 		return true;
-	if(sf::Keyboard::isKeyPressed(sf::Keyboard::Left))
+	else if(sf::Keyboard::isKeyPressed(sf::Keyboard::Left))
 		return true;
-	if(sf::Keyboard::isKeyPressed(sf::Keyboard::Up))
+	else if(sf::Keyboard::isKeyPressed(sf::Keyboard::Up))
 		return true;
-	if(sf::Keyboard::isKeyPressed(sf::Keyboard::Down))
+	else if(sf::Keyboard::isKeyPressed(sf::Keyboard::Down))
 		return true;
 	
 	return false;
