@@ -56,6 +56,8 @@ private:
 	void _draw_dresseur();
 	void _manage();
 	void _manage_sound();
+	void _front_sound();
+	void _back_sound();
 	void _manage_bg();
 	void _manage_dresseur();
 	void _choisir_dresseur();

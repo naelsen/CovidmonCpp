@@ -8,13 +8,12 @@ _sound_switched(false),
 _sound_switched2(false),
 _window(sf::VideoMode(WINDOW_WIDTH, WINDOW_HEIGHT), "LE MONDE D'APRES ...")
 {
-	this->_backgrounds.insert(couple("intro",Image("Images/Backgrounds/Intro.png")));
+	this->_backgrounds.insert(couple("intro",Image("Images/Backgrounds/intro2.png")));
 	this->_backgrounds.insert(couple("menu",Image("Images/Backgrounds/menu.png")));
 	this->_backgrounds.insert(couple("choix_personnage",Image("Images/Backgrounds/choix_personnage.png")));
 	this->_backgrounds.insert(couple("choix_pokemon",Image("Images/Backgrounds/choix_pokemon.png")));
 	this->_backgrounds.insert(couple("arene",Image("Images/Backgrounds/arene.png")));
 
-	//this->_sounds.insert(couple("switch",Sound("Sons/")));
     
 	this->_dresseurs.push_back(Dresseur("Images/Personnages/G_gaby.png","Gaby"));
 	this->_dresseurs.push_back(Dresseur("Images/Personnages/G_joelle.png","Joelle"));
@@ -115,7 +114,7 @@ void Game::run()
 {
 	while (this->_window.isOpen())
     {
-        // ==ON S'OCCUPE DE SAVOIR SI ON DOIT FERMER LA window==
+        // ==ON S'OCCUPE DE SAVOIR SI ON DOIT FERMER LA FENETRE
         while (this->_window.pollEvent(this->_event))
         {
             if (this->_event.type == sf::Event::Closed || sf::Keyboard::isKeyPressed(sf::Keyboard::Escape))
@@ -132,7 +131,6 @@ void Game::run()
 }
 
 // La fonction joue le son du fichier placé en paramètre
-// Il faut faire attention au clock.restart() et aux conditions
 void Game::_switch_sound(std::string fichier)
 {
     if (!this->_buffer.loadFromFile(fichier))
@@ -226,6 +224,22 @@ void Game::_draw_pokemon()
 				it->draw(this->_window);
 				it->animate();
 			}
+			else
+				it->print_name(this->_window);
+		}
+	}
+	if(this->_current_background == arene)
+	{
+		for(auto it = this->_pokemons.begin(); it != this->_pokemons.end(); it++)
+		{
+			if(it->get_choisi())
+			{
+				it->print_name(this->_window);
+				it->draw(this->_window);
+				it->move();
+				it->animate();
+				// 30,30 ---  570,30 ---- 570,570 ------ 30, 600
+			}
 		}
 	}
 }
@@ -236,8 +250,8 @@ void Game::_manage()
 	this->_manage_dresseur();
 }
 //Les sons se déclanchent que dans la deuxième fenetre
-// jsp pourquoi
-void Game::_manage_sound()
+
+void Game::_back_sound()
 {
 	if(_current_background!=arene)
 	{
@@ -269,7 +283,10 @@ void Game::_manage_sound()
 			this->_sound2.play();
 		}
 	}
-	
+}
+
+void Game::_front_sound()
+{
 	if(sf::Keyboard::isKeyPressed(sf::Keyboard::Return) &&  this->_current_background != arene && this->_clock.getElapsedTime().asMilliseconds() > 200)
 	{
 		if(this->_sound_switched == false)
@@ -295,6 +312,12 @@ void Game::_manage_sound()
 			this->_sound.play();
 		}
 	}
+}
+
+void Game::_manage_sound()
+{
+	this->_back_sound();
+	this->_front_sound();
 }
 
 void Game::_manage_bg()

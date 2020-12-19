@@ -5,6 +5,7 @@
 class Pokemon : public Entite
 {
 private : 
+    sf::Font _font;
     void _move_up();
     void _move_down();
     void _move_right();
@@ -19,5 +20,6 @@ public:
 
     void animate();
     void got_a_clic(sf::RenderWindow&);
+    void print_name(sf::RenderWindow&);
     //void attaque()
 };

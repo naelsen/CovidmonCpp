@@ -108,6 +108,38 @@ void Player::receive(std::vector<Dresseur>& dresseurs)
     }  
 }
 
+void Player::receive(std::vector<Pokemon>& pokemon)
+{
+    sf::Packet receivePacket;
+    if(socket.receive(receivePacket) == sf::Socket::Done)
+    {
+        sf::Uint16 x,y;
+        int animation;
+        int dir;
+        Direction d;
+        std::string nom;
+		receivePacket >> nom >> dir >> animation >> x >> y;
+        if(dir == 0)
+            d = Down;
+        if(dir == 1)
+            d = Left;
+        if(dir == 2)
+            d = Right;
+        if(dir == 3)
+            d = Up;
+        for(auto it = pokemon.begin(); it != pokemon.end(); it++)
+        {
+            if(it->get_nom() == nom)
+            {
+		        it->set_position_x(x);
+		        it->set_position_y(y);
+                it->set_direction(d);
+                it->set_animation(animation);
+            }
+        }
+    }  
+}
+
 void Player::send()
 {
     sf::Packet sendPacket;

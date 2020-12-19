@@ -17,6 +17,19 @@ void Pokemon::animate()
      SIZE_BLOCK_POKEMON *this->_direction,SIZE_BLOCK_POKEMON,SIZE_BLOCK_POKEMON));
 }
 
+void Pokemon::print_name(sf::RenderWindow &window)
+{
+        this->_font.loadFromFile("Images/arial.ttf");
+        sf::Text text("Pokemon choisi : "+this->get_nom(),_font);
+        text.setCharacterSize(15);
+        text.setStyle(sf::Text::Bold);
+        text.setFillColor(sf::Color::Black);
+        text.setPosition(sf::Vector2f(WINDOW_WIDTH-200,6));
+        window.draw(text);
+}
+
+
+// 30,30 ---  570,30 ---- 570,570 ------ 30, 600
 void Pokemon::_move_up()
 {
     if(this->_clock.getElapsedTime().asSeconds() > 0.10f)
@@ -28,7 +41,7 @@ void Pokemon::_move_up()
         this->_clock.restart();
     }
     this->_direction = Up;
-    if(this->__position_y > 0)
+    if(this->__position_y > ARENE_START)
     {
         this->__position_y -= this->_speed;
         if(this->__position_y<0)
@@ -47,7 +60,7 @@ void Pokemon::_move_down()
         this->_clock.restart();
     }
     this->_direction = Down;
-    if(this->__position_y < WINDOW_HEIGHT - SIZE_BLOCK_POKEMON)
+    if(this->__position_y < ARENE_END - SIZE_BLOCK_POKEMON)
     {
         this->__position_y += this->_speed;
         if(this->__position_y > WINDOW_HEIGHT - SIZE_BLOCK_POKEMON)
@@ -66,7 +79,7 @@ void Pokemon::_move_right()
         this->_clock.restart();
     }
     this->_direction = Right;
-    if(this->__position_x < WINDOW_HEIGHT - SIZE_BLOCK_POKEMON)
+    if(this->__position_x < ARENE_END - SIZE_BLOCK_POKEMON)
     {
         this->__position_x += this->_speed;
         if(this->__position_x> WINDOW_HEIGHT - SIZE_BLOCK_POKEMON)
@@ -85,7 +98,7 @@ void Pokemon::_move_left()
         this->_clock.restart();
     }
     this->_direction = Left;
-    if(this->__position_x > 0)
+    if(this->__position_x > ARENE_START)
     {
         this->__position_x -= this->_speed;
         if(this->__position_x<0)
