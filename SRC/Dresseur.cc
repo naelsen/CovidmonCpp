@@ -17,6 +17,17 @@ void Dresseur::animate()
      SIZE_HEIGHT_PERSO *this->_direction, SIZE_WIDTH_PERSO, SIZE_HEIGHT_PERSO));
 }
 
+void Dresseur::print_name(sf::RenderWindow &window)
+{
+        this->_font.loadFromFile("Images/arial.ttf");
+        sf::Text text("Joueur 1 : "+this->get_nom(),_font);
+        text.setCharacterSize(15);
+        text.setStyle(sf::Text::Bold);
+        text.setFillColor(sf::Color::Red);
+        text.setPosition(sf::Vector2f(12,6));
+        window.draw(text);
+}
+
 bool Dresseur::is_out()
 {
     if(this->__position_x > WINDOW_WIDTH)

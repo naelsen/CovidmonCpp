@@ -3,6 +3,7 @@
 #include <iostream>
 #include <map>
 #include <SFML/Graphics.hpp>
+#include <SFML/Audio.hpp>
 #include <string>
 #include <vector>
 
@@ -11,6 +12,7 @@
 #include "Image.hh"
 #include "Player.hh"
 #include "Pokemon.hh"
+#include "Sound.hh"
 
 typedef enum Bg
 {
@@ -38,6 +40,8 @@ private:
 	sf::RenderWindow _window;
 	sf::Event _event;
 	sf::Clock _clock;
+	sf::SoundBuffer _buffer;
+	sf::Sound _sound;
 
 	Bg _get_current_background() const;
 	void _set_current_background(Bg);
@@ -45,11 +49,13 @@ private:
 	void _draw_bg();
 	void _draw_dresseur();
 	void _manage();
+	void _manage_sound();
 	void _manage_bg();
 	void _manage_dresseur();
 	void _choisir_dresseur();
 	void _choisir_pokemon();
 	void _draw_pokemon();
+	void play_sound(std::string);
 public:
 	Game();
 	~Game();

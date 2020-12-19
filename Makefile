@@ -2,7 +2,7 @@ CC = g++
 CCFLAGS = -Wall -Werror -std=c++11 -g
 SRC = $(wildcard SRC/*.cc)
 OBJ = $(SRC:.cc=.o)
-EXEC = prog
+EXEC = jeu
 
 all: $(EXEC)
 
@@ -17,4 +17,4 @@ play:
 	./$(EXEC)
 
 clean:
-	rm -f $(OBJ) $(EXEC)
+	rm -f $(OBJ) $(EXEC) serveur

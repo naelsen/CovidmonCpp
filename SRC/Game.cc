@@ -11,15 +11,17 @@ _window(sf::VideoMode(WINDOW_WIDTH, WINDOW_HEIGHT), "LE MONDE D'APRES ...")
 	this->_backgrounds.insert(couple("choix_personnage",Image("Images/Backgrounds/choix_personnage.png")));
 	this->_backgrounds.insert(couple("choix_pokemon",Image("Images/Backgrounds/choix_pokemon.png")));
 	this->_backgrounds.insert(couple("arene",Image("Images/Backgrounds/arene.png")));
+
+	//this->_sounds.insert(couple("switch",Sound("Sons/")));
     
-	this->_dresseurs.push_back(Dresseur("Images/Personnages/G_gaby.png","gaby"));
-	this->_dresseurs.push_back(Dresseur("Images/Personnages/G_joelle.png","joelle"));
-	this->_dresseurs.push_back(Dresseur("Images/Personnages/G_red.png","red"));
-	this->_dresseurs.push_back(Dresseur("Images/Personnages/G_chauve.png","le chauve"));
-	this->_dresseurs.push_back(Dresseur("Images/Personnages/R_butch.png","butch"));
-	this->_dresseurs.push_back(Dresseur("Images/Personnages/R_cassidy.png","cassidy"));
-	this->_dresseurs.push_back(Dresseur("Images/Personnages/R_cyrus.png","cyrus"));
-	this->_dresseurs.push_back(Dresseur("Images/Personnages/R_james.png","james"));
+	this->_dresseurs.push_back(Dresseur("Images/Personnages/G_gaby.png","Gaby"));
+	this->_dresseurs.push_back(Dresseur("Images/Personnages/G_joelle.png","Joelle"));
+	this->_dresseurs.push_back(Dresseur("Images/Personnages/G_red.png","Red"));
+	this->_dresseurs.push_back(Dresseur("Images/Personnages/G_chauve.png","Le gros crane"));
+	this->_dresseurs.push_back(Dresseur("Images/Personnages/R_butch.png","Butch"));
+	this->_dresseurs.push_back(Dresseur("Images/Personnages/R_cassidy.png","Cassidy"));
+	this->_dresseurs.push_back(Dresseur("Images/Personnages/R_cyrus.png","Cyrus"));
+	this->_dresseurs.push_back(Dresseur("Images/Personnages/R_james.png","James"));
 
 	this->_pokemons.push_back(Pokemon("Images/Pokemons/articodin.png" ,"Articodin" ));
 	this->_pokemons.push_back(Pokemon("Images/Pokemons/canartichaud.png" ,"Canartichaud" ));
@@ -87,6 +89,7 @@ _window(sf::VideoMode(WINDOW_WIDTH, WINDOW_HEIGHT), "LE MONDE D'APRES ...")
 			l++;
 		}
 	}
+	this->_clock.restart();
 	this->_window.setFramerateLimit(60);
 }
 
@@ -98,6 +101,7 @@ Bg Game::_get_current_background() const
 {
 	return this->_current_background;
 }
+
 
 void Game::_set_current_background(Bg bg)
 {
@@ -122,6 +126,18 @@ void Game::run()
 		this->_draw();
     	this->_window.display();
     }
+}
+
+// La fonction joue le son du fichier placé en paramètre
+// Il faut faire attention au clock.restart() et aux conditions
+void Game::play_sound(std::string fichier)
+{
+	this->_clock.restart();
+    if (!this->_buffer.loadFromFile(fichier))
+		std::cout<<"Erreur chargement son"<<std::endl;
+
+	this->_sound.setBuffer(_buffer);
+	this->_sound.play();
 }
 
 void Game::_draw()
@@ -156,6 +172,11 @@ void Game::_draw_dresseur()
 	{
 		for(auto it = this->_dresseurs.begin(); it != this->_dresseurs.end(); it++)
 		{
+			if(it->get_choisi())
+			{
+				it->print_name(this->_window);
+				play_sound("Sons/eheh.wav");
+			}
 			it->draw(this->_window);
 			it->animate();
 		}
@@ -166,6 +187,7 @@ void Game::_draw_dresseur()
 		{
 			if(it->get_choisi())
 			{
+				it->print_name(this->_window);
 				it->draw(this->_window);
 				it->animate();
 			}
@@ -190,14 +212,29 @@ void Game::_draw_pokemon()
 void Game::_manage()
 {
 	this->_manage_bg();
+	this->_manage_sound();
 	this->_manage_dresseur();
+}
+//Les sons se déclanchent que dans la deuxième fenetre
+// jsp pourquoi
+void Game::_manage_sound()
+{
+	if(_current_background==intro && this->_clock.getElapsedTime().asSeconds() < 0.01f)
+		play_sound("Sons/film.wav");
+
+	if(sf::Keyboard::isKeyPressed(sf::Keyboard::Return) && this->_clock.getElapsedTime().asSeconds() > 1.0f)
+		play_sound("Sons/b.wav");
+
+	if(this->_players[0].is_moving() && this->_clock.getElapsedTime().asSeconds() > 0.3f)
+		play_sound("Sons/pas.wav");
+
 }
 
 void Game::_manage_bg()
 {
 	if(sf::Keyboard::isKeyPressed(sf::Keyboard::Return) && _current_background==intro)
 	{
-		_set_current_background(menu);	
+		_set_current_background(menu);
 		this->_clock.restart();
 	}
 	else if(sf::Keyboard::isKeyPressed(sf::Keyboard::Return) && _current_background==menu)

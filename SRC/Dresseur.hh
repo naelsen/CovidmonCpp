@@ -11,6 +11,7 @@ private :
     void _move_down();
     void _move_right();
     void _move_left();
+    sf::Font _font;
 public:
     Dresseur(std::string,std::string);
     Dresseur(Dresseur const&);
@@ -19,4 +20,5 @@ public:
     void animate();
     bool is_out();
     void got_a_clic(sf::RenderWindow&);
+    void print_name(sf::RenderWindow&);
 };

@@ -26,5 +26,6 @@ public:
     Pokemon* get_pokemon() const;
     void pop_pokeball(sf::RenderWindow&);
     void receive(std::vector<Dresseur>&);
+    bool is_moving();
     void send();
 };

@@ -38,6 +38,21 @@ _pokeball(P._pokeball)
 Player::~Player()
 {
 }
+// Fonction ajoutée pour le bruit des pas
+// elle evite de faire les 4 conditions a chaque fois
+bool Player::is_moving()
+{
+	if(sf::Keyboard::isKeyPressed(sf::Keyboard::Right))
+		return true;
+	if(sf::Keyboard::isKeyPressed(sf::Keyboard::Left))
+		return true;
+	if(sf::Keyboard::isKeyPressed(sf::Keyboard::Up))
+		return true;
+	if(sf::Keyboard::isKeyPressed(sf::Keyboard::Down))
+		return true;
+	
+	return false;
+}
 
 void Player::set_pokemon(Pokemon& pok)
 {
