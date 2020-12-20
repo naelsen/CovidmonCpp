@@ -12,7 +12,6 @@
 #include "Image.hh"
 #include "Player.hh"
 #include "Pokemon.hh"
-#include "Sound.hh"
 
 typedef enum Bg
 {
@@ -71,4 +70,3 @@ public:
 	~Game();
 	void run();
 };
-

@@ -1,25 +1,26 @@
 #include "Entite.hh"
 
-Entite::Entite(std::string image,std::string nom):
-Image(image),
-_nom(nom),
-_speed(2),
-_direction(Down),
-_animation(0),
-_choisi(false)
-{}
+Entite::Entite(std::string image, std::string nom) : Image(image),
+                                                     _nom(nom),
+                                                     _speed(2),
+                                                     _direction(Down),
+                                                     _animation(0),
+                                                     _choisi(false)
+{
+}
 
-Entite::Entite(Entite const& Entite):
-Image(Entite),
-_nom(Entite._nom),
-_speed(Entite._speed),
-_direction(Entite._direction),
-_animation(Entite._animation),
-_choisi(false)
-{}
+Entite::Entite(Entite const &Entite) : Image(Entite),
+                                       _nom(Entite._nom),
+                                       _speed(Entite._speed),
+                                       _direction(Entite._direction),
+                                       _animation(Entite._animation),
+                                       _choisi(false)
+{
+}
 
 Entite::~Entite()
-{}
+{
+}
 
 std::string Entite::get_nom() const
 {
@@ -28,27 +29,27 @@ std::string Entite::get_nom() const
 
 sf::Uint16 Entite::get_speed() const
 {
-    return _speed;
+    return this->_speed;
 }
 
 Direction Entite::get_direction() const
 {
-    return _direction;
+    return this->_direction;
 }
 
 int Entite::get_animation() const
 {
-    return _animation;
+    return this->_animation;
 }
 
 bool Entite::get_choisi() const
 {
-    return _choisi;
+    return this->_choisi;
 }
 
 void Entite::set_nom(std::string nom)
 {
-    this->_nom = nom; 
+    this->_nom = nom;
 }
 
 void Entite::set_speed(sf::Uint16 speed)
@@ -70,21 +71,21 @@ void Entite::set_animation(int animation)
     this->_animation = animation;
 }
 
-void Entite::got_a_clic(sf::RenderWindow& window)
+void Entite::got_a_clic(sf::RenderWindow &window)
 {
 }
 
 void Entite::move()
 {
-    if(this->_clock.getElapsedTime().asSeconds() > 0.30f)
-        this->_animation=0;
+    if (this->_clock.getElapsedTime().asSeconds() > 0.30f)
+        this->_animation = 0;
     this->animate();
-    if(sf::Keyboard::isKeyPressed(sf::Keyboard::Up))
-        _move_up();
-    if(sf::Keyboard::isKeyPressed(sf::Keyboard::Down))
-        _move_down();
-    if(sf::Keyboard::isKeyPressed(sf::Keyboard::Right))
-        _move_right();
-    if(sf::Keyboard::isKeyPressed(sf::Keyboard::Left))
-        _move_left();
+    if (sf::Keyboard::isKeyPressed(sf::Keyboard::Up))
+        this->_move_up();
+    if (sf::Keyboard::isKeyPressed(sf::Keyboard::Down))
+        this->_move_down();
+    if (sf::Keyboard::isKeyPressed(sf::Keyboard::Right))
+        this->_move_right();
+    if (sf::Keyboard::isKeyPressed(sf::Keyboard::Left))
+        this->_move_left();
 }

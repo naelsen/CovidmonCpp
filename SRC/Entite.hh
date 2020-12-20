@@ -1,18 +1,19 @@
 #pragma once
 
-#include <SFML/Graphics.hpp>
 #include <SFML/Audio.hpp>
+#include <SFML/Graphics.hpp>
 #include <string>
 
-#include "Image.hh"
 #include "define.hh"
-class Entite: public Image
+#include "Image.hh"
+
+class Entite : public Image
 {
 protected:
     sf::Clock _clock;
     std::string _nom;
+    sf::Uint16 _speed;
 
-    sf::Uint16 _speed;    
     Direction _direction;
     int _animation;
     bool _choisi;
@@ -21,9 +22,10 @@ protected:
     virtual void _move_down() = 0;
     virtual void _move_right() = 0;
     virtual void _move_left() = 0;
+
 public:
-    Entite(std::string,std::string);
-    Entite(Entite const&);
+    Entite(std::string, std::string);
+    Entite(Entite const &);
     ~Entite();
     std::string get_nom() const;
     sf::Uint16 get_speed() const;
@@ -35,7 +37,7 @@ public:
     void set_direction(Direction);
     void set_choisi(bool);
     void set_animation(int);
-    virtual void animate()=0;
-    virtual void got_a_clic(sf::RenderWindow&)=0;
+    virtual void animate() = 0;
+    virtual void got_a_clic(sf::RenderWindow &) = 0;
     void move();
 };
