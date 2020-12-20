@@ -47,6 +47,7 @@ private:
 	sf::Sound _sound2;
 	sf::Clock _clock2;
 	sf::Font _font;
+	sf::Text _text;
 
 	Bg _get_current_background() const;
 	void _set_current_background(Bg);

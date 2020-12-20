@@ -2,10 +2,24 @@
 
 Dresseur::Dresseur(std::string image, std::string nom) : Entite(image, nom)
 {
+    this->_font.loadFromFile("Images/arial.ttf");
+    this->_text.setFont(this->_font);
+    this->_text.setString("Joueur 1 : " + this->get_nom());
+    this->_text.setCharacterSize(15);
+    this->_text.setStyle(sf::Text::Bold);
+    this->_text.setFillColor(sf::Color::Red);
+    this->_text.setPosition(sf::Vector2f(12, 6));
 }
 
 Dresseur::Dresseur(Dresseur const &dresseur) : Entite(dresseur)
 {
+    this->_font.loadFromFile("Images/arial.ttf");
+    this->_text.setFont(this->_font);
+    this->_text.setString("Joueur 1 : " + this->get_nom());
+    this->_text.setCharacterSize(15);
+    this->_text.setStyle(sf::Text::Bold);
+    this->_text.setFillColor(sf::Color::Red);
+    this->_text.setPosition(sf::Vector2f(12, 6));
 }
 
 Dresseur::~Dresseur()
@@ -19,13 +33,7 @@ void Dresseur::animate()
 
 void Dresseur::print_name(sf::RenderWindow &window)
 {
-    this->_font.loadFromFile("Images/arial.ttf");
-    sf::Text text("Joueur 1 : " + this->get_nom(), this->_font);
-    text.setCharacterSize(15);
-    text.setStyle(sf::Text::Bold);
-    text.setFillColor(sf::Color::Red);
-    text.setPosition(sf::Vector2f(12, 6));
-    window.draw(text);
+    window.draw(this->_text);
 }
 
 bool Dresseur::is_out()

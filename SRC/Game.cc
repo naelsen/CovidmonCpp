@@ -7,6 +7,14 @@ Game::Game() : _current_background(intro),
 			   _sound_switched2(false),
 			   _window(sf::VideoMode(WINDOW_WIDTH, WINDOW_HEIGHT), "LE MONDE D'APRES ...")
 {
+	this->_font.loadFromFile("Images/arial.ttf");
+    this->_text.setFont(this->_font);
+    this->_text.setString("Choisissez un joueur \n   (avec la souris!)");
+    this->_text.setCharacterSize(17);
+    this->_text.setStyle(sf::Text::Bold);
+    this->_text.setFillColor(sf::Color::Black);
+    this->_text.setPosition(sf::Vector2f(245, 220));
+
 	this->_backgrounds.insert(couple("intro", Image("Images/Backgrounds/intro3.png")));
 	this->_backgrounds.insert(couple("menu", Image("Images/Backgrounds/menu.png")));
 	this->_backgrounds.insert(couple("choix_personnage", Image("Images/Backgrounds/choix_personnage.png")));
@@ -163,9 +171,13 @@ void Game::_draw_bg()
 		break;
 	case choix_personnage:
 		this->_backgrounds["choix_personnage"].draw(this->_window);
+		if(this->_selec_dresseur == false)
+			this->_window.draw(this->_text);
 		break;
 	case choix_pokemon:
 		this->_backgrounds["choix_pokemon"].draw(this->_window);
+		if(this->_selec_pokemon == false)
+			this->_window.draw(this->_text);
 		break;
 	case arene:
 		this->_backgrounds["arene"].draw(this->_window);
@@ -184,7 +196,6 @@ void Game::_draw_dresseur()
 			if (it->get_choisi())
 			{
 				it->print_name(this->_window);
-				//play_sound("Sons/eheh.wav");
 			}
 			it->draw(this->_window);
 			it->animate();
@@ -325,12 +336,12 @@ void Game::_manage_sound()
 
 void Game::_manage_bg()
 {
-	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Return) && _current_background == intro)
+	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Return) && this->_current_background == intro)
 	{
 		_set_current_background(menu);
 		this->_clock.restart();
 	}
-	else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Return) && _current_background == menu)
+	else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Return) && this->_current_background == menu)
 	{
 		if (this->_clock.getElapsedTime().asMilliseconds() > 200)
 			_set_current_background(choix_personnage);
@@ -384,6 +395,7 @@ void Game::_choisir_dresseur()
 				Player P(*it);
 				this->_selec_dresseur = true;
 				this->_players.push_back(P);
+				this->_text.setString("Choisissez un covidmon \n   (avec la souris!)");
 			}
 		}
 	}

@@ -12,6 +12,7 @@ private:
     void _move_right();
     void _move_left();
     sf::Font _font;
+    sf::Text _text;
 
 public:
     Dresseur(std::string, std::string);
