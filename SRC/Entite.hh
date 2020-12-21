@@ -24,6 +24,7 @@ protected:
     virtual void _move_left() = 0;
 
 public:
+    Entite();
     Entite(std::string, std::string);
     Entite(Entite const &);
     ~Entite();

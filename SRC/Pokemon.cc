@@ -1,11 +1,28 @@
 #include "Pokemon.hh"
 
-Pokemon::Pokemon(std::string image, std::string nom) : Entite(image, nom)
+Pokemon::Pokemon(std::string image, std::string nom, Type _type) : Entite(image, nom)
 {
+    switch(_type)
+    {
+        case Vol :  this->_attaque_de_loin = Attaque("Images/Attaques/lance_vent.png","jaj",loin);
+                    this->_attaque_de_pres = Attaque("Images/Attaques/explosion_vent.png","jaj",pres);
+                    break;
+        case Feu :  this->_attaque_de_loin = Attaque("Images/Attaques/lance_feu.png","jaj",loin);
+                    this->_attaque_de_pres = Attaque("Images/Attaques/explosion_feu.png","jaj",pres);
+                    break;
+        case Eau :  this->_attaque_de_loin = Attaque("Images/Attaques/lance_eau.png","jaj",loin);
+                    this->_attaque_de_pres = Attaque("Images/Attaques/explosion_eau.png","jaj",pres);
+                    break;
+        case Plante :  this->_attaque_de_loin = Attaque("Images/Attaques/lance_plante.png","jaj",loin);
+                    this->_attaque_de_pres = Attaque("Images/Attaques/explosion_plante.png","jaj",pres);
+                    break;
+        default : break;
+    }
 }
 
 Pokemon::Pokemon(Pokemon const &pokemon) : Entite(pokemon)
 {
+    this->_type = pokemon._type;
 }
 
 Pokemon::~Pokemon()
@@ -31,7 +48,33 @@ void Pokemon::print_name(sf::RenderWindow &window)
     window.draw(text);
 }
 
-// 30,30 ---  570,30 ---- 570,570 ------ 30, 600
+void Pokemon::attaque(sf::RenderWindow &window)
+{
+    if(this->_attaque_de_loin.get_est_lancee())
+    {
+        this->_attaque_de_loin.move();
+        this->_attaque_de_loin.animate();
+        this->_attaque_de_loin.draw(window);
+    }
+    else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Space))
+    {
+        std::cout<<this->get_position_x()<<std::endl;
+        std::cout<<this->get_position_y()<<std::endl;
+        this->_attaque_de_loin.set_position_x(this->get_position_x());
+        this->_attaque_de_loin.set_position_y(this->get_position_y());
+        this->_attaque_de_loin.set_est_lancee(true);
+        this->_attaque_de_loin.set_direction(this->get_direction());
+    }
+}
+void Pokemon::collision_attaque(Pokemon &P)
+{
+    /*if(this->_attaque_de_loin.distance(P) < SIZE_BLOCK_POKEMON/2)
+    {
+
+    }*/
+}
+
+
 void Pokemon::_move_up()
 {
     if (this->_clock.getElapsedTime().asSeconds() > 0.10f)

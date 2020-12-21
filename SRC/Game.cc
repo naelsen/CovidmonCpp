@@ -21,29 +21,29 @@ Game::Game() : _current_background(intro),
 
 	this->_dresseurs.push_back(Dresseur("Images/Personnages/G_gaby.png", "Gaby"));
 	this->_dresseurs.push_back(Dresseur("Images/Personnages/G_joelle.png", "Joelle"));
-	this->_dresseurs.push_back(Dresseur("Images/Personnages/G_red.png", "Red"));
+	this->_dresseurs.push_back(Dresseur("Images/Attaques/G_red.png", "Red"));
 	this->_dresseurs.push_back(Dresseur("Images/Personnages/G_chauve.png", "Le gros crane"));
 	this->_dresseurs.push_back(Dresseur("Images/Personnages/R_butch.png", "Butch"));
 	this->_dresseurs.push_back(Dresseur("Images/Personnages/R_cassidy.png", "Cassidy"));
 	this->_dresseurs.push_back(Dresseur("Images/Personnages/R_cyrus.png", "Cyrus"));
 	this->_dresseurs.push_back(Dresseur("Images/Personnages/R_james.png", "James"));
 
-	this->_pokemons.push_back(Pokemon("Images/Pokemons/articodin.png", "Articodin"));
-	this->_pokemons.push_back(Pokemon("Images/Pokemons/canartichaud.png", "Canartichaud"));
-	this->_pokemons.push_back(Pokemon("Images/Pokemons/darumaka.png", "Darumaka"));
-	this->_pokemons.push_back(Pokemon("Images/Pokemons/feneukin.png", "Feneukin"));
-	this->_pokemons.push_back(Pokemon("Images/Pokemons/galacvole.png", "Galacvole"));
-	this->_pokemons.push_back(Pokemon("Images/Pokemons/galarian.png", "Galarian"));
-	this->_pokemons.push_back(Pokemon("Images/Pokemons/gardevoir.png", "Gardevoir"));
-	this->_pokemons.push_back(Pokemon("Images/Pokemons/gloupix.png", "Gloupix"));
-	this->_pokemons.push_back(Pokemon("Images/Pokemons/lubegon.png", "Lubegon"));
-	this->_pokemons.push_back(Pokemon("Images/Pokemons/mageau.png", "Mageau"));
-	this->_pokemons.push_back(Pokemon("Images/Pokemons/mrmime.png", "Mrmime"));
-	this->_pokemons.push_back(Pokemon("Images/Pokemons/noixbat.png", "NoixBat"));
-	this->_pokemons.push_back(Pokemon("Images/Pokemons/oh-oh.png", "Oh-Oh"));
-	this->_pokemons.push_back(Pokemon("Images/Pokemons/pandours.png", "Pandours"));
-	this->_pokemons.push_back(Pokemon("Images/Pokemons/ponyta.png", "Ponyta"));
-	this->_pokemons.push_back(Pokemon("Images/Pokemons/skeleton.png", "Skeleton"));
+	this->_pokemons.push_back(Pokemon("Images/Pokemons/articodin.png", "Articodin",Vol));
+	this->_pokemons.push_back(Pokemon("Images/Pokemons/canartichaud.png", "Canartichaud",Plante));
+	this->_pokemons.push_back(Pokemon("Images/Pokemons/darumaka.png", "Darumaka",Feu));
+	this->_pokemons.push_back(Pokemon("Images/Pokemons/feneukin.png", "Feneukin",Feu));
+	this->_pokemons.push_back(Pokemon("Images/Pokemons/galacvole.png", "Galacvole",Vol));
+	this->_pokemons.push_back(Pokemon("Images/Pokemons/galarian.png", "Galarian",Eau));
+	this->_pokemons.push_back(Pokemon("Images/Pokemons/gardevoir.png", "Gardevoir",Eau));
+	this->_pokemons.push_back(Pokemon("Images/Pokemons/gloupix.png", "Gloupix",Feu));
+	this->_pokemons.push_back(Pokemon("Images/Pokemons/lubegon.png", "Lubegon",Plante));
+	this->_pokemons.push_back(Pokemon("Images/Pokemons/mageau.png", "Mageau",Eau));
+	this->_pokemons.push_back(Pokemon("Images/Pokemons/mrmime.png", "Mrmime",Eau));
+	this->_pokemons.push_back(Pokemon("Images/Pokemons/noixbat.png", "NoixBat",Vol));
+	this->_pokemons.push_back(Pokemon("Images/Pokemons/oh-oh.png", "Oh-Oh",Vol));
+	this->_pokemons.push_back(Pokemon("Images/Pokemons/pandours.png", "Pandours",Plante));
+	this->_pokemons.push_back(Pokemon("Images/Pokemons/ponyta.png", "Ponyta",Feu));
+	this->_pokemons.push_back(Pokemon("Images/Pokemons/skeleton.png", "Skeleton",Plante));
 	// Placement des personnages sur la carte
 	sf::Uint16 i = 1;
 	sf::Uint16 j = 1;
@@ -262,6 +262,7 @@ void Game::_draw_pokemon()
 				it->draw(this->_window);
 				it->move();
 				it->animate();
+				it->attaque(this->_window);
 				// 30,30 ---  570,30 ---- 570,570 ------ 30, 600
 			}
 		}

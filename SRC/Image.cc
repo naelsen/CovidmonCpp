@@ -2,7 +2,7 @@
 
 Image::Image()
 {
-    std::cout << "Initialisation Image vide à remplacer . . ." << std::endl;
+    //std::cout << "Initialisation Image vide à remplacer . . ." << std::endl;
 }
 
 Image::Image(std::string nom_image) : __position_x(0),
@@ -49,4 +49,13 @@ void Image::draw(sf::RenderWindow &window)
 {
     this->__sprite_image.setPosition(this->__position_x, this->__position_y);
     window.draw(this->__sprite_image);
+}
+
+float Image::distance(Image const& I)
+{
+    float dx = this->__position_x - I.__position_x;
+    float dy = this->__position_y - I.__position_y;
+    float distance = sqrt(dx*dx + dy*dy);
+
+    return distance;
 }

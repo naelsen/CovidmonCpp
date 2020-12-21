@@ -22,6 +22,10 @@ Entite::~Entite()
 {
 }
 
+Entite::Entite() : Image()
+{
+}
+
 std::string Entite::get_nom() const
 {
     return this->_nom;
