@@ -1,6 +1,7 @@
 #pragma once
 
 #include <iostream>
+#include <list>
 #include <map>
 #include <SFML/Graphics.hpp>
 #include <SFML/Audio.hpp>
@@ -31,21 +32,20 @@ private:
 	std::vector<Dresseur> _dresseurs;
 	std::vector<Pokemon> _pokemons;
 	std::vector<Player> _players;
-
+	// Clock i sert a gerer le temps du son i dans les conditions de game
+	std::vector<sf::Clock> _clocks;
+	// Buffer i correspond au son i
+	std::vector<sf::SoundBuffer> _buffers;
+	std::vector<sf::Sound> _sounds;
+	// Sert à gerer les differents sons des backgrounds
+	std::vector<bool> _sounds_switched;
 	Bg _current_background;
 	bool _selec_dresseur;
 	bool _selec_pokemon;
-	bool _sound_switched;
-	bool _sound_switched2;
 	// Attribut SFML
 	sf::RenderWindow _window;
 	sf::Event _event;
-	sf::Clock _clock;
-	sf::SoundBuffer _buffer;
-	sf::Sound _sound;
-	sf::SoundBuffer _buffer2;
-	sf::Sound _sound2;
-	sf::Clock _clock2;
+
 	sf::Font _font;
 	sf::Text _text;
 
@@ -63,8 +63,7 @@ private:
 	void _choisir_dresseur();
 	void _choisir_pokemon();
 	void _draw_pokemon();
-	void _switch_sound(std::string);
-	void _switch_sound2(std::string);
+	void _switch_sound(std::size_t ,std::string);
 
 public:
 	Game();

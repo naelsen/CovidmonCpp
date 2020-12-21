@@ -37,7 +37,7 @@ Direction Entite::get_direction() const
     return this->_direction;
 }
 
-int Entite::get_animation() const
+sf::Uint16 Entite::get_animation() const
 {
     return this->_animation;
 }
@@ -66,7 +66,7 @@ void Entite::set_choisi(bool choix)
 {
     this->_choisi = choix;
 }
-void Entite::set_animation(int animation)
+void Entite::set_animation(sf::Uint16 animation)
 {
     this->_animation = animation;
 }

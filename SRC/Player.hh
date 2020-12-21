@@ -17,6 +17,7 @@ private:
     Pokemon *_pokemon;
     Image _pokeball;
     static int numero_joueur;
+    bool _accepted;
 
 public:
     Player();
@@ -31,4 +32,5 @@ public:
     void receive(std::vector<Pokemon> &);
     bool is_moving();
     void send();
+    bool is_accepted();
 };

@@ -3,8 +3,6 @@
 Game::Game() : _current_background(intro),
 			   _selec_dresseur(false),
 			   _selec_pokemon(false),
-			   _sound_switched(false),
-			   _sound_switched2(false),
 			   _window(sf::VideoMode(WINDOW_WIDTH, WINDOW_HEIGHT), "LE MONDE D'APRES ...")
 {
 	this->_font.loadFromFile("Images/arial.ttf");
@@ -95,9 +93,25 @@ Game::Game() : _current_background(intro),
 			it->set_position_y(690.f - SIZE_BLOCK_POKEMON);
 			l++;
 		}
-	}
-	this->_clock.restart();
-	this->_clock2.restart();
+	} 
+	sf::Clock c1;
+	sf::Clock c2;
+	sf::Sound s1;
+	sf::Sound s2;
+	sf::SoundBuffer sb1;
+	sf::SoundBuffer sb2;
+	bool sound_switched1 = false;
+	bool sound_switched2 = false;
+	this->_clocks.push_back(c1);
+	this->_clocks.push_back(c2);
+	this->_sounds.push_back(s1);
+	this->_sounds.push_back(s2);
+	this->_buffers.push_back(sb1);
+	this->_buffers.push_back(sb2);
+	this->_sounds_switched.push_back(sound_switched1);
+	this->_sounds_switched.push_back(sound_switched2);
+	this->_clocks[0].restart();
+	this->_clocks[1].restart();
 	this->_window.setFramerateLimit(60);
 }
 
@@ -136,18 +150,14 @@ void Game::run()
 }
 
 // La fonction joue le son du fichier placé en paramètre
-void Game::_switch_sound(std::string fichier)
+void Game::_switch_sound(std::size_t i, std::string fichier)
 {
-	if (!this->_buffer.loadFromFile(fichier))
-		std::cout << "Erreur chargement son" << std::endl;
-	this->_sound.setBuffer(_buffer);
-}
-
-void Game::_switch_sound2(std::string fichier)
-{
-	if (!this->_buffer2.loadFromFile(fichier))
-		std::cout << "Erreur chargement son" << std::endl;
-	this->_sound2.setBuffer(_buffer2);
+	if(i < _buffers.size())
+	{
+		if (!this->_buffers[i].loadFromFile(fichier))
+			std::cout << "Erreur chargement son" << std::endl;
+		this->_sounds[i].setBuffer(_buffers[i]);
+	}
 }
 
 void Game::_draw()
@@ -269,61 +279,61 @@ void Game::_back_sound()
 {
 	if (this->_current_background != arene)
 	{
-		if (this->_sound_switched2 == false)
+		if (this->_sounds_switched[1] == false)
 		{
-			this->_switch_sound2("Sons/musique.wav");
-			this->_sound_switched2 = true;
-			this->_clock2.restart();
-			this->_sound2.play();
+			this->_switch_sound(1,"Sons/musique.wav");
+			this->_sounds_switched[1] = true;
+			this->_clocks[1].restart();
+			this->_sounds[1].play();
 		}
-		else if (this->_clock2.getElapsedTime().asMilliseconds() > 31300)
+		else if (this->_clocks[1].getElapsedTime().asMilliseconds() > 31300)
 		{
-			this->_clock2.restart();
-			this->_sound2.play();
+			this->_clocks[1].restart();
+			this->_sounds[1].play();
 		}
 	}
 	else
 	{
-		if (this->_sound_switched2 == true)
+		if (this->_sounds_switched[1] == true)
 		{
-			this->_switch_sound2("Sons/musique_arene1.wav");
-			this->_sound_switched2 = false;
-			this->_clock2.restart();
-			this->_sound2.play();
+			this->_switch_sound(1,"Sons/musique_arene1.wav");
+			this->_sounds_switched[1] = false;
+			this->_clocks[1].restart();
+			this->_sounds[1].play();
 		}
-		else if (this->_clock2.getElapsedTime().asMilliseconds() > 31300)
+		else if (this->_clocks[1].getElapsedTime().asMilliseconds() > 31300)
 		{
-			this->_clock2.restart();
-			this->_sound2.play();
+			this->_clocks[1].restart();
+			this->_sounds[1].play();
 		}
 	}
 }
 
 void Game::_front_sound()
 {
-	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Return) && this->_current_background != arene && this->_clock.getElapsedTime().asMilliseconds() > 200)
+	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Return) && this->_current_background != arene && this->_clocks[0].getElapsedTime().asMilliseconds() > 200)
 	{
-		if (this->_sound_switched == false)
+		if (this->_sounds_switched[0] == false)
 		{
-			_switch_sound("Sons/b.wav");
-			this->_sound_switched = true;
-			this->_clock.restart();
-			this->_sound.play();
+			_switch_sound(0,"Sons/b.wav");
+			this->_sounds_switched[0] = true;
+			this->_clocks[0].restart();
+			this->_sounds[0].play();
 		}
 	}
-	else if (this->_players[0].is_moving() && this->_clock.getElapsedTime().asMilliseconds() > 800)
+	else if (this->_players[0].is_moving() && this->_clocks[0].getElapsedTime().asMilliseconds() > 800)
 	{
-		if (this->_sound_switched == true)
+		if (this->_sounds_switched[0] == true)
 		{
-			this->_switch_sound("Sons/footstep.wav");
-			this->_sound_switched = false;
-			this->_clock.restart();
-			this->_sound.play();
+			this->_switch_sound(0,"Sons/footstep.wav");
+			this->_sounds_switched[0] = false;
+			this->_clocks[0].restart();
+			this->_sounds[0].play();
 		}
 		else
 		{
-			this->_clock.restart();
-			this->_sound.play();
+			this->_clocks[0].restart();
+			this->_sounds[0].play();
 		}
 	}
 }
@@ -339,11 +349,11 @@ void Game::_manage_bg()
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Return) && this->_current_background == intro)
 	{
 		_set_current_background(menu);
-		this->_clock.restart();
+		this->_clocks[0].restart();
 	}
 	else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Return) && this->_current_background == menu)
 	{
-		if (this->_clock.getElapsedTime().asMilliseconds() > 200)
+		if (this->_clocks[0].getElapsedTime().asMilliseconds() > 200)
 			_set_current_background(choix_personnage);
 	}
 	else if (this->_selec_dresseur)
@@ -393,9 +403,18 @@ void Game::_choisir_dresseur()
 			if (it->get_choisi())
 			{
 				Player P(*it);
-				this->_selec_dresseur = true;
 				this->_players.push_back(P);
-				this->_text.setString("Choisissez un covidmon \n   (avec la souris!)");
+				if(_players[0].is_accepted())
+				{
+					this->_selec_dresseur = true;
+					this->_text.setString("Choisissez un covidmon \n   (avec la souris!)");
+				}
+				else
+				{
+					_players.pop_back();
+					it->set_choisi(false);
+				}
+				
 			}
 		}
 	}

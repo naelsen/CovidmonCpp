@@ -8,6 +8,7 @@ Serveur::Serveur() : _port(30000),
     else
         exit(0);
     this->_selector.add(this->_listener);
+    std::cout << "Nombre joueurs connectés: " << this->_nom_clients.size() << std::endl;
 }
 
 Serveur::~Serveur()
@@ -40,14 +41,42 @@ void Serveur::accept_client()
     this->_selector.add(*socket);
     this->_Clients.push_back(socket);
     sf::Packet receivePacket;
+    bool accepted = true;
     // Si une nouvelle connexion s'effectue
+
     if (socket->receive(receivePacket) == sf::Socket::Done)
     {
         std::string nom;
         // On charge le pseudo du joueur dans le paquet
         receivePacket >> nom;
+        if(this->_nom_clients.size() != 0)
+        {
+            for(std::size_t i = 0; i < _nom_clients.size(); i++)
+            {
+                if(this->_nom_clients[i] == nom)
+                {
+                    accepted = false;
+                }
+            }
+        }
         // On affiche dans le serveur (Mais pas aux joueurs)
-        std::cout << "Un joueur viens de se connecter en choisissant " << nom << std::endl;
+        sf::Packet sendPacket;
+        sendPacket << accepted;
+        // On informe au client qui essaye de se connecter si il est accepter
+        // Il sera accepter si le joueur choisis n'a pas encore ete choisi par quelqu'un d'autre
+        this->_Clients[this->_nom_clients.size()]->send(sendPacket);
+
+        if(accepted)   
+        { 
+            this->_nom_clients.push_back(nom);
+            std::cout << "Un joueur viens de se connecter en choisissant " << nom << std::endl;
+        }
+        else
+        {
+            std::cout << "Un joueur s'est fait refouler car " << nom << " est deja choisi" << std::endl;
+            this->_Clients.pop_back();
+        }
+        std::cout << "Nombre joueurs connectés: " << this->_nom_clients.size() << std::endl;
     }
 }
 
@@ -64,8 +93,6 @@ void Serveur::action_clients()
             // On récupère toute les entrées du client
             if (this->_Clients[i]->receive(receivePacket) == sf::Socket::Done)
             {
-                sf::Uint16 x, y;
-                int animation;
                 int dir;
                 std::string nom;
                 // On a charge les informations dans cette ordre avec le client donc on le recupere dans cet ordre

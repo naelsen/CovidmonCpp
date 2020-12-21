@@ -6,25 +6,46 @@ Player::Player()
 }
 
 Player::Player(Dresseur &dresseur) : _dresseur(&dresseur),
-                                     _pokeball("Images/pokeball.png")
+                                     _pokeball("Images/pokeball.png"),
+                                     _accepted(true)
 {
     this->IP = sf::IpAddress::getLocalAddress();
 }
 
 Player::Player(Player const &P) : IP(P.IP),
                                   _dresseur(P._dresseur),
-                                  _pokeball(P._pokeball)
+                                  _pokeball(P._pokeball),
+                                  _accepted(true)
 {
     short int port = 30000;
-    // Le client se connecte au port avec son IP a condition que le serveur ai deja été lancé
+
+        // Le client se connecte au port avec son IP a condition que le serveur ai deja été lancé
     if (this->socket.connect(IP, port) == sf::Socket::Done)
     {
-        std::cout << "Connecte au serveur !" << std::endl;
+        std::cout << "Tentative de connexion au serveur..." << std::endl;
         sf::Packet sendPacket;
         // On charge le pseudo dans le paquet a envoyer au serveur
         sendPacket << this->get_dresseur()->get_nom();
         // On envoie
         socket.send(sendPacket);
+        sf::Packet receivePacket;
+        // Le joueur a t il ete accepter par le serveur ?
+        if(socket.receive(receivePacket) == sf::Socket::Done)
+            receivePacket >> _accepted;
+        // Non
+        if(!_accepted)
+        {
+            std::cout << "Deconnecte du serveur car un joueur possède déjà ce personage!" << std::endl;
+            this->socket.disconnect();
+            this->_accepted = false;
+        }
+        // Oui
+        else
+        {
+            std::cout << "Connexion reussi" << std::endl;
+        }
+        
+        
     }
     else
     {
@@ -81,8 +102,7 @@ void Player::receive(std::vector<Dresseur> &dresseurs)
     sf::Packet receivePacket;
     if (socket.receive(receivePacket) == sf::Socket::Done)
     {
-        sf::Uint16 x, y;
-        int animation;
+        sf::Uint16 x, y, animation;
         int dir;
         Direction d;
         std::string nom;
@@ -113,8 +133,7 @@ void Player::receive(std::vector<Pokemon> &pokemon)
     sf::Packet receivePacket;
     if (socket.receive(receivePacket) == sf::Socket::Done)
     {
-        sf::Uint16 x, y;
-        int animation;
+        sf::Uint16 x, y, animation;
         int dir;
         Direction d;
         std::string nom;
@@ -145,6 +164,11 @@ void Player::send()
     sf::Packet sendPacket;
     sendPacket << this->_dresseur->get_nom() << this->_dresseur->get_direction() << this->get_dresseur()->get_animation() << this->_dresseur->get_position_x() << this->_dresseur->get_position_y();
     socket.send(sendPacket);
+}
+
+bool Player::is_accepted()
+{
+    return this->_accepted;
 }
 
 /*sf::Packet& operator <<(sf::Packet& packet, Direction dir)
