@@ -53,9 +53,6 @@ void Image::draw(sf::RenderWindow &window)
 
 float Image::distance(Image const& I)
 {
-    float dx = this->__position_x - I.__position_x;
-    float dy = this->__position_y - I.__position_y;
-    float distance = sqrt(dx*dx + dy*dy);
-
-    return distance;
+    return sqrt((this->__position_x - I.__position_x)*(this->__position_x - I.__position_x)
+                +(this->__position_y - I.__position_y)*(this->__position_y - I.__position_y));
 }

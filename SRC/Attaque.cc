@@ -1,6 +1,6 @@
 #include "Attaque.hh"
 
-Attaque::Attaque(std::string im, std::string nom,Range R) :
+Attaque::Attaque(std::string im, std::string nom, Range R) :
 Entite(im,nom),
 _degats(10),
 _range(R),
@@ -8,6 +8,7 @@ _est_lancee(false)
 {
     this->_speed = 3;
 }
+
 Attaque::Attaque(): 
 _degats(10),
 _est_lancee(false)

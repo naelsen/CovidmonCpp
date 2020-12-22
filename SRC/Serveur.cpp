@@ -93,12 +93,12 @@ void Serveur::action_clients()
             // On récupère toute les entrées du client
             if (this->_Clients[i]->receive(receivePacket) == sf::Socket::Done)
             {
-                int dir;
+                int dir, bg;
                 std::string nom;
                 // On a charge les informations dans cette ordre avec le client donc on le recupere dans cet ordre
-                receivePacket >> nom >> dir >> animation >> x >> y;
+                receivePacket >> nom >> dir >> animation >> x >> y >> bg;
                 sf::Packet sendPacket;
-                sendPacket << nom << dir << animation << x << y;
+                sendPacket << nom << dir << animation << x << y << bg;
                 // On envoie le paquet a tout les autres clients pour qu'ils savent ce que l'autre client a envoyé au serveur
                 for (std::size_t j = 0; j < this->_Clients.size(); j++)
                 {

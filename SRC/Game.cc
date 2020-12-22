@@ -21,7 +21,7 @@ Game::Game() : _current_background(intro),
 
 	this->_dresseurs.push_back(Dresseur("Images/Personnages/G_gaby.png", "Gaby"));
 	this->_dresseurs.push_back(Dresseur("Images/Personnages/G_joelle.png", "Joelle"));
-	this->_dresseurs.push_back(Dresseur("Images/Attaques/G_red.png", "Red"));
+	this->_dresseurs.push_back(Dresseur("Images/Personnages/G_red.png", "Red"));
 	this->_dresseurs.push_back(Dresseur("Images/Personnages/G_chauve.png", "Le gros crane"));
 	this->_dresseurs.push_back(Dresseur("Images/Personnages/R_butch.png", "Butch"));
 	this->_dresseurs.push_back(Dresseur("Images/Personnages/R_cassidy.png", "Cassidy"));
@@ -139,6 +139,7 @@ void Game::run()
 			if (this->_event.type == sf::Event::Closed || sf::Keyboard::isKeyPressed(sf::Keyboard::Escape))
 			{
 				this->_window.close();
+				this->_players[0].disconnect();
 			}
 		}
 		this->_choisir_dresseur();
@@ -207,8 +208,11 @@ void Game::_draw_dresseur()
 			{
 				it->print_name(this->_window);
 			}
-			it->draw(this->_window);
-			it->animate();
+			if(it->get_current_bg()==choix_personnage)
+			{
+				it->draw(this->_window);
+				it->animate();
+			}
 		}
 	}
 	if (this->_current_background == choix_pokemon)
@@ -218,6 +222,9 @@ void Game::_draw_dresseur()
 			if (it->get_choisi())
 			{
 				it->print_name(this->_window);
+			}
+			if(it->get_current_bg()==choix_pokemon)
+			{
 				it->draw(this->_window);
 				it->animate();
 			}
@@ -262,7 +269,6 @@ void Game::_draw_pokemon()
 				it->draw(this->_window);
 				it->move();
 				it->animate();
-				it->attaque(this->_window);
 				// 30,30 ---  570,30 ---- 570,570 ------ 30, 600
 			}
 		}
@@ -362,9 +368,15 @@ void Game::_manage_bg()
 		if (this->_players[0].get_dresseur()->is_out())
 		{
 			if (this->_current_background == choix_personnage)
+			{
 				_set_current_background(choix_pokemon);
+				this->_players[0].get_dresseur()->set_current_bg(choix_pokemon);
+			}
 			else if (this->_current_background == choix_pokemon)
+			{
 				_set_current_background(arene);
+				this->_players[0].get_dresseur()->set_current_bg(arene);
+			}
 			this->_players[0].get_dresseur()->set_position_x(0);
 		}
 	}
@@ -383,6 +395,8 @@ void Game::_manage_dresseur()
 	}
 	if (this->_current_background == choix_pokemon)
 	{
+		this->_players[0].send();
+		this->_players[0].receive(this->_dresseurs);
 		this->_players[0].get_dresseur()->move();
 	}
 	if (this->_current_background == arene)

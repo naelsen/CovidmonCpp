@@ -33,4 +33,5 @@ public:
     bool is_moving();
     void send();
     bool is_accepted();
+    void disconnect();
 };

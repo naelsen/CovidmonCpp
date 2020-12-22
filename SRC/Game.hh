@@ -14,15 +14,6 @@
 #include "Player.hh"
 #include "Pokemon.hh"
 
-typedef enum Bg
-{
-	intro,
-	menu,
-	choix_personnage,
-	choix_pokemon,
-	arene
-} Bg;
-
 typedef std::pair<std::string, Image> couple;
 
 class Game

@@ -38,7 +38,7 @@ void Dresseur::print_name(sf::RenderWindow &window)
 
 bool Dresseur::is_out()
 {
-    if (this->__position_x > WINDOW_WIDTH)
+    if (this->__position_x > WINDOW_WIDTH && this->__position_x < 2*WINDOW_WIDTH)
         return true;
 
     return false;
@@ -57,12 +57,10 @@ void Dresseur::_move_up()
     this->_direction = Up;
     if (this->__position_x < WINDOW_WIDTH - SIZE_WIDTH_PERSO + 1)
     {
-        if (this->__position_y > 0)
-        {
+        if (this->__position_y > 0 && this->__position_y < 65000)
             this->__position_y -= this->_speed;
-            if (this->__position_y < 0)
-                this->__position_y = 0;
-        }
+        else
+            this->__position_y = 0;
     }
     else
     {
@@ -86,11 +84,9 @@ void Dresseur::_move_down()
     if (this->__position_x < WINDOW_WIDTH - SIZE_WIDTH_PERSO + 1)
     {
         if (this->__position_y < WINDOW_HEIGHT - SIZE_HEIGHT_PERSO)
-        {
             this->__position_y += this->_speed;
-            if (this->__position_y > WINDOW_HEIGHT - SIZE_HEIGHT_PERSO)
-                this->__position_y = WINDOW_HEIGHT - SIZE_HEIGHT_PERSO;
-        }
+        else
+            this->__position_y = WINDOW_HEIGHT - SIZE_HEIGHT_PERSO;
     }
     else
     {
@@ -137,13 +133,14 @@ void Dresseur::_move_left()
         this->_clock.restart();
     }
     this->_direction = Left;
-    if (this->__position_x > 0)
+    if (this->__position_x > 0 && this->__position_x < 65000)
     {
         this->__position_x -= this->_speed;
-        if (this->__position_x < 0)
-            this->__position_x = 0;
     }
+    else
+        this->__position_x = 0;
 }
+
 
 void Dresseur::got_a_clic(sf::RenderWindow &window)
 {

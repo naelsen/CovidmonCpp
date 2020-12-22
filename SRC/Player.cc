@@ -103,10 +103,11 @@ void Player::receive(std::vector<Dresseur> &dresseurs)
     if (socket.receive(receivePacket) == sf::Socket::Done)
     {
         sf::Uint16 x, y, animation;
-        int dir;
+        int dir, bg;
         Direction d;
         std::string nom;
-        receivePacket >> nom >> dir >> animation >> x >> y;
+        Bg current_bg;
+        receivePacket >> nom >> dir >> animation >> x >> y >> bg;
         if (dir == 0)
             d = Down;
         if (dir == 1)
@@ -115,6 +116,22 @@ void Player::receive(std::vector<Dresseur> &dresseurs)
             d = Right;
         if (dir == 3)
             d = Up;
+
+        if(bg == 0)
+            current_bg = intro;
+        if(bg == 1)
+            current_bg = menu;
+        if(bg == 2)
+            current_bg = choix_personnage;
+        if(bg == 3)
+            current_bg = choix_pokemon;
+        if(bg == 4)
+            current_bg = arene;
+        std::cout << "current_bg : " << current_bg << std::endl;
+        std::cout << "animation : " << animation << std::endl;
+        std::cout << "x : " << x << std::endl;
+        std::cout << "y : " << y << std::endl;
+
         for (auto it = dresseurs.begin(); it != dresseurs.end(); it++)
         {
             if (it->get_nom() == nom)
@@ -123,6 +140,7 @@ void Player::receive(std::vector<Dresseur> &dresseurs)
                 it->set_position_y(y);
                 it->set_direction(d);
                 it->set_animation(animation);
+                it->set_current_bg(current_bg);
             }
         }
     }
@@ -162,13 +180,21 @@ void Player::receive(std::vector<Pokemon> &pokemon)
 void Player::send()
 {
     sf::Packet sendPacket;
-    sendPacket << this->_dresseur->get_nom() << this->_dresseur->get_direction() << this->get_dresseur()->get_animation() << this->_dresseur->get_position_x() << this->_dresseur->get_position_y();
+    sendPacket << this->_dresseur->get_nom() << this->_dresseur->get_direction() << this->get_dresseur()->get_animation() << this->_dresseur->get_position_x() << this->_dresseur->get_position_y() << this->_dresseur->get_current_bg();
     socket.send(sendPacket);
 }
 
 bool Player::is_accepted()
 {
     return this->_accepted;
+}
+
+void Player::disconnect()
+{
+    sf::Packet sendPacket;
+    sendPacket << this->_dresseur->get_nom();
+    this->socket.disconnect();
+    std::cout << "Deconnexion du serveur !" << std::endl;
 }
 
 /*sf::Packet& operator <<(sf::Packet& packet, Direction dir)

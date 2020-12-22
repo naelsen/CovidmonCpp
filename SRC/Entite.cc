@@ -5,7 +5,8 @@ Entite::Entite(std::string image, std::string nom) : Image(image),
                                                      _speed(2),
                                                      _direction(Down),
                                                      _animation(0),
-                                                     _choisi(false)
+                                                     _choisi(false),
+                                                     _current_bg(choix_personnage)
 {
 }
 
@@ -14,15 +15,16 @@ Entite::Entite(Entite const &Entite) : Image(Entite),
                                        _speed(Entite._speed),
                                        _direction(Entite._direction),
                                        _animation(Entite._animation),
-                                       _choisi(false)
+                                       _choisi(false),
+                                       _current_bg(choix_personnage)
+{
+}
+
+Entite::Entite()
 {
 }
 
 Entite::~Entite()
-{
-}
-
-Entite::Entite() : Image()
 {
 }
 
@@ -51,6 +53,11 @@ bool Entite::get_choisi() const
     return this->_choisi;
 }
 
+Bg Entite::get_current_bg() const
+{
+    return this->_current_bg;
+}
+
 void Entite::set_nom(std::string nom)
 {
     this->_nom = nom;
@@ -70,6 +77,12 @@ void Entite::set_choisi(bool choix)
 {
     this->_choisi = choix;
 }
+
+void Entite::set_current_bg(Bg bg)
+{
+    this->_current_bg = bg;
+}
+
 void Entite::set_animation(sf::Uint16 animation)
 {
     this->_animation = animation;
