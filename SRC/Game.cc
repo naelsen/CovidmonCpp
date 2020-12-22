@@ -21,7 +21,7 @@ Game::Game() : _current_background(intro),
 
 	this->_dresseurs.push_back(Dresseur("Images/Personnages/G_gaby.png", "Gaby"));
 	this->_dresseurs.push_back(Dresseur("Images/Personnages/G_joelle.png", "Joelle"));
-	this->_dresseurs.push_back(Dresseur("Images/Attaques/G_red.png", "Red"));
+	this->_dresseurs.push_back(Dresseur("Images/Personnages/G_red.png", "Red"));
 	this->_dresseurs.push_back(Dresseur("Images/Personnages/G_chauve.png", "Le gros crane"));
 	this->_dresseurs.push_back(Dresseur("Images/Personnages/R_butch.png", "Butch"));
 	this->_dresseurs.push_back(Dresseur("Images/Personnages/R_cassidy.png", "Cassidy"));
@@ -262,8 +262,7 @@ void Game::_draw_pokemon()
 				it->draw(this->_window);
 				it->move();
 				it->animate();
-				it->attaque(this->_window);
-				// 30,30 ---  570,30 ---- 570,570 ------ 30, 600
+				it->attaque_de_loin(this->_window);
 			}
 		}
 	}
