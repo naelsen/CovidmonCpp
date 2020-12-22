@@ -28,6 +28,7 @@ private:
 	// Buffer i correspond au son i
 	std::vector<sf::SoundBuffer> _buffers;
 	std::vector<sf::Sound> _sounds;
+	sf::Music _musique;
 	// Sert à gerer les differents sons des backgrounds
 	std::vector<bool> _sounds_switched;
 	Bg _current_background;

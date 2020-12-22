@@ -294,16 +294,31 @@ void Game::_manage()
 
 void Game::_back_sound()
 {
-	if (this->_current_background != arene)
+	if (this->_current_background == intro)
 	{
 		if (this->_sounds_switched[1] == false)
 		{
-			this->_switch_sound(1, "Sons/musique.wav");
+			this->_switch_sound(1, "Sons/intro.wav");
 			this->_sounds_switched[1] = true;
 			this->_clocks[1].restart();
 			this->_sounds[1].play();
 		}
-		else if (this->_clocks[1].getElapsedTime().asMilliseconds() > 31300)
+		else if (this->_clocks[1].getElapsedTime().asSeconds() > 41)
+		{
+			this->_clocks[1].restart();
+			this->_sounds[1].play();
+		}
+	}
+	else if(this->_current_background != arene)
+	{
+		if (this->_sounds_switched[1] == true)
+		{
+			this->_switch_sound(1, "Sons/menu_and_choix.wav");
+			this->_sounds_switched[1] = false;
+			this->_clocks[1].restart();
+			this->_sounds[1].play();
+		}
+		else if (this->_clocks[1].getElapsedTime().asSeconds() > 19)
 		{
 			this->_clocks[1].restart();
 			this->_sounds[1].play();
@@ -311,17 +326,19 @@ void Game::_back_sound()
 	}
 	else
 	{
-		if (this->_sounds_switched[1] == true)
+		if (this->_sounds_switched[1] == false)
 		{
-			this->_switch_sound(1, "Sons/musique_arene1.wav");
-			this->_sounds_switched[1] = false;
+			this->_sounds.pop_back();
+			if(!this->_musique.openFromFile("Sons/musique_arene1.wav"))
+				std::cout << "Erreur lors de l'ouverture de Sons/musique_arene1.wav" << std::endl;
+			this->_sounds_switched[1] = true;
 			this->_clocks[1].restart();
-			this->_sounds[1].play();
+			this->_musique.play();
 		}
-		else if (this->_clocks[1].getElapsedTime().asMilliseconds() > 31300)
+		else if (this->_clocks[1].getElapsedTime().asSeconds() > 180)
 		{
 			this->_clocks[1].restart();
-			this->_sounds[1].play();
+			this->_musique.play();
 		}
 	}
 }
