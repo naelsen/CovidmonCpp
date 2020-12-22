@@ -1,6 +1,7 @@
 #include "Pokemon.hh"
 
-Pokemon::Pokemon(std::string image, std::string nom, Type _type) : Entite(image, nom)
+Pokemon::Pokemon(std::string image, std::string nom, Type _type) : Entite(image, nom),
+_pv(500)
 {
     switch(_type)
     {
@@ -44,22 +45,21 @@ void Pokemon::print_name(sf::RenderWindow &window)
     text.setCharacterSize(15);
     text.setStyle(sf::Text::Bold);
     text.setFillColor(sf::Color::Black);
-    text.setPosition(sf::Vector2f(WINDOW_WIDTH - 200, 6));
+    text.setPosition(sf::Vector2f(WINDOW_WIDTH/2, 6));
     window.draw(text);
 }
 
-void Pokemon::attaque(sf::RenderWindow &window)
+void Pokemon::attaque_de_loin(sf::RenderWindow &window)
 {
     if(this->_attaque_de_loin.get_est_lancee())
     {
+        this->_attaque_de_loin.draw(window);
         this->_attaque_de_loin.move();
         this->_attaque_de_loin.animate();
-        this->_attaque_de_loin.draw(window);
     }
     else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Space))
     {
-        std::cout<<this->get_position_x()<<std::endl;
-        std::cout<<this->get_position_y()<<std::endl;
+        std::cout<<"lancement"<<std::endl;
         this->_attaque_de_loin.set_position_x(this->get_position_x());
         this->_attaque_de_loin.set_position_y(this->get_position_y());
         this->_attaque_de_loin.set_est_lancee(true);
@@ -68,12 +68,18 @@ void Pokemon::attaque(sf::RenderWindow &window)
 }
 void Pokemon::collision_attaque(Pokemon &P)
 {
-    /*if(this->_attaque_de_loin.distance(P) < SIZE_BLOCK_POKEMON/2)
-    {
-
-    }*/
+    if(this->_attaque_de_loin.distance(P) < SIZE_BLOCK_POKEMON/2)
+    {  
+        P.receive_degat(this->_attaque_de_loin.get_degats());
+        this->_attaque_de_loin.set_est_lancee(false);
+        this->_attaque_de_loin.set_position_x(-SIZE_BLOCK_POKEMON);
+        this->_attaque_de_loin.set_position_y(-SIZE_BLOCK_POKEMON);
+    }
 }
 
+void Pokemon::receive_degat(int degats)
+
+{this->_pv -= degats;}
 
 void Pokemon::_move_up()
 {

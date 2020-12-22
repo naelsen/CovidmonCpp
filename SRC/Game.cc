@@ -240,6 +240,11 @@ void Game::_draw_dresseur()
 				it->draw(this->_window);
 				it->animate();
 			}
+			if(it->get_current_bg()==arene)
+			{
+				it->draw(this->_window);
+				it->animate();
+			}
 		}
 	}
 }
@@ -267,10 +272,14 @@ void Game::_draw_pokemon()
 			{
 				it->print_name(this->_window);
 				it->draw(this->_window);
-				it->move();
 				it->animate();
 				// 30,30 ---  570,30 ---- 570,570 ------ 30, 600
 			}
+			/*if(it->get_current_bg()==arene)
+			{
+				it->draw(this->_window);
+				it->animate();
+			}*/
 		}
 	}
 }
@@ -279,6 +288,7 @@ void Game::_manage()
 	this->_manage_bg();
 	this->_manage_sound();
 	this->_manage_dresseur();
+	this->_manage_pokemon();
 }
 //Les sons se déclanchent que dans la deuxième fenetre
 
@@ -376,6 +386,7 @@ void Game::_manage_bg()
 			{
 				_set_current_background(arene);
 				this->_players[0].get_dresseur()->set_current_bg(arene);
+				this->_players[0].get_pokemon()->set_current_bg(arene);
 			}
 			this->_players[0].get_dresseur()->set_position_x(0);
 		}
@@ -401,10 +412,28 @@ void Game::_manage_dresseur()
 	}
 	if (this->_current_background == arene)
 	{
+		this->_players[0].send();
+		this->_players[0].receive(this->_dresseurs);
 		if (this->_players[0].get_dresseur()->get_position_y() != WINDOW_WIDTH / 2 - 100)
 			this->_players[0].get_dresseur()->set_position_y(WINDOW_WIDTH / 2 - 100);
 		if (this->_players[0].get_dresseur()->get_animation() != 0)
 			this->_players[0].get_dresseur()->set_animation(0);
+
+		if(!this->_players[0].get_first_on_arene())
+		{
+			this->_players[0].get_dresseur()->set_direction(Left);
+			this->_players[0].get_dresseur()->set_position_x(WINDOW_WIDTH -SIZE_WIDTH_PERSO);
+		}
+	}
+}
+
+void Game::_manage_pokemon()
+{
+	if (this->_current_background == arene)
+	{
+		this->_players[0].send_pokemon();
+		this->_players[0].receive(this->_pokemons);
+		this->_players[0].get_pokemon()->move();
 	}
 }
 

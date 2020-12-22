@@ -51,6 +51,7 @@ private:
 	void _back_sound();
 	void _manage_bg();
 	void _manage_dresseur();
+	void _manage_pokemon();
 	void _choisir_dresseur();
 	void _choisir_pokemon();
 	void _draw_pokemon();

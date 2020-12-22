@@ -2,18 +2,19 @@
 
 Attaque::Attaque(std::string im, std::string nom, Range R) :
 Entite(im,nom),
-_degats(10),
-_range(R),
-_est_lancee(false)
+_degats(50),
+_range(R)
 {
     this->_speed = 3;
+    this->_direction = Up;
+    this->_portee = 400;
 }
 
 Attaque::Attaque(): 
-_degats(10),
-_est_lancee(false)
+_degats(50),
+_portee(400)
 {
-
+    this->_direction = Up;
 }
 
 Attaque::Attaque(Attaque const& at) : Entite (at),
@@ -71,7 +72,7 @@ void Attaque::move()
 
 void Attaque::_move_up()
 {
-    int dist = this->_portee;
+    sf::Uint16 dist = this->_portee;
     if (this->_clock.getElapsedTime().asSeconds() > 0.10f)
     {
         if (this->_animation < 3)
@@ -88,11 +89,13 @@ void Attaque::_move_up()
         if (this->__position_y < 0)
             this->__position_y = 0;
     }
+    else
+        this->set_est_lancee(false);
 }
 
 void Attaque::_move_down()
 {
-    int dist = this->_portee;
+    sf::Uint16 dist = this->_portee;
     if (this->_clock.getElapsedTime().asSeconds() > 0.10f)
     {
         if (this->_animation < 3)
@@ -109,11 +112,13 @@ void Attaque::_move_down()
         if (this->__position_y > WINDOW_HEIGHT)
             this->__position_y = WINDOW_HEIGHT;
     }
+    else
+        this->set_est_lancee(false);
 }
 
 void Attaque::_move_right()
 {
-    int dist = this->_portee;
+    sf::Uint16 dist = this->_portee;
     if (this->_clock.getElapsedTime().asSeconds() > 0.10f)
     {
         if (this->_animation < 3)
@@ -130,11 +135,13 @@ void Attaque::_move_right()
         if (this->__position_x > WINDOW_HEIGHT)
             this->__position_x = WINDOW_HEIGHT ;
     }
+    else
+        this->set_est_lancee(false);
 }
 
 void Attaque::_move_left()
 {
-    int dist = this->_portee;
+    sf::Uint16 dist = this->_portee;
     if (this->_clock.getElapsedTime().asSeconds() > 0.10f)
     {
         if (this->_animation < 3)
@@ -151,6 +158,8 @@ void Attaque::_move_left()
         if (this->__position_x < 0)
             this->__position_x = 0;
     }
+    else
+        this->set_est_lancee(false);
 }
 
 

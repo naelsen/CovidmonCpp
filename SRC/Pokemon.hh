@@ -35,8 +35,10 @@ public:
     int get_pv();
     void set_type(Type t);
     void animate();
-    void attaque(sf::RenderWindow&);
+    void attaque_de_loin(sf::RenderWindow&);
+    //void attaque_de_pres(sf::RenderWindow&);
     void collision_attaque(Pokemon &p);
+    void receive_degat(int);
     void got_a_clic(sf::RenderWindow &);
     void print_name(sf::RenderWindow &);
     //void attaque()

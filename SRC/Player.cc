@@ -7,7 +7,8 @@ Player::Player()
 
 Player::Player(Dresseur &dresseur) : _dresseur(&dresseur),
                                      _pokeball("Images/pokeball.png"),
-                                     _accepted(true)
+                                     _accepted(true),
+                                     _first_on_arene(true)
 {
     this->IP = sf::IpAddress::getLocalAddress();
 }
@@ -15,7 +16,8 @@ Player::Player(Dresseur &dresseur) : _dresseur(&dresseur),
 Player::Player(Player const &P) : IP(P.IP),
                                   _dresseur(P._dresseur),
                                   _pokeball(P._pokeball),
-                                  _accepted(true)
+                                  _accepted(true),
+                                  _first_on_arene(true)
 {
     short int port = 30000;
 
@@ -90,6 +92,11 @@ Pokemon *Player::get_pokemon() const
     return this->_pokemon;
 }
 
+bool Player::get_first_on_arene() const
+{
+    return this->_first_on_arene;
+}
+
 void Player::pop_pokeball(sf::RenderWindow &window)
 {
     this->_pokeball.set_position_x(this->_dresseur->get_position_x() + SIZE_WIDTH_PERSO / 2 - SIZE_BLOCK_POKEBALL / 2);
@@ -127,10 +134,16 @@ void Player::receive(std::vector<Dresseur> &dresseurs)
             current_bg = choix_pokemon;
         if(bg == 4)
             current_bg = arene;
-        std::cout << "current_bg : " << current_bg << std::endl;
+
+        if(current_bg == arene && get_dresseur()->get_current_bg() != arene && _first_on_arene)
+        {
+            _first_on_arene = false;
+        }
+
+        /*std::cout << "current_bg : " << current_bg << std::endl;
         std::cout << "animation : " << animation << std::endl;
         std::cout << "x : " << x << std::endl;
-        std::cout << "y : " << y << std::endl;
+        std::cout << "y : " << y << std::endl;*/
 
         for (auto it = dresseurs.begin(); it != dresseurs.end(); it++)
         {
@@ -181,6 +194,13 @@ void Player::send()
 {
     sf::Packet sendPacket;
     sendPacket << this->_dresseur->get_nom() << this->_dresseur->get_direction() << this->get_dresseur()->get_animation() << this->_dresseur->get_position_x() << this->_dresseur->get_position_y() << this->_dresseur->get_current_bg();
+    socket.send(sendPacket);
+}
+
+void Player::send_pokemon()
+{
+    sf::Packet sendPacket;
+    sendPacket << this->_pokemon->get_nom() << this->_pokemon->get_direction() << this->get_pokemon()->get_animation() << this->_pokemon->get_position_x() << this->_pokemon->get_position_y() << this->_pokemon->get_current_bg();
     socket.send(sendPacket);
 }
 
