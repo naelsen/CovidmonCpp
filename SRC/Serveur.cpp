@@ -49,11 +49,11 @@ void Serveur::accept_client()
         std::string nom;
         // On charge le pseudo du joueur dans le paquet
         receivePacket >> nom;
-        if(this->_nom_clients.size() != 0)
+        if (this->_nom_clients.size() != 0)
         {
-            for(std::size_t i = 0; i < _nom_clients.size(); i++)
+            for (std::size_t i = 0; i < _nom_clients.size(); i++)
             {
-                if(this->_nom_clients[i] == nom)
+                if (this->_nom_clients[i] == nom)
                 {
                     accepted = false;
                 }
@@ -66,8 +66,8 @@ void Serveur::accept_client()
         // Il sera accepter si le joueur choisis n'a pas encore ete choisi par quelqu'un d'autre
         this->_Clients[this->_nom_clients.size()]->send(sendPacket);
 
-        if(accepted)   
-        { 
+        if (accepted)
+        {
             this->_nom_clients.push_back(nom);
             std::cout << "Un joueur viens de se connecter en choisissant " << nom << std::endl;
         }

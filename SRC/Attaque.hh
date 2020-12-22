@@ -4,10 +4,11 @@
 
 #include "Entite.hh"
 
-typedef enum Range{
+typedef enum Range
+{
     loin,
     pres
-}Range;
+} Range;
 
 class Attaque : public Entite
 {
@@ -24,8 +25,8 @@ private:
 
 public:
     Attaque();
-    Attaque(std::string,std::string ,Range);
-    Attaque(Attaque const&);
+    Attaque(std::string, std::string, Range);
+    Attaque(Attaque const &);
     ~Attaque();
 
     int get_degats();
@@ -41,5 +42,5 @@ public:
 
     void move();
     void animate();
-    void got_a_clic(sf::RenderWindow&);
+    void got_a_clic(sf::RenderWindow &);
 };

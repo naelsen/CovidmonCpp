@@ -38,7 +38,7 @@ void Dresseur::print_name(sf::RenderWindow &window)
 
 bool Dresseur::is_out()
 {
-    if (this->__position_x > WINDOW_WIDTH && this->__position_x < 2*WINDOW_WIDTH)
+    if (this->__position_x > WINDOW_WIDTH && this->__position_x < 2 * WINDOW_WIDTH)
         return true;
 
     return false;
@@ -140,7 +140,6 @@ void Dresseur::_move_left()
     else
         this->__position_x = 0;
 }
-
 
 void Dresseur::got_a_clic(sf::RenderWindow &window)
 {

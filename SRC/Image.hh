@@ -33,7 +33,7 @@ public:
 	void set_position_x(sf::Uint16);
 	void set_position_y(sf::Uint16);
 	void draw(sf::RenderWindow &);
-	float distance(Image const&);
+	float distance(Image const &);
 	// On declare la surcharge en friend pour acceder au valeur proteger de la classe
 	friend bool operator==(Image const &im1, Image const &im2);
 };

@@ -1,24 +1,22 @@
 #include "Attaque.hh"
 
-Attaque::Attaque(std::string im, std::string nom, Range R) :
-Entite(im,nom),
-_degats(50),
-_range(R)
+Attaque::Attaque(std::string im, std::string nom, Range R) : Entite(im, nom),
+                                                             _degats(50),
+                                                             _range(R)
 {
     this->_speed = 3;
     this->_direction = Up;
     this->_portee = 400;
 }
 
-Attaque::Attaque(): 
-_degats(50),
-_portee(400)
+Attaque::Attaque() : _degats(50),
+                     _portee(400)
 {
     this->_direction = Up;
 }
 
-Attaque::Attaque(Attaque const& at) : Entite (at),
-_degats(at._degats)
+Attaque::Attaque(Attaque const &at) : Entite(at),
+                                      _degats(at._degats)
 {
 }
 
@@ -26,23 +24,23 @@ Attaque::~Attaque()
 {
 }
 
-int Attaque::get_degats(){return this->_degats;}
+int Attaque::get_degats() { return this->_degats; }
 
-sf::Uint16 Attaque::get_portee(){return this->_portee;}
-    
-Range Attaque::get_range(){return this->_range;}
+sf::Uint16 Attaque::get_portee() { return this->_portee; }
 
-float Attaque::get_mult(){return this->_mult;}
+Range Attaque::get_range() { return this->_range; }
 
-bool Attaque::get_est_lancee(){return this->_est_lancee;}
+float Attaque::get_mult() { return this->_mult; }
 
-void Attaque::set_degats(int d){this->_degats = d;}
+bool Attaque::get_est_lancee() { return this->_est_lancee; }
 
-void Attaque::set_range(Range R){this->_range = R;}
+void Attaque::set_degats(int d) { this->_degats = d; }
 
-void Attaque::set_mult(float m){this->_mult = m;}
+void Attaque::set_range(Range R) { this->_range = R; }
 
-void Attaque::set_est_lancee(bool e){this->_est_lancee = e;}
+void Attaque::set_mult(float m) { this->_mult = m; }
+
+void Attaque::set_est_lancee(bool e) { this->_est_lancee = e; }
 
 void Attaque::animate()
 {
@@ -59,13 +57,22 @@ void Attaque::move()
     this->animate();
     if (this->_est_lancee)
     {
-        switch(this->_direction)
+        switch (this->_direction)
         {
-            case Up: this->_move_up(); break;
-            case Right: this->_move_right(); break;
-            case Left: this->_move_left(); break;
-            case Down: this->_move_down(); break;
-            default: break;
+        case Up:
+            this->_move_up();
+            break;
+        case Right:
+            this->_move_right();
+            break;
+        case Left:
+            this->_move_left();
+            break;
+        case Down:
+            this->_move_down();
+            break;
+        default:
+            break;
         }
     }
 }
@@ -105,10 +112,10 @@ void Attaque::_move_down()
         this->_clock.restart();
     }
     this->_direction = Down;
-    if (this->__position_y < ARENE_END && dist >0)
+    if (this->__position_y < ARENE_END && dist > 0)
     {
         this->__position_y += this->_speed;
-        dist-=this->_speed;
+        dist -= this->_speed;
         if (this->__position_y > WINDOW_HEIGHT)
             this->__position_y = WINDOW_HEIGHT;
     }
@@ -128,12 +135,12 @@ void Attaque::_move_right()
         this->_clock.restart();
     }
     this->_direction = Right;
-    if (this->__position_x < ARENE_END && dist>0)
+    if (this->__position_x < ARENE_END && dist > 0)
     {
         this->__position_x += this->_speed;
         dist -= this->_speed;
         if (this->__position_x > WINDOW_HEIGHT)
-            this->__position_x = WINDOW_HEIGHT ;
+            this->__position_x = WINDOW_HEIGHT;
     }
     else
         this->set_est_lancee(false);
@@ -162,7 +169,6 @@ void Attaque::_move_left()
         this->set_est_lancee(false);
 }
 
-
-void Attaque::got_a_clic(sf::RenderWindow& W)
+void Attaque::got_a_clic(sf::RenderWindow &W)
 {
 }

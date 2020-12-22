@@ -51,8 +51,7 @@ void Image::draw(sf::RenderWindow &window)
     window.draw(this->__sprite_image);
 }
 
-float Image::distance(Image const& I)
+float Image::distance(Image const &I)
 {
-    return sqrt((this->__position_x - I.__position_x)*(this->__position_x - I.__position_x)
-                +(this->__position_y - I.__position_y)*(this->__position_y - I.__position_y));
+    return sqrt((this->__position_x - I.__position_x) * (this->__position_x - I.__position_x) + (this->__position_y - I.__position_y) * (this->__position_y - I.__position_y));
 }

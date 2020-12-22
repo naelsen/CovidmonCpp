@@ -11,7 +11,6 @@ static const sf::Uint16 SIZE_HEIGHT_PERSO = 72;
 static const sf::Uint16 SIZE_WIDTH_PERSO = 68;
 static const sf::Uint16 SIZE_BLOCK_POKEBALL = 16;
 
-
 typedef enum Bg
 {
 	intro,

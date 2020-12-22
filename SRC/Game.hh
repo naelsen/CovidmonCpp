@@ -55,7 +55,7 @@ private:
 	void _choisir_dresseur();
 	void _choisir_pokemon();
 	void _draw_pokemon();
-	void _switch_sound(std::size_t ,std::string);
+	void _switch_sound(std::size_t, std::string);
 
 public:
 	Game();

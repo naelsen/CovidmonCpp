@@ -6,12 +6,12 @@ Game::Game() : _current_background(intro),
 			   _window(sf::VideoMode(WINDOW_WIDTH, WINDOW_HEIGHT), "LE MONDE D'APRES ...")
 {
 	this->_font.loadFromFile("Images/arial.ttf");
-    this->_text.setFont(this->_font);
-    this->_text.setString("Choisissez un joueur \n   (avec la souris!)");
-    this->_text.setCharacterSize(17);
-    this->_text.setStyle(sf::Text::Bold);
-    this->_text.setFillColor(sf::Color::Black);
-    this->_text.setPosition(sf::Vector2f(245, 220));
+	this->_text.setFont(this->_font);
+	this->_text.setString("Choisissez un joueur \n   (avec la souris!)");
+	this->_text.setCharacterSize(17);
+	this->_text.setStyle(sf::Text::Bold);
+	this->_text.setFillColor(sf::Color::Black);
+	this->_text.setPosition(sf::Vector2f(245, 220));
 
 	this->_backgrounds.insert(couple("intro", Image("Images/Backgrounds/intro3.png")));
 	this->_backgrounds.insert(couple("menu", Image("Images/Backgrounds/menu.png")));
@@ -28,22 +28,22 @@ Game::Game() : _current_background(intro),
 	this->_dresseurs.push_back(Dresseur("Images/Personnages/R_cyrus.png", "Cyrus"));
 	this->_dresseurs.push_back(Dresseur("Images/Personnages/R_james.png", "James"));
 
-	this->_pokemons.push_back(Pokemon("Images/Pokemons/articodin.png", "Articodin",Vol));
-	this->_pokemons.push_back(Pokemon("Images/Pokemons/canartichaud.png", "Canartichaud",Plante));
-	this->_pokemons.push_back(Pokemon("Images/Pokemons/darumaka.png", "Darumaka",Feu));
-	this->_pokemons.push_back(Pokemon("Images/Pokemons/feneukin.png", "Feneukin",Feu));
-	this->_pokemons.push_back(Pokemon("Images/Pokemons/galacvole.png", "Galacvole",Vol));
-	this->_pokemons.push_back(Pokemon("Images/Pokemons/galarian.png", "Galarian",Eau));
-	this->_pokemons.push_back(Pokemon("Images/Pokemons/gardevoir.png", "Gardevoir",Eau));
-	this->_pokemons.push_back(Pokemon("Images/Pokemons/gloupix.png", "Gloupix",Feu));
-	this->_pokemons.push_back(Pokemon("Images/Pokemons/lubegon.png", "Lubegon",Plante));
-	this->_pokemons.push_back(Pokemon("Images/Pokemons/mageau.png", "Mageau",Eau));
-	this->_pokemons.push_back(Pokemon("Images/Pokemons/mrmime.png", "Mrmime",Eau));
-	this->_pokemons.push_back(Pokemon("Images/Pokemons/noixbat.png", "NoixBat",Vol));
-	this->_pokemons.push_back(Pokemon("Images/Pokemons/oh-oh.png", "Oh-Oh",Vol));
-	this->_pokemons.push_back(Pokemon("Images/Pokemons/pandours.png", "Pandours",Plante));
-	this->_pokemons.push_back(Pokemon("Images/Pokemons/ponyta.png", "Ponyta",Feu));
-	this->_pokemons.push_back(Pokemon("Images/Pokemons/skeleton.png", "Skeleton",Plante));
+	this->_pokemons.push_back(Pokemon("Images/Pokemons/articodin.png", "Articodin", Vol));
+	this->_pokemons.push_back(Pokemon("Images/Pokemons/canartichaud.png", "Canartichaud", Plante));
+	this->_pokemons.push_back(Pokemon("Images/Pokemons/darumaka.png", "Darumaka", Feu));
+	this->_pokemons.push_back(Pokemon("Images/Pokemons/feneukin.png", "Feneukin", Feu));
+	this->_pokemons.push_back(Pokemon("Images/Pokemons/galacvole.png", "Galacvole", Vol));
+	this->_pokemons.push_back(Pokemon("Images/Pokemons/galarian.png", "Galarian", Eau));
+	this->_pokemons.push_back(Pokemon("Images/Pokemons/gardevoir.png", "Gardevoir", Eau));
+	this->_pokemons.push_back(Pokemon("Images/Pokemons/gloupix.png", "Gloupix", Feu));
+	this->_pokemons.push_back(Pokemon("Images/Pokemons/lubegon.png", "Lubegon", Plante));
+	this->_pokemons.push_back(Pokemon("Images/Pokemons/mageau.png", "Mageau", Eau));
+	this->_pokemons.push_back(Pokemon("Images/Pokemons/mrmime.png", "Mrmime", Eau));
+	this->_pokemons.push_back(Pokemon("Images/Pokemons/noixbat.png", "NoixBat", Vol));
+	this->_pokemons.push_back(Pokemon("Images/Pokemons/oh-oh.png", "Oh-Oh", Vol));
+	this->_pokemons.push_back(Pokemon("Images/Pokemons/pandours.png", "Pandours", Plante));
+	this->_pokemons.push_back(Pokemon("Images/Pokemons/ponyta.png", "Ponyta", Feu));
+	this->_pokemons.push_back(Pokemon("Images/Pokemons/skeleton.png", "Skeleton", Plante));
 	// Placement des personnages sur la carte
 	sf::Uint16 i = 1;
 	sf::Uint16 j = 1;
@@ -93,7 +93,7 @@ Game::Game() : _current_background(intro),
 			it->set_position_y(690.f - SIZE_BLOCK_POKEMON);
 			l++;
 		}
-	} 
+	}
 	sf::Clock c1;
 	sf::Clock c2;
 	sf::Sound s1;
@@ -153,7 +153,7 @@ void Game::run()
 // La fonction joue le son du fichier placé en paramètre
 void Game::_switch_sound(std::size_t i, std::string fichier)
 {
-	if(i < _buffers.size())
+	if (i < _buffers.size())
 	{
 		if (!this->_buffers[i].loadFromFile(fichier))
 			std::cout << "Erreur chargement son" << std::endl;
@@ -182,12 +182,12 @@ void Game::_draw_bg()
 		break;
 	case choix_personnage:
 		this->_backgrounds["choix_personnage"].draw(this->_window);
-		if(this->_selec_dresseur == false)
+		if (this->_selec_dresseur == false)
 			this->_window.draw(this->_text);
 		break;
 	case choix_pokemon:
 		this->_backgrounds["choix_pokemon"].draw(this->_window);
-		if(this->_selec_pokemon == false)
+		if (this->_selec_pokemon == false)
 			this->_window.draw(this->_text);
 		break;
 	case arene:
@@ -208,7 +208,7 @@ void Game::_draw_dresseur()
 			{
 				it->print_name(this->_window);
 			}
-			if(it->get_current_bg()==choix_personnage)
+			if (it->get_current_bg() == choix_personnage)
 			{
 				it->draw(this->_window);
 				it->animate();
@@ -223,7 +223,7 @@ void Game::_draw_dresseur()
 			{
 				it->print_name(this->_window);
 			}
-			if(it->get_current_bg()==choix_pokemon)
+			if (it->get_current_bg() == choix_pokemon)
 			{
 				it->draw(this->_window);
 				it->animate();
@@ -240,7 +240,7 @@ void Game::_draw_dresseur()
 				it->draw(this->_window);
 				it->animate();
 			}
-			if(it->get_current_bg()==arene)
+			if (it->get_current_bg() == arene)
 			{
 				it->draw(this->_window);
 				it->animate();
@@ -275,11 +275,11 @@ void Game::_draw_pokemon()
 				it->animate();
 				// 30,30 ---  570,30 ---- 570,570 ------ 30, 600
 			}
-			/*if(it->get_current_bg()==arene)
+			if (it->get_current_bg() == arene)
 			{
 				it->draw(this->_window);
 				it->animate();
-			}*/
+			}
 		}
 	}
 }
@@ -298,7 +298,7 @@ void Game::_back_sound()
 	{
 		if (this->_sounds_switched[1] == false)
 		{
-			this->_switch_sound(1,"Sons/musique.wav");
+			this->_switch_sound(1, "Sons/musique.wav");
 			this->_sounds_switched[1] = true;
 			this->_clocks[1].restart();
 			this->_sounds[1].play();
@@ -313,7 +313,7 @@ void Game::_back_sound()
 	{
 		if (this->_sounds_switched[1] == true)
 		{
-			this->_switch_sound(1,"Sons/musique_arene1.wav");
+			this->_switch_sound(1, "Sons/musique_arene1.wav");
 			this->_sounds_switched[1] = false;
 			this->_clocks[1].restart();
 			this->_sounds[1].play();
@@ -332,7 +332,7 @@ void Game::_front_sound()
 	{
 		if (this->_sounds_switched[0] == false)
 		{
-			_switch_sound(0,"Sons/b.wav");
+			_switch_sound(0, "Sons/b.wav");
 			this->_sounds_switched[0] = true;
 			this->_clocks[0].restart();
 			this->_sounds[0].play();
@@ -342,7 +342,7 @@ void Game::_front_sound()
 	{
 		if (this->_sounds_switched[0] == true)
 		{
-			this->_switch_sound(0,"Sons/footstep.wav");
+			this->_switch_sound(0, "Sons/footstep.wav");
 			this->_sounds_switched[0] = false;
 			this->_clocks[0].restart();
 			this->_sounds[0].play();
@@ -419,10 +419,10 @@ void Game::_manage_dresseur()
 		if (this->_players[0].get_dresseur()->get_animation() != 0)
 			this->_players[0].get_dresseur()->set_animation(0);
 
-		if(!this->_players[0].get_first_on_arene())
+		if (!this->_players[0].get_first_on_arene())
 		{
 			this->_players[0].get_dresseur()->set_direction(Left);
-			this->_players[0].get_dresseur()->set_position_x(WINDOW_WIDTH -SIZE_WIDTH_PERSO);
+			this->_players[0].get_dresseur()->set_position_x(WINDOW_WIDTH - SIZE_WIDTH_PERSO);
 		}
 	}
 }
@@ -448,7 +448,7 @@ void Game::_choisir_dresseur()
 			{
 				Player P(*it);
 				this->_players.push_back(P);
-				if(_players[0].is_accepted())
+				if (_players[0].is_accepted())
 				{
 					this->_selec_dresseur = true;
 					this->_text.setString("Choisissez un covidmon \n   (avec la souris!)");
@@ -458,7 +458,6 @@ void Game::_choisir_dresseur()
 					_players.pop_back();
 					it->set_choisi(false);
 				}
-				
 			}
 		}
 	}

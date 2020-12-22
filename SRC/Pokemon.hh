@@ -3,12 +3,13 @@
 #include "Entite.hh"
 #include "Attaque.hh"
 
-typedef enum Type{
+typedef enum Type
+{
     Feu,
     Eau,
     Plante,
     Vol
-}Type;
+} Type;
 
 class Pokemon : public Entite
 {
@@ -18,7 +19,7 @@ private:
     Attaque _attaque_de_loin;
     Attaque _attaque_de_pres;
     int _pv;
-    
+
     void _move_up();
     void _move_down();
     void _move_right();
@@ -27,7 +28,7 @@ private:
     // Attaque* Att_dist;
 
 public:
-    Pokemon(std::string, std::string,Type);
+    Pokemon(std::string, std::string, Type);
     Pokemon(Pokemon const &);
     ~Pokemon();
 
@@ -35,7 +36,7 @@ public:
     int get_pv();
     void set_type(Type t);
     void animate();
-    void attaque_de_loin(sf::RenderWindow&);
+    void attaque_de_loin(sf::RenderWindow &);
     //void attaque_de_pres(sf::RenderWindow&);
     void collision_attaque(Pokemon &p);
     void receive_degat(int);

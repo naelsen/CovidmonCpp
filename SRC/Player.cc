@@ -21,7 +21,7 @@ Player::Player(Player const &P) : IP(P.IP),
 {
     short int port = 30000;
 
-        // Le client se connecte au port avec son IP a condition que le serveur ai deja été lancé
+    // Le client se connecte au port avec son IP a condition que le serveur ai deja été lancé
     if (this->socket.connect(IP, port) == sf::Socket::Done)
     {
         std::cout << "Tentative de connexion au serveur..." << std::endl;
@@ -32,10 +32,10 @@ Player::Player(Player const &P) : IP(P.IP),
         socket.send(sendPacket);
         sf::Packet receivePacket;
         // Le joueur a t il ete accepter par le serveur ?
-        if(socket.receive(receivePacket) == sf::Socket::Done)
+        if (socket.receive(receivePacket) == sf::Socket::Done)
             receivePacket >> _accepted;
         // Non
-        if(!_accepted)
+        if (!_accepted)
         {
             std::cout << "Deconnecte du serveur car un joueur possède déjà ce personage!" << std::endl;
             this->socket.disconnect();
@@ -46,8 +46,6 @@ Player::Player(Player const &P) : IP(P.IP),
         {
             std::cout << "Connexion reussi" << std::endl;
         }
-        
-        
     }
     else
     {
@@ -124,18 +122,18 @@ void Player::receive(std::vector<Dresseur> &dresseurs)
         if (dir == 3)
             d = Up;
 
-        if(bg == 0)
+        if (bg == 0)
             current_bg = intro;
-        if(bg == 1)
+        if (bg == 1)
             current_bg = menu;
-        if(bg == 2)
+        if (bg == 2)
             current_bg = choix_personnage;
-        if(bg == 3)
+        if (bg == 3)
             current_bg = choix_pokemon;
-        if(bg == 4)
+        if (bg == 4)
             current_bg = arene;
 
-        if(current_bg == arene && get_dresseur()->get_current_bg() != arene && _first_on_arene)
+        if (current_bg == arene && get_dresseur()->get_current_bg() != arene && _first_on_arene)
         {
             _first_on_arene = false;
         }
@@ -165,10 +163,11 @@ void Player::receive(std::vector<Pokemon> &pokemon)
     if (socket.receive(receivePacket) == sf::Socket::Done)
     {
         sf::Uint16 x, y, animation;
-        int dir;
+        int dir, bg;
         Direction d;
         std::string nom;
-        receivePacket >> nom >> dir >> animation >> x >> y;
+        Bg current_bg;
+        receivePacket >> nom >> dir >> animation >> x >> y >> bg;
         if (dir == 0)
             d = Down;
         if (dir == 1)
@@ -177,6 +176,23 @@ void Player::receive(std::vector<Pokemon> &pokemon)
             d = Right;
         if (dir == 3)
             d = Up;
+
+        if (bg == 0)
+            current_bg = intro;
+        if (bg == 1)
+            current_bg = menu;
+        if (bg == 2)
+            current_bg = choix_personnage;
+        if (bg == 3)
+            current_bg = choix_pokemon;
+        if (bg == 4)
+            current_bg = arene;
+
+        std::cout << "current_bg : " << current_bg << std::endl;
+        std::cout << "animation : " << animation << std::endl;
+        std::cout << "x : " << x << std::endl;
+        std::cout << "y : " << y << std::endl;
+
         for (auto it = pokemon.begin(); it != pokemon.end(); it++)
         {
             if (it->get_nom() == nom)
@@ -185,6 +201,7 @@ void Player::receive(std::vector<Pokemon> &pokemon)
                 it->set_position_y(y);
                 it->set_direction(d);
                 it->set_animation(animation);
+                it->set_current_bg(current_bg);
             }
         }
     }
@@ -199,6 +216,7 @@ void Player::send()
 
 void Player::send_pokemon()
 {
+    std::cout << "send" << std::endl;
     sf::Packet sendPacket;
     sendPacket << this->_pokemon->get_nom() << this->_pokemon->get_direction() << this->get_pokemon()->get_animation() << this->_pokemon->get_position_x() << this->_pokemon->get_position_y() << this->_pokemon->get_current_bg();
     socket.send(sendPacket);
