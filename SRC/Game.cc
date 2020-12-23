@@ -275,7 +275,7 @@ void Game::_manage()
 	this->_manage_bg();
 	this->_manage_sound();
 	this->_manage_dresseur();
-	this->_manage_covidmon();
+	//this->_manage_covidmon();
 }
 
 void Game::_back_sound()
@@ -418,13 +418,18 @@ void Game::_manage_dresseur()
 	}
 	if (this->_current_background == arene)
 	{
-		this->_players[0].send();
-		this->_players[0].receive(this->_dresseurs);
-		if (this->_players[0].get_dresseur()->get_position_y() != WINDOW_WIDTH / 2 - 100)
+		if(this->_players[0].get_dresseur()->get_position_y() != WINDOW_WIDTH / 2 - 100 && this->_players[0].get_dresseur()->get_animation() != 0)
+		{
 			this->_players[0].get_dresseur()->set_position_y(WINDOW_WIDTH / 2 - 100);
-		if (this->_players[0].get_dresseur()->get_animation() != 0)
 			this->_players[0].get_dresseur()->set_animation(0);
-
+			this->_players[0].send();
+			this->_players[0].receive(this->_dresseurs);
+		}
+		else
+		{
+			_manage_covidmon();
+		}
+		
 		if (!this->_players[0].get_first_on_arene())
 		{
 			this->_players[0].get_dresseur()->set_direction(Left);
