@@ -2,7 +2,6 @@
 #include <string.h>
 #include "Entite.hh"
 
-
 class Attaque_de_loin : public Entite
 {
 private:
@@ -16,18 +15,18 @@ private:
 
 public:
     Attaque_de_loin();
-    Attaque_de_loin(std::string,std::string);
-    Attaque_de_loin(Attaque_de_loin const&);
+    Attaque_de_loin(std::string, std::string);
+    Attaque_de_loin(Attaque_de_loin const &);
     ~Attaque_de_loin();
 
-    int get_degats();
-    sf::Uint16 get_portee();
-    bool get_est_lancee();
+    int get_degats() const;
+    sf::Uint16 get_portee() const;
+    bool get_est_lancee() const;
 
     void set_degats(int);
     void set_est_lancee(bool);
 
     void move();
     void animate();
-    void got_a_clic(sf::RenderWindow&);
+    void got_a_clic(sf::RenderWindow &);
 };

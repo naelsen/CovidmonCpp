@@ -188,10 +188,10 @@ void Player::receive(std::vector<Covidmon> &Covidmon)
         if (bg == 4)
             current_bg = arene;
 
-        std::cout << "current_bg : " << current_bg << std::endl;
+        /*std::cout << "current_bg : " << current_bg << std::endl;
         std::cout << "animation : " << animation << std::endl;
         std::cout << "x : " << x << std::endl;
-        std::cout << "y : " << y << std::endl;
+        std::cout << "y : " << y << std::endl;*/
 
         for (auto it = Covidmon.begin(); it != Covidmon.end(); it++)
         {
@@ -216,7 +216,7 @@ void Player::send()
 
 void Player::send_covidmon()
 {
-    std::cout << "send" << std::endl;
+    //std::cout << "send" << std::endl;
     sf::Packet sendPacket;
     sendPacket << this->_covidmon->get_nom() << this->_covidmon->get_direction() << this->get_covidmon()->get_animation() << this->_covidmon->get_position_x() << this->_covidmon->get_position_y() << this->_covidmon->get_current_bg();
     socket.send(sendPacket);

@@ -2,7 +2,6 @@
 #include <string.h>
 #include "Image.hh"
 
-
 class Attaque_de_pres : public Image
 {
 private:
@@ -14,11 +13,11 @@ private:
 public:
     Attaque_de_pres();
     Attaque_de_pres(std::string);
-    Attaque_de_pres(Attaque_de_pres const&);
+    Attaque_de_pres(Attaque_de_pres const &);
     ~Attaque_de_pres();
 
-    int get_degats();
-    bool get_est_lancee();
+    int get_degats() const;
+    bool get_est_lancee() const;
 
     void set_degats(int);
     void set_est_lancee(bool);

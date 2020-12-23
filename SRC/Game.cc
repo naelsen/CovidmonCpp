@@ -452,6 +452,7 @@ void Game::_manage_covidmon()
 		this->_players[0].receive(this->_covidmons);
 		this->_players[0].get_covidmon()->move();
 		this->_players[0].get_covidmon()->attaque_de_loin(this->_window);
+		//this->_players[0].get_covidmon()->attaque_de_pres(this->_window);
 	}
 }
 

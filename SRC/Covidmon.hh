@@ -26,6 +26,7 @@ private:
     void _move_left();
 
 public:
+    Covidmon();
     Covidmon(std::string, std::string,Type);
     Covidmon(Covidmon const &);
     ~Covidmon();

@@ -1,62 +1,90 @@
 #include "Attaque_de_loin.hh"
 
-Attaque_de_loin::Attaque_de_loin(std::string im, std::string nom) :
-Entite(im,nom),
-_degats(50)
+Attaque_de_loin::Attaque_de_loin(std::string im, std::string nom) : Entite(im, nom),
+                                                                    _degats(50),
+                                                                    _portee(400),
+                                                                    _est_lancee(false)
 {
     this->_speed = 3;
     this->_direction = Up;
-    this->_portee = 400;
 }
-Attaque_de_loin::Attaque_de_loin(): 
-_degats(50),
-_portee(400)
+Attaque_de_loin::Attaque_de_loin()
 {
-    this->_direction = Up;
 }
 
-Attaque_de_loin::Attaque_de_loin(Attaque_de_loin const& at) : Entite (at),
-_degats(at._degats)
+Attaque_de_loin::Attaque_de_loin(Attaque_de_loin const &at) : Entite(at),
+                                                              _degats(at._degats),
+                                                              _portee(at._portee),
+                                                              _est_lancee(at._est_lancee)
 {
+    std::cout << "charge !\n";
+    this->_speed = at._speed;
+    this->_direction = at._direction;
+    this->_nom = at._nom;
 }
 
 Attaque_de_loin::~Attaque_de_loin()
 {
 }
 
-int Attaque_de_loin::get_degats(){return this->_degats;}
+int Attaque_de_loin::get_degats() const
+{
+    return this->_degats;
+}
 
-sf::Uint16 Attaque_de_loin::get_portee(){return this->_portee;}
+sf::Uint16 Attaque_de_loin::get_portee() const
+{
+    return this->_portee;
+}
 
-bool Attaque_de_loin::get_est_lancee(){return this->_est_lancee;}
+bool Attaque_de_loin::get_est_lancee() const
+{
+    return this->_est_lancee;
+}
 
-void Attaque_de_loin::set_degats(int d){this->_degats = d;}
+void Attaque_de_loin::set_degats(int d)
+{
+    this->_degats = d;
+}
 
-
-void Attaque_de_loin::set_est_lancee(bool e){this->_est_lancee = e;}
+void Attaque_de_loin::set_est_lancee(bool e)
+{
+    this->_est_lancee = e;
+}
 
 void Attaque_de_loin::animate()
 {
-    this->__sprite_image.setTextureRect(sf::IntRect(SIZE_BLOCK*this->_animation,
-                                                    SIZE_BLOCK*this->_direction,
+    this->__sprite_image.setTextureRect(sf::IntRect(SIZE_BLOCK * this->_animation,
+                                                    SIZE_BLOCK * this->_direction,
                                                     SIZE_BLOCK,
                                                     SIZE_BLOCK));
 }
 
 void Attaque_de_loin::move()
 {
-    if (this->_clock.getElapsedTime().asSeconds() > 0.30f)
-        this->_animation = 0;
+    /*std::cout << "moving" << std::endl;
+    std::cout << "x : " << __position_x << std::endl;
+    std::cout << "y: " << __position_y << std::endl;*/
+
     this->animate();
     if (this->_est_lancee)
     {
-        switch(this->_direction)
+        switch (this->_direction)
         {
-            case Up: this->_move_down(); break;
-            case Right: this->_move_right(); break;
-            case Left: this->_move_up(); break;
-            case Down: this->_move_left(); break;
-            default: break;
+        case Down:
+            this->_move_down();
+            break;
+        case Right:
+            this->_move_right();
+            break;
+        case Up:
+            this->_move_up();
+            break;
+        case Left:
+            this->_move_left();
+            break;
+        default:
+            break;
         }
     }
 }
@@ -72,8 +100,7 @@ void Attaque_de_loin::_move_up()
         this->_clock.restart();
     }
     this->_direction = Up;
-    if (this->__position_y > ARENE_START)
-        this->__position_y -= this->_speed;
+    this->__position_y -= this->_speed;
 }
 
 void Attaque_de_loin::_move_down()
@@ -87,12 +114,7 @@ void Attaque_de_loin::_move_down()
         this->_clock.restart();
     }
     this->_direction = Down;
-    if (this->__position_y < ARENE_END)
-    {
-        this->__position_y += this->_speed;
-        if (this->__position_y > WINDOW_HEIGHT)
-            this->__position_y = WINDOW_HEIGHT;
-    }
+    this->__position_y += this->_speed;
 }
 
 void Attaque_de_loin::_move_right()
@@ -106,8 +128,7 @@ void Attaque_de_loin::_move_right()
         this->_clock.restart();
     }
     this->_direction = Right;
-    if (this->__position_x < ARENE_END)
-        this->__position_x += this->_speed;
+    this->__position_x += this->_speed;
 }
 
 void Attaque_de_loin::_move_left()
@@ -121,15 +142,9 @@ void Attaque_de_loin::_move_left()
         this->_clock.restart();
     }
     this->_direction = Left;
-    if (this->__position_x > ARENE_START)
-    {
-        this->__position_x -= this->_speed;
-        if (this->__position_x < 0)
-            this->__position_x = 0;
-    }
+    this->__position_x -= this->_speed;
 }
 
-
-void Attaque_de_loin::got_a_clic(sf::RenderWindow& W)
+void Attaque_de_loin::got_a_clic(sf::RenderWindow &W)
 {
 }
