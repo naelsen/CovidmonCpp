@@ -7,8 +7,8 @@ static const sf::Uint16 WINDOW_HEIGHT = 700;
 static const sf::Uint16 ARENE_START = 45;
 static const sf::Uint16 ARENE_END = 644;
 static const sf::Uint16 SIZE_BLOCK = 64;
-static const sf::Uint16 SIZE_HEIGHT_PERSO = 72;
-static const sf::Uint16 SIZE_WIDTH_PERSO = 68;
+static const sf::Uint16 SIZE_HEIGHT_PERSO = 64;
+static const sf::Uint16 SIZE_WIDTH_PERSO = 64;
 static const sf::Uint16 SIZE_BLOCK_POKEBALL = 16;
 
 typedef enum Bg
