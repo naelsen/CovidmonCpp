@@ -12,7 +12,7 @@
 #include "Dresseur.hh"
 #include "Image.hh"
 #include "Player.hh"
-#include "Pokemon.hh"
+#include "Covidmon.hh"
 #include "Attaque_de_loin.hh"
 #include "Attaque_de_pres.hh"
 
@@ -23,7 +23,7 @@ class Game
 private:
 	std::map<std::string, Image> _backgrounds;
 	std::vector<Dresseur> _dresseurs;
-	std::vector<Pokemon> _pokemons;
+	std::vector<Covidmon> _covidmons;
 	std::vector<Player> _players;
 	// Clock i sert a gerer le temps du son i dans les conditions de game
 	std::vector<sf::Clock> _clocks;
@@ -35,7 +35,7 @@ private:
 	std::vector<bool> _sounds_switched;
 	Bg _current_background;
 	bool _selec_dresseur;
-	bool _selec_pokemon;
+	bool _selec_covidmon;
 	// Attribut SFML
 	sf::RenderWindow _window;
 	sf::Event _event;
@@ -54,10 +54,10 @@ private:
 	void _back_sound();
 	void _manage_bg();
 	void _manage_dresseur();
-	void _manage_pokemon();
+	void _manage_covidmon();
 	void _choisir_dresseur();
-	void _choisir_pokemon();
-	void _draw_pokemon();
+	void _choisir_covidmon();
+	void _draw_covidmon();
 	void _switch_sound(std::size_t, std::string);
 
 public:

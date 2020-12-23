@@ -16,6 +16,6 @@ typedef enum Bg
 	intro,
 	menu,
 	choix_personnage,
-	choix_pokemon,
+	choix_covidmon,
 	arene
 } Bg;

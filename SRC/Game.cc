@@ -2,7 +2,7 @@
 
 Game::Game() : _current_background(intro),
 			   _selec_dresseur(false),
-			   _selec_pokemon(false),
+			   _selec_covidmon(false),
 			   _window(sf::VideoMode(WINDOW_WIDTH, WINDOW_HEIGHT), "LE MONDE D'APRES ...")
 {
 	this->_font.loadFromFile("Images/arial.ttf");
@@ -16,7 +16,7 @@ Game::Game() : _current_background(intro),
 	this->_backgrounds.insert(couple("intro", Image("Images/Backgrounds/intro3.png")));
 	this->_backgrounds.insert(couple("menu", Image("Images/Backgrounds/menu.png")));
 	this->_backgrounds.insert(couple("choix_personnage", Image("Images/Backgrounds/choix_personnage.png")));
-	this->_backgrounds.insert(couple("choix_pokemon", Image("Images/Backgrounds/choix_pokemon.png")));
+	this->_backgrounds.insert(couple("choix_covidmon", Image("Images/Backgrounds/choix_covidmon.png")));
 	this->_backgrounds.insert(couple("arene", Image("Images/Backgrounds/arene.png")));
 
 	this->_dresseurs.push_back(Dresseur("Images/Personnages/G_gaby.png", "Gaby"));
@@ -28,22 +28,22 @@ Game::Game() : _current_background(intro),
 	this->_dresseurs.push_back(Dresseur("Images/Personnages/R_cyrus.png", "Cyrus"));
 	this->_dresseurs.push_back(Dresseur("Images/Personnages/R_james.png", "James"));
 
-	this->_pokemons.push_back(Pokemon("Images/Pokemons/articodin.png", "Articodin", Vol));
-	this->_pokemons.push_back(Pokemon("Images/Pokemons/canartichaud.png", "Canartichaud", Plante));
-	this->_pokemons.push_back(Pokemon("Images/Pokemons/darumaka.png", "Darumaka", Feu));
-	this->_pokemons.push_back(Pokemon("Images/Pokemons/feneukin.png", "Feneukin", Feu));
-	this->_pokemons.push_back(Pokemon("Images/Pokemons/galacvole.png", "Galacvole", Vol));
-	this->_pokemons.push_back(Pokemon("Images/Pokemons/galarian.png", "Galarian", Eau));
-	this->_pokemons.push_back(Pokemon("Images/Pokemons/gardevoir.png", "Gardevoir", Eau));
-	this->_pokemons.push_back(Pokemon("Images/Pokemons/gloupix.png", "Gloupix", Feu));
-	this->_pokemons.push_back(Pokemon("Images/Pokemons/lubegon.png", "Lubegon", Plante));
-	this->_pokemons.push_back(Pokemon("Images/Pokemons/mageau.png", "Mageau", Eau));
-	this->_pokemons.push_back(Pokemon("Images/Pokemons/mrmime.png", "Mrmime", Eau));
-	this->_pokemons.push_back(Pokemon("Images/Pokemons/noixbat.png", "NoixBat", Vol));
-	this->_pokemons.push_back(Pokemon("Images/Pokemons/oh-oh.png", "Oh-Oh", Vol));
-	this->_pokemons.push_back(Pokemon("Images/Pokemons/pandours.png", "Pandours", Plante));
-	this->_pokemons.push_back(Pokemon("Images/Pokemons/ponyta.png", "Ponyta", Feu));
-	this->_pokemons.push_back(Pokemon("Images/Pokemons/skeleton.png", "Skeleton", Plante));
+	this->_covidmons.push_back(Covidmon("Images/Covidmons/articodin.png", "Articodin", Vol));
+	this->_covidmons.push_back(Covidmon("Images/Covidmons/canartichaud.png", "Canartichaud", Plante));
+	this->_covidmons.push_back(Covidmon("Images/Covidmons/darumaka.png", "Darumaka", Feu));
+	this->_covidmons.push_back(Covidmon("Images/Covidmons/feneukin.png", "Feneukin", Feu));
+	this->_covidmons.push_back(Covidmon("Images/Covidmons/galacvole.png", "Galacvole", Vol));
+	this->_covidmons.push_back(Covidmon("Images/Covidmons/galarian.png", "Galarian", Eau));
+	this->_covidmons.push_back(Covidmon("Images/Covidmons/gardevoir.png", "Gardevoir", Eau));
+	this->_covidmons.push_back(Covidmon("Images/Covidmons/gloupix.png", "Gloupix", Feu));
+	this->_covidmons.push_back(Covidmon("Images/Covidmons/lubegon.png", "Lubegon", Plante));
+	this->_covidmons.push_back(Covidmon("Images/Covidmons/mageau.png", "Mageau", Eau));
+	this->_covidmons.push_back(Covidmon("Images/Covidmons/mrmime.png", "Mrmime", Eau));
+	this->_covidmons.push_back(Covidmon("Images/Covidmons/noixbat.png", "NoixBat", Vol));
+	this->_covidmons.push_back(Covidmon("Images/Covidmons/oh-oh.png", "Oh-Oh", Vol));
+	this->_covidmons.push_back(Covidmon("Images/Covidmons/pandours.png", "Pandours", Plante));
+	this->_covidmons.push_back(Covidmon("Images/Covidmons/ponyta.png", "Ponyta", Feu));
+	this->_covidmons.push_back(Covidmon("Images/Covidmons/skeleton.png", "Skeleton", Plante));
 	// Placement des personnages sur la carte
 	sf::Uint16 i = 1;
 	sf::Uint16 j = 1;
@@ -67,7 +67,7 @@ Game::Game() : _current_background(intro),
 	j = 1;
 	sf::Uint16 k = 1;
 	sf::Uint16 l = 1;
-	for (auto it = this->_pokemons.begin(); it != this->_pokemons.end(); it++)
+	for (auto it = this->_covidmons.begin(); it != this->_covidmons.end(); it++)
 	{
 		if (i <= 4)
 		{
@@ -143,7 +143,7 @@ void Game::run()
 			}
 		}
 		this->_choisir_dresseur();
-		this->_choisir_pokemon();
+		this->_choisir_covidmon();
 		this->_manage();
 		this->_draw();
 		this->_window.display();
@@ -165,8 +165,8 @@ void Game::_draw()
 {
 	this->_draw_bg();
 	this->_draw_dresseur();
-	this->_draw_pokemon();
-	if (this->_selec_pokemon)
+	this->_draw_covidmon();
+	if (this->_selec_covidmon)
 		this->_players[0].pop_pokeball(this->_window);
 }
 
@@ -185,9 +185,9 @@ void Game::_draw_bg()
 		if (this->_selec_dresseur == false)
 			this->_window.draw(this->_text);
 		break;
-	case choix_pokemon:
-		this->_backgrounds["choix_pokemon"].draw(this->_window);
-		if (this->_selec_pokemon == false)
+	case choix_covidmon:
+		this->_backgrounds["choix_covidmon"].draw(this->_window);
+		if (this->_selec_covidmon == false)
 			this->_window.draw(this->_text);
 		break;
 	case arene:
@@ -215,7 +215,7 @@ void Game::_draw_dresseur()
 			}
 		}
 	}
-	if (this->_current_background == choix_pokemon)
+	if (this->_current_background == choix_covidmon)
 	{
 		for (auto it = this->_dresseurs.begin(); it != this->_dresseurs.end(); it++)
 		{
@@ -223,7 +223,7 @@ void Game::_draw_dresseur()
 			{
 				it->print_name(this->_window);
 			}
-			if (it->get_current_bg() == choix_pokemon)
+			if (it->get_current_bg() == choix_covidmon)
 			{
 				it->draw(this->_window);
 				it->animate();
@@ -249,11 +249,11 @@ void Game::_draw_dresseur()
 	}
 }
 
-void Game::_draw_pokemon()
+void Game::_draw_covidmon()
 {
-	if (this->_current_background == choix_pokemon)
+	if (this->_current_background == choix_covidmon)
 	{
-		for (auto it = this->_pokemons.begin(); it != this->_pokemons.end(); it++)
+		for (auto it = this->_covidmons.begin(); it != this->_covidmons.end(); it++)
 		{
 			if (!it->get_choisi())
 			{
@@ -266,7 +266,7 @@ void Game::_draw_pokemon()
 	}
 	if (this->_current_background == arene)
 	{
-		for (auto it = this->_pokemons.begin(); it != this->_pokemons.end(); it++)
+		for (auto it = this->_covidmons.begin(); it != this->_covidmons.end(); it++)
 		{
 			if (it->get_choisi())
 			{
@@ -288,7 +288,7 @@ void Game::_manage()
 	this->_manage_bg();
 	this->_manage_sound();
 	this->_manage_dresseur();
-	this->_manage_pokemon();
+	this->_manage_covidmon();
 }
 //Les sons se déclanchent que dans la deuxième fenetre
 
@@ -396,14 +396,14 @@ void Game::_manage_bg()
 		{
 			if (this->_current_background == choix_personnage)
 			{
-				_set_current_background(choix_pokemon);
-				this->_players[0].get_dresseur()->set_current_bg(choix_pokemon);
+				_set_current_background(choix_covidmon);
+				this->_players[0].get_dresseur()->set_current_bg(choix_covidmon);
 			}
-			else if (this->_current_background == choix_pokemon)
+			else if (this->_current_background == choix_covidmon)
 			{
 				_set_current_background(arene);
 				this->_players[0].get_dresseur()->set_current_bg(arene);
-				this->_players[0].get_pokemon()->set_current_bg(arene);
+				this->_players[0].get_covidmon()->set_current_bg(arene);
 			}
 			this->_players[0].get_dresseur()->set_position_x(0);
 		}
@@ -421,7 +421,7 @@ void Game::_manage_dresseur()
 			it->get_dresseur()->move();
 		}
 	}
-	if (this->_current_background == choix_pokemon)
+	if (this->_current_background == choix_covidmon)
 	{
 		this->_players[0].send();
 		this->_players[0].receive(this->_dresseurs);
@@ -444,14 +444,14 @@ void Game::_manage_dresseur()
 	}
 }
 
-void Game::_manage_pokemon()
+void Game::_manage_covidmon()
 {
 	if (this->_current_background == arene)
 	{
-		this->_players[0].send_pokemon();
-		this->_players[0].receive(this->_pokemons);
-		this->_players[0].get_pokemon()->move();
-		this->_players[0].get_pokemon()->attaque_de_loin(this->_window);
+		this->_players[0].send_covidmon();
+		this->_players[0].receive(this->_covidmons);
+		this->_players[0].get_covidmon()->move();
+		this->_players[0].get_covidmon()->attaque_de_loin(this->_window);
 	}
 }
 
@@ -481,19 +481,19 @@ void Game::_choisir_dresseur()
 	}
 }
 
-void Game::_choisir_pokemon()
+void Game::_choisir_covidmon()
 {
-	if (!this->_selec_pokemon && this->_current_background == choix_pokemon)
+	if (!this->_selec_covidmon && this->_current_background == choix_covidmon)
 	{
-		for (auto it = this->_pokemons.begin(); it != this->_pokemons.end(); it++)
+		for (auto it = this->_covidmons.begin(); it != this->_covidmons.end(); it++)
 		{
 			it->got_a_clic(this->_window);
 			if (it->get_choisi())
 			{
 				if(this->_players[0].get_dresseur()[0].distance(*it)>100)
 					this->_text.setString("Rapprochez vous du covidmon \n pour l'attraper !");
-				this->_players[0].set_pokemon(*it);
-				this->_selec_pokemon = true;
+				this->_players[0].set_covidmon(*it);
+				this->_selec_covidmon = true;
 			}
 		}
 	}

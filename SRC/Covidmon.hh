@@ -11,7 +11,7 @@ typedef enum Type{
     Vol
 }Type;
 
-class Pokemon : public Entite
+class Covidmon : public Entite
 {
 private:
     sf::Font _font;
@@ -26,9 +26,9 @@ private:
     void _move_left();
 
 public:
-    Pokemon(std::string, std::string,Type);
-    Pokemon(Pokemon const &);
-    ~Pokemon();
+    Covidmon(std::string, std::string,Type);
+    Covidmon(Covidmon const &);
+    ~Covidmon();
 
     Type get_type();
     int get_pv();
@@ -37,10 +37,10 @@ public:
     void animate();
     void attaque_de_loin(sf::RenderWindow&);
     void attaque_de_pres(sf::RenderWindow&);
-    void collision_attaque(Pokemon&);
-    bool est_fort_contre(Pokemon&);
-    bool est_faible_contre(Pokemon&);
-    void receive_degat(Pokemon&);
+    void collision_attaque(Covidmon&);
+    bool est_fort_contre(Covidmon&);
+    bool est_faible_contre(Covidmon&);
+    void receive_degat(Covidmon&);
     void got_a_clic(sf::RenderWindow &);
     void print_name(sf::RenderWindow &);
     //void attaque()

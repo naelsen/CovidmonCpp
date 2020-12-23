@@ -1,6 +1,6 @@
-#include "Pokemon.hh"
+#include "Covidmon.hh"
 
-Pokemon::Pokemon(std::string image, std::string nom, Type _type) : Entite(image, nom),
+Covidmon::Covidmon(std::string image, std::string nom, Type _type) : Entite(image, nom),
 _pv(500)
 {
     switch(_type)
@@ -21,24 +21,24 @@ _pv(500)
     }
 }
 
-Pokemon::Pokemon(Pokemon const &pokemon) : Entite(pokemon)
+Covidmon::Covidmon(Covidmon const &Covidmon) : Entite(Covidmon)
 {
-    this->_type = pokemon._type;
+    this->_type = Covidmon._type;
 }
 
-Pokemon::~Pokemon()
+Covidmon::~Covidmon()
 {
 }
 
-Type Pokemon::get_type(){return this->_type;}
+Type Covidmon::get_type(){return this->_type;}
 
-void Pokemon::set_type(Type t){this->_type = t;}
+void Covidmon::set_type(Type t){this->_type = t;}
 
-int Pokemon::get_pv(){return this->_pv;}
+int Covidmon::get_pv(){return this->_pv;}
 
-void Pokemon::set_pv(int pv){this->_pv = pv;}
+void Covidmon::set_pv(int pv){this->_pv = pv;}
 
-void Pokemon::animate()
+void Covidmon::animate()
 {
     this->__sprite_image.setTextureRect(sf::IntRect(SIZE_BLOCK*this->_animation,
                                                     SIZE_BLOCK*this->_direction,
@@ -46,10 +46,10 @@ void Pokemon::animate()
                                                     SIZE_BLOCK));
 }
 
-void Pokemon::print_name(sf::RenderWindow &window)
+void Covidmon::print_name(sf::RenderWindow &window)
 {
     this->_font.loadFromFile("Images/arial.ttf");
-    sf::Text text("Pokemon choisi : " + this->get_nom(), _font);
+    sf::Text text("Covidmon choisi : " + this->get_nom(), _font);
     text.setCharacterSize(15);
     text.setStyle(sf::Text::Bold);
     text.setFillColor(sf::Color::Black);
@@ -57,7 +57,7 @@ void Pokemon::print_name(sf::RenderWindow &window)
     window.draw(text);
 }
 
-void Pokemon::attaque_de_loin(sf::RenderWindow &window)
+void Covidmon::attaque_de_loin(sf::RenderWindow &window)
 {
     if(this->_attaque_de_loin.get_est_lancee())
     {
@@ -75,7 +75,7 @@ void Pokemon::attaque_de_loin(sf::RenderWindow &window)
     }
 }
 
-void Pokemon::attaque_de_pres(sf::RenderWindow &window)
+void Covidmon::attaque_de_pres(sf::RenderWindow &window)
 {
     if(this->_attaque_de_pres.get_est_lancee())
     {
@@ -91,7 +91,7 @@ void Pokemon::attaque_de_pres(sf::RenderWindow &window)
     }
 }
 
-void Pokemon::collision_attaque(Pokemon &P)
+void Covidmon::collision_attaque(Covidmon &P)
 {
     if(this->_attaque_de_loin.distance(P) < SIZE_BLOCK/2)
     {  
@@ -109,7 +109,7 @@ void Pokemon::collision_attaque(Pokemon &P)
     }
 }
 
-bool Pokemon::est_faible_contre(Pokemon &P)
+bool Covidmon::est_faible_contre(Covidmon &P)
 {
     switch(this->_type)
     {
@@ -133,7 +133,7 @@ bool Pokemon::est_faible_contre(Pokemon &P)
     return false;
 }
 
-bool Pokemon::est_fort_contre(Pokemon &P)
+bool Covidmon::est_fort_contre(Covidmon &P)
 {
     switch(this->_type)
     {
@@ -158,7 +158,7 @@ bool Pokemon::est_fort_contre(Pokemon &P)
     return false;
 }
 
-void Pokemon::receive_degat(Pokemon &P)
+void Covidmon::receive_degat(Covidmon &P)
 {
     if(this->est_faible_contre(P))
         P.set_pv(get_pv() - 0.5*this->_attaque_de_loin.get_degats());
@@ -170,7 +170,7 @@ void Pokemon::receive_degat(Pokemon &P)
 }
 
 
-void Pokemon::_move_up()
+void Covidmon::_move_up()
 {
     if (this->_clock.getElapsedTime().asSeconds() > 0.10f)
     {
@@ -185,7 +185,7 @@ void Pokemon::_move_up()
         this->__position_y -= this->_speed;
 }
 
-void Pokemon::_move_down()
+void Covidmon::_move_down()
 {
     if (this->_clock.getElapsedTime().asSeconds() > 0.10f)
     {
@@ -201,7 +201,7 @@ void Pokemon::_move_down()
 
 }
 
-void Pokemon::_move_right()
+void Covidmon::_move_right()
 {
     if (this->_clock.getElapsedTime().asSeconds() > 0.10f)
     {
@@ -216,7 +216,7 @@ void Pokemon::_move_right()
         this->__position_x += this->_speed;
 }
 
-void Pokemon::_move_left()
+void Covidmon::_move_left()
 {
     if (this->_clock.getElapsedTime().asSeconds() > 0.10f)
     {
@@ -231,7 +231,7 @@ void Pokemon::_move_left()
         this->__position_x -= this->_speed;
 }
 
-void Pokemon::got_a_clic(sf::RenderWindow &window)
+void Covidmon::got_a_clic(sf::RenderWindow &window)
 {
     sf::Vector2i pos = sf::Mouse::getPosition(window);
     sf::Uint16 dx = pos.x - this->__position_x;

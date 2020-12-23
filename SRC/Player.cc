@@ -75,9 +75,9 @@ bool Player::is_moving()
     return false;
 }
 
-void Player::set_pokemon(Pokemon &pok)
+void Player::set_covidmon(Covidmon &pok)
 {
-    this->_pokemon = &pok;
+    this->_covidmon = &pok;
 }
 
 Dresseur *Player::get_dresseur() const
@@ -85,9 +85,9 @@ Dresseur *Player::get_dresseur() const
     return this->_dresseur;
 }
 
-Pokemon *Player::get_pokemon() const
+Covidmon *Player::get_covidmon() const
 {
-    return this->_pokemon;
+    return this->_covidmon;
 }
 
 bool Player::get_first_on_arene() const
@@ -129,7 +129,7 @@ void Player::receive(std::vector<Dresseur> &dresseurs)
         if (bg == 2)
             current_bg = choix_personnage;
         if (bg == 3)
-            current_bg = choix_pokemon;
+            current_bg = choix_covidmon;
         if (bg == 4)
             current_bg = arene;
 
@@ -157,7 +157,7 @@ void Player::receive(std::vector<Dresseur> &dresseurs)
     }
 }
 
-void Player::receive(std::vector<Pokemon> &pokemon)
+void Player::receive(std::vector<Covidmon> &Covidmon)
 {
     sf::Packet receivePacket;
     if (socket.receive(receivePacket) == sf::Socket::Done)
@@ -184,7 +184,7 @@ void Player::receive(std::vector<Pokemon> &pokemon)
         if (bg == 2)
             current_bg = choix_personnage;
         if (bg == 3)
-            current_bg = choix_pokemon;
+            current_bg = choix_covidmon;
         if (bg == 4)
             current_bg = arene;
 
@@ -193,7 +193,7 @@ void Player::receive(std::vector<Pokemon> &pokemon)
         std::cout << "x : " << x << std::endl;
         std::cout << "y : " << y << std::endl;
 
-        for (auto it = pokemon.begin(); it != pokemon.end(); it++)
+        for (auto it = Covidmon.begin(); it != Covidmon.end(); it++)
         {
             if (it->get_nom() == nom)
             {
@@ -214,11 +214,11 @@ void Player::send()
     socket.send(sendPacket);
 }
 
-void Player::send_pokemon()
+void Player::send_covidmon()
 {
     std::cout << "send" << std::endl;
     sf::Packet sendPacket;
-    sendPacket << this->_pokemon->get_nom() << this->_pokemon->get_direction() << this->get_pokemon()->get_animation() << this->_pokemon->get_position_x() << this->_pokemon->get_position_y() << this->_pokemon->get_current_bg();
+    sendPacket << this->_covidmon->get_nom() << this->_covidmon->get_direction() << this->get_covidmon()->get_animation() << this->_covidmon->get_position_x() << this->_covidmon->get_position_y() << this->_covidmon->get_current_bg();
     socket.send(sendPacket);
 }
 
