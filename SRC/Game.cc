@@ -104,10 +104,6 @@ Game::Game() : _current_background(intro),
 	bool sound_switched2 = false;
 	this->_clocks.push_back(c1);
 	this->_clocks.push_back(c2);
-	this->_sounds.push_back(s1);
-	this->_sounds.push_back(s2);
-	this->_buffers.push_back(sb1);
-	this->_buffers.push_back(sb2);
 	this->_sounds_switched.push_back(sound_switched1);
 	this->_sounds_switched.push_back(sound_switched2);
 	this->_clocks[0].restart();
@@ -150,16 +146,6 @@ void Game::run()
 	}
 }
 
-// La fonction joue le son du fichier placé en paramètre
-void Game::_switch_sound(std::size_t i, std::string fichier)
-{
-	if (i < _buffers.size())
-	{
-		if (!this->_buffers[i].loadFromFile(fichier))
-			std::cout << "Erreur chargement son" << std::endl;
-		this->_sounds[i].setBuffer(_buffers[i]);
-	}
-}
 
 void Game::_draw()
 {
@@ -298,47 +284,48 @@ void Game::_back_sound()
 	{
 		if (this->_sounds_switched[1] == false)
 		{
-			this->_switch_sound(1, "Sons/intro.wav");
+			if(!this->_sound_back.openFromFile("Sons/intro.wav"))
+				std::cout << "Erreur lors de l'ouverture de Sons/intro.wav" << std::endl;
 			this->_sounds_switched[1] = true;
 			this->_clocks[1].restart();
-			this->_sounds[1].play();
+			this->_sound_back.play();
 		}
 		else if (this->_clocks[1].getElapsedTime().asSeconds() > 41)
 		{
 			this->_clocks[1].restart();
-			this->_sounds[1].play();
+			this->_sound_back.play();
 		}
 	}
 	else if(this->_current_background != arene)
 	{
 		if (this->_sounds_switched[1] == true)
 		{
-			this->_switch_sound(1, "Sons/menu_and_choix.wav");
+			if(!this->_sound_back.openFromFile("Sons/menu_and_choix.wav"))
+				std::cout << "Erreur lors de l'ouverture de Sons/menu_and_choix.wav" << std::endl;
 			this->_sounds_switched[1] = false;
 			this->_clocks[1].restart();
-			this->_sounds[1].play();
+			this->_sound_back.play();
 		}
 		else if (this->_clocks[1].getElapsedTime().asSeconds() > 19)
 		{
 			this->_clocks[1].restart();
-			this->_sounds[1].play();
+			this->_sound_back.play();
 		}
 	}
 	else
 	{
 		if (this->_sounds_switched[1] == false)
 		{
-			this->_sounds.pop_back();
-			if(!this->_musique.openFromFile("Sons/musique_arene1.wav"))
+			if(!this->_sound_back.openFromFile("Sons/musique_arene1.wav"))
 				std::cout << "Erreur lors de l'ouverture de Sons/musique_arene1.wav" << std::endl;
 			this->_sounds_switched[1] = true;
 			this->_clocks[1].restart();
-			this->_musique.play();
+			this->_sound_back.play();
 		}
 		else if (this->_clocks[1].getElapsedTime().asSeconds() > 180)
 		{
 			this->_clocks[1].restart();
-			this->_musique.play();
+			this->_sound_back.play();
 		}
 	}
 }
@@ -349,25 +336,27 @@ void Game::_front_sound()
 	{
 		if (this->_sounds_switched[0] == false)
 		{
-			_switch_sound(0, "Sons/b.wav");
+			if(!this->_sound_front.openFromFile("Sons/b.wav"))
+				std::cout << "Erreur lors de l'ouverture de Sons/b.wav" << std::endl;
 			this->_sounds_switched[0] = true;
 			this->_clocks[0].restart();
-			this->_sounds[0].play();
+			this->_sound_front.play();
 		}
 	}
 	else if (this->_players[0].is_moving() && this->_clocks[0].getElapsedTime().asMilliseconds() > 800)
 	{
 		if (this->_sounds_switched[0] == true)
 		{
-			this->_switch_sound(0, "Sons/footstep.wav");
+			if(!this->_sound_front.openFromFile("Sons/footstep.wav"))
+				std::cout << "Erreur lors de l'ouverture de Sons/footstep.wav" << std::endl;
 			this->_sounds_switched[0] = false;
 			this->_clocks[0].restart();
-			this->_sounds[0].play();
+			this->_sound_front.play();
 		}
 		else
 		{
 			this->_clocks[0].restart();
-			this->_sounds[0].play();
+			this->_sound_front.play();
 		}
 	}
 }

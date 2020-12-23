@@ -28,9 +28,8 @@ private:
 	// Clock i sert a gerer le temps du son i dans les conditions de game
 	std::vector<sf::Clock> _clocks;
 	// Buffer i correspond au son i
-	std::vector<sf::SoundBuffer> _buffers;
-	std::vector<sf::Sound> _sounds;
-	sf::Music _musique;
+	sf::Music _sound_front;
+	sf::Music _sound_back;
 	// Sert à gerer les differents sons des backgrounds
 	std::vector<bool> _sounds_switched;
 	Bg _current_background;
