@@ -5,7 +5,7 @@ Attaque_de_loin::Attaque_de_loin(std::string im, std::string nom) : Entite(im, n
                                                                     _portee(400),
                                                                     _est_lancee(false)
 {
-    this->_speed = 3;
+    this->_speed = 10;
     this->_direction = Up;
 }
 Attaque_de_loin::Attaque_de_loin()
@@ -17,7 +17,7 @@ Attaque_de_loin::Attaque_de_loin(Attaque_de_loin const &at) : Entite(at),
                                                               _portee(at._portee),
                                                               _est_lancee(at._est_lancee)
 {
-    std::cout << "charge !\n";
+   // std::cout << "charge !\n";
     this->_speed = at._speed;
     this->_direction = at._direction;
     this->_nom = at._nom;
@@ -62,11 +62,11 @@ void Attaque_de_loin::animate()
 
 void Attaque_de_loin::move()
 {
-    std::cout << "moving" << std::endl;
+  /*  std::cout << "moving" << std::endl;
     std::cout << "x : " << __position_x << std::endl;
     std::cout << "y: " << __position_y << std::endl;
     std::cout << "animation " << _animation << std::endl;
-    std::cout << "direction: " << _direction << std::endl;
+    std::cout << "direction: " << _direction << std::endl;*/
     this->animate();
     if (this->_est_lancee)
     {
@@ -101,7 +101,10 @@ void Attaque_de_loin::_move_up()
         this->_clock.restart();
     }
     this->_direction = Up;
-    this->__position_y -= this->_speed;
+    if(this->__position_y > ARENE_START)
+        this->__position_y -= this->_speed;
+    else
+        set_est_lancee(false);
 }
 
 void Attaque_de_loin::_move_down()
@@ -115,7 +118,10 @@ void Attaque_de_loin::_move_down()
         this->_clock.restart();
     }
     this->_direction = Down;
-    this->__position_y += this->_speed;
+    if(this->__position_y < ARENE_END - SIZE_BLOCK)
+        this->__position_y += this->_speed;
+    else
+        set_est_lancee(false);
 }
 
 void Attaque_de_loin::_move_right()
@@ -129,7 +135,10 @@ void Attaque_de_loin::_move_right()
         this->_clock.restart();
     }
     this->_direction = Right;
-    this->__position_x += this->_speed;
+    if(this->__position_x < ARENE_END - SIZE_BLOCK)
+        this->__position_x += this->_speed;
+    else
+        set_est_lancee(false);
 }
 
 void Attaque_de_loin::_move_left()
@@ -143,7 +152,11 @@ void Attaque_de_loin::_move_left()
         this->_clock.restart();
     }
     this->_direction = Left;
-    this->__position_x -= this->_speed;
+    if(this->__position_x > ARENE_START )
+        this->__position_x -= this->_speed;
+    else
+        set_est_lancee(false);
+
 }
 
 void Attaque_de_loin::got_a_clic(sf::RenderWindow &W)

@@ -8,6 +8,7 @@ private:
     int _degats;
     int _animation;
     sf::Uint16 _portee;
+    sf::Clock _clock;
     bool _est_lancee;
 
 public:

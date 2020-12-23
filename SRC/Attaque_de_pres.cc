@@ -47,12 +47,15 @@ void Attaque_de_pres::animate()
 
 void Attaque_de_pres::lancement()
 {
-    //if (this->_clock.getElapsedTime().asSeconds() > 0.10f)
+    if (this->_clock.getElapsedTime().asSeconds() > 0.10f)
     {
         if (this->_animation < 15)
             this->_animation++;
         else
+        {
             this->_animation = 0;
-        // this->_clock.restart();
+            set_est_lancee(false);
+        }
+        this->_clock.restart();
     }
 }

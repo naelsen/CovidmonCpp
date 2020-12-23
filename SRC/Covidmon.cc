@@ -101,9 +101,26 @@ void Covidmon::attaque_de_pres(sf::RenderWindow &window)
     }
     else if (sf::Keyboard::isKeyPressed(sf::Keyboard::D))
     {
-        this->_attaque_de_pres.set_position_x(this->get_position_x());
-        this->_attaque_de_pres.set_position_y(this->get_position_y());
-        this->_attaque_de_pres.set_est_lancee(true);
+        switch(this->_direction)
+        {
+        case Up:
+            this->_attaque_de_pres.set_position_x(this->get_position_x());
+            this->_attaque_de_pres.set_position_y(this->get_position_y() - SIZE_BLOCK/2);
+            break;
+        case Down:
+            this->_attaque_de_pres.set_position_x(this->get_position_x());
+            this->_attaque_de_pres.set_position_y(this->get_position_y() + SIZE_BLOCK/2);
+            break;
+        case Right:
+            this->_attaque_de_pres.set_position_x(this->get_position_x() + SIZE_BLOCK/2);
+            this->_attaque_de_pres.set_position_y(this->get_position_y());
+            break;
+        case Left:
+            this->_attaque_de_pres.set_position_x(this->get_position_x() - SIZE_BLOCK/2);
+            this->_attaque_de_pres.set_position_y(this->get_position_y());
+            break;
+        }
+    this->_attaque_de_pres.set_est_lancee(true);
     }
 }
 
@@ -116,7 +133,7 @@ void Covidmon::collision_attaque(Covidmon &P)
         this->_attaque_de_loin.set_position_x(-SIZE_BLOCK);
         this->_attaque_de_loin.set_position_y(-SIZE_BLOCK);
     }
-    if (this->_attaque_de_loin.distance(P) < SIZE_BLOCK / 2)
+    if (this->_attaque_de_pres.distance(P) < SIZE_BLOCK / 2)
     {
         this->receive_degat(P);
         this->_attaque_de_pres.set_est_lancee(false);
