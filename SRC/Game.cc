@@ -84,13 +84,13 @@ Game::Game() : _current_background(intro),
 		else if (k <= 4)
 		{
 			it->set_position_x(k * WINDOW_WIDTH / 6);
-			it->set_position_y(620.f - SIZE_BLOCK_POKEMON);
+			it->set_position_y(620.f - SIZE_BLOCK);
 			k++;
 		}
 		else if (l <= 4)
 		{
 			it->set_position_x(l * WINDOW_WIDTH / 6);
-			it->set_position_y(690.f - SIZE_BLOCK_POKEMON);
+			it->set_position_y(690.f - SIZE_BLOCK);
 			l++;
 		}
 	}
@@ -451,6 +451,7 @@ void Game::_manage_pokemon()
 		this->_players[0].send_pokemon();
 		this->_players[0].receive(this->_pokemons);
 		this->_players[0].get_pokemon()->move();
+		this->_players[0].get_pokemon()->attaque_de_loin(this->_window);
 	}
 }
 
@@ -489,6 +490,8 @@ void Game::_choisir_pokemon()
 			it->got_a_clic(this->_window);
 			if (it->get_choisi())
 			{
+				if(this->_players[0].get_dresseur()[0].distance(*it)>100)
+					this->_text.setString("Rapprochez vous du covidmon \n pour l'attraper !");
 				this->_players[0].set_pokemon(*it);
 				this->_selec_pokemon = true;
 			}

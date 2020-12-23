@@ -13,6 +13,8 @@
 #include "Image.hh"
 #include "Player.hh"
 #include "Pokemon.hh"
+#include "Attaque_de_loin.hh"
+#include "Attaque_de_pres.hh"
 
 typedef std::pair<std::string, Image> couple;
 
