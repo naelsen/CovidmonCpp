@@ -146,7 +146,6 @@ void Game::run()
 	}
 }
 
-
 void Game::_draw()
 {
 	this->_draw_bg();
@@ -246,8 +245,11 @@ void Game::_draw_covidmon()
 				it->draw(this->_window);
 				it->animate();
 			}
-			else
+			else if (it->distance(*this->_players[0].get_dresseur()) > 20 && !_selec_covidmon)
+			{
+				it->draw(this->_window);
 				it->print_name(this->_window);
+			}
 		}
 	}
 	if (this->_current_background == arene)
@@ -275,7 +277,7 @@ void Game::_manage()
 	this->_manage_bg();
 	this->_manage_sound();
 	this->_manage_dresseur();
-	//this->_manage_covidmon();
+	//this->_manage_pokemon();
 }
 
 void Game::_back_sound()
@@ -284,7 +286,7 @@ void Game::_back_sound()
 	{
 		if (this->_sounds_switched[1] == false)
 		{
-			if(!this->_sound_back.openFromFile("Sons/intro.wav"))
+			if (!this->_sound_back.openFromFile("Sons/intro.wav"))
 				std::cout << "Erreur lors de l'ouverture de Sons/intro.wav" << std::endl;
 			this->_sounds_switched[1] = true;
 			this->_clocks[1].restart();
@@ -296,11 +298,11 @@ void Game::_back_sound()
 			this->_sound_back.play();
 		}
 	}
-	else if(this->_current_background != arene)
+	else if (this->_current_background != arene)
 	{
 		if (this->_sounds_switched[1] == true)
 		{
-			if(!this->_sound_back.openFromFile("Sons/menu_and_choix.wav"))
+			if (!this->_sound_back.openFromFile("Sons/menu_and_choix.wav"))
 				std::cout << "Erreur lors de l'ouverture de Sons/menu_and_choix.wav" << std::endl;
 			this->_sounds_switched[1] = false;
 			this->_clocks[1].restart();
@@ -316,7 +318,7 @@ void Game::_back_sound()
 	{
 		if (this->_sounds_switched[1] == false)
 		{
-			if(!this->_sound_back.openFromFile("Sons/musique_arene1.wav"))
+			if (!this->_sound_back.openFromFile("Sons/musique_arene1.wav"))
 				std::cout << "Erreur lors de l'ouverture de Sons/musique_arene1.wav" << std::endl;
 			this->_sounds_switched[1] = true;
 			this->_clocks[1].restart();
@@ -336,7 +338,7 @@ void Game::_front_sound()
 	{
 		if (this->_sounds_switched[0] == false)
 		{
-			if(!this->_sound_front.openFromFile("Sons/b.wav"))
+			if (!this->_sound_front.openFromFile("Sons/b.wav"))
 				std::cout << "Erreur lors de l'ouverture de Sons/b.wav" << std::endl;
 			this->_sounds_switched[0] = true;
 			this->_clocks[0].restart();
@@ -347,7 +349,7 @@ void Game::_front_sound()
 	{
 		if (this->_sounds_switched[0] == true)
 		{
-			if(!this->_sound_front.openFromFile("Sons/footstep.wav"))
+			if (!this->_sound_front.openFromFile("Sons/footstep.wav"))
 				std::cout << "Erreur lors de l'ouverture de Sons/footstep.wav" << std::endl;
 			this->_sounds_switched[0] = false;
 			this->_clocks[0].restart();
@@ -398,7 +400,6 @@ void Game::_manage_bg()
 		}
 	}
 }
-
 void Game::_manage_dresseur()
 {
 	if (this->_current_background == choix_personnage)
@@ -418,7 +419,7 @@ void Game::_manage_dresseur()
 	}
 	if (this->_current_background == arene)
 	{
-		if(this->_players[0].get_dresseur()->get_position_y() != WINDOW_WIDTH / 2 - 100 && this->_players[0].get_dresseur()->get_animation() != 0)
+		if (this->_players[0].get_dresseur()->get_position_y() != WINDOW_WIDTH / 2 - 100 && this->_players[0].get_dresseur()->get_animation() != 0)
 		{
 			this->_players[0].get_dresseur()->set_position_y(WINDOW_WIDTH / 2 - 100);
 			this->_players[0].get_dresseur()->set_animation(0);
@@ -429,7 +430,7 @@ void Game::_manage_dresseur()
 		{
 			_manage_covidmon();
 		}
-		
+
 		if (!this->_players[0].get_first_on_arene())
 		{
 			this->_players[0].get_dresseur()->set_direction(Left);
@@ -485,10 +486,16 @@ void Game::_choisir_covidmon()
 			it->got_a_clic(this->_window);
 			if (it->get_choisi())
 			{
-				if(this->_players[0].get_dresseur()[0].distance(*it)>100)
-					this->_text.setString("Rapprochez vous du covidmon \n pour l'attraper !");
-				this->_players[0].set_covidmon(*it);
-				this->_selec_covidmon = true;
+				if (this->_players[0].get_dresseur()[0].distance(*it) > 10)
+				{
+					this->_text.setString("Capture du Covidmon, rapprochez \nvous de la case le recuperer !");
+					this->_window.draw(this->_text);
+				}
+				else
+				{
+					this->_players[0].set_covidmon(*it);
+					this->_selec_covidmon = true;
+				}
 			}
 		}
 	}
