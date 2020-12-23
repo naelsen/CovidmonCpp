@@ -76,10 +76,10 @@ void Covidmon::attaque_de_loin(sf::RenderWindow &window)
 {
     if (this->_attaque_de_loin.get_est_lancee())
     {
-        
+
         this->_attaque_de_loin.draw(window);
         this->_attaque_de_loin.move();
-        //this->_attaque_de_loin.animate();
+        this->_attaque_de_loin.animate();
     }
     else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Space))
     {

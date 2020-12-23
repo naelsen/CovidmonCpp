@@ -62,10 +62,11 @@ void Attaque_de_loin::animate()
 
 void Attaque_de_loin::move()
 {
-    /*std::cout << "moving" << std::endl;
+    std::cout << "moving" << std::endl;
     std::cout << "x : " << __position_x << std::endl;
-    std::cout << "y: " << __position_y << std::endl;*/
-
+    std::cout << "y: " << __position_y << std::endl;
+    std::cout << "animation " << _animation << std::endl;
+    std::cout << "direction: " << _direction << std::endl;
     this->animate();
     if (this->_est_lancee)
     {

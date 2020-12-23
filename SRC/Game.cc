@@ -144,8 +144,8 @@ void Game::run()
 		}
 		this->_choisir_dresseur();
 		this->_choisir_covidmon();
-		this->_manage();
 		this->_draw();
+		this->_manage();
 		this->_window.display();
 	}
 }
