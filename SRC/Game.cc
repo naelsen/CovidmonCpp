@@ -273,7 +273,8 @@ void Game::_draw_covidmon()
 				it->print_name(this->_window);
 				it->draw(this->_window);
 				it->animate();
-				// 30,30 ---  570,30 ---- 570,570 ------ 30, 600
+				it->print_pv(this->_window);
+				it->draw_pv(this->_window);
 			}
 			if (it->get_current_bg() == arene)
 			{
@@ -290,7 +291,6 @@ void Game::_manage()
 	this->_manage_dresseur();
 	this->_manage_covidmon();
 }
-//Les sons se déclanchent que dans la deuxième fenetre
 
 void Game::_back_sound()
 {

@@ -15,10 +15,14 @@ class Covidmon : public Entite
 {
 private:
     sf::Font _font;
+	sf::Texture __texture_pv;
+	sf::Sprite __sprite_pv;
+
     Type _type;
     Attaque_de_loin  _attaque_de_loin;
     Attaque_de_pres  _attaque_de_pres;
     int _pv;
+    bool _est_vivant;
     
     void _move_up();
     void _move_down();
@@ -33,8 +37,10 @@ public:
 
     Type get_type();
     int get_pv();
+    bool get_est_vivant();
     void set_type(Type t);
     void set_pv(int);
+    void set_est_vivant(bool);
     void animate();
     void attaque_de_loin(sf::RenderWindow&);
     void attaque_de_pres(sf::RenderWindow&);
@@ -44,5 +50,6 @@ public:
     void receive_degat(Covidmon&);
     void got_a_clic(sf::RenderWindow &);
     void print_name(sf::RenderWindow &);
-    //void attaque()
+    void print_pv(sf::RenderWindow &);
+    void draw_pv(sf::RenderWindow &);
 };

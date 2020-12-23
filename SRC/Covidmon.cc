@@ -6,7 +6,8 @@ Covidmon::Covidmon()
 
 Covidmon::Covidmon(std::string image, std::string nom, Type _type) : Entite(image, nom),
                                                                      _type(_type),
-                                                                     _pv(500)
+                                                                     _pv(100),
+                                                                     _est_vivant(true)
 {
 
     if(_type == Vol)
@@ -29,6 +30,9 @@ Covidmon::Covidmon(std::string image, std::string nom, Type _type) : Entite(imag
         this->_attaque_de_loin = Attaque_de_loin("Images/Attaques/lance_plante.png", "jaj");
         this->_attaque_de_pres = Attaque_de_pres("Images/Attaques/explosion_plante.png");
     }
+    if(!__texture_pv.loadFromFile("Images/vie.png")) {std::cout << "Erreur chargement de vie" << std::endl;}
+    this->__sprite_pv.setTexture(this->__texture_pv);
+    this->__sprite_pv.setScale(sf::Vector2f(0.05f,0.08f));
 }
 
 Covidmon::Covidmon(Covidmon const &Covidmon) : Entite(Covidmon),
@@ -36,9 +40,11 @@ Covidmon::Covidmon(Covidmon const &Covidmon) : Entite(Covidmon),
                                                _attaque_de_loin(Covidmon._attaque_de_loin),
                                                _attaque_de_pres(Covidmon._attaque_de_pres),
                                                _pv(Covidmon._pv)
-
 {
     this->_nom = Covidmon._nom;
+    if(!__texture_pv.loadFromFile("Images/vie.png")) {std::cout << "Erreur chargement de vie" << std::endl;}
+    this->__sprite_pv.setTexture(this->__texture_pv);
+    this->__sprite_pv.setScale(sf::Vector2f(0.1f,0.2f));
 }
 
 Covidmon::~Covidmon()
@@ -53,12 +59,27 @@ int Covidmon::get_pv() { return this->_pv; }
 
 void Covidmon::set_pv(int pv) { this->_pv = pv; }
 
+bool Covidmon::get_est_vivant(){ return this->_est_vivant; }
+
+void Covidmon::set_est_vivant(bool v){ this->_est_vivant = v; }
+
 void Covidmon::animate()
 {
     this->__sprite_image.setTextureRect(sf::IntRect(SIZE_BLOCK * this->_animation,
                                                     SIZE_BLOCK * this->_direction,
                                                     SIZE_BLOCK,
                                                     SIZE_BLOCK));
+    if(sf::Keyboard::isKeyPressed(sf::Keyboard::P))
+    {
+        if(this->_pv >0)
+            this->_pv -= 1;
+        else 
+        {
+            this->_pv = 0;
+            this->set_est_vivant(false);
+            set_position_x(-100);
+        }
+    }
 }
 
 void Covidmon::print_name(sf::RenderWindow &window)
@@ -72,6 +93,35 @@ void Covidmon::print_name(sf::RenderWindow &window)
     window.draw(text);
 }
 
+void Covidmon::print_pv(sf::RenderWindow &window)
+{
+    this->_font.loadFromFile("Images/arial.ttf");
+    sf::Text text("Pv restants: " + std::to_string(this->get_pv()) + "%", _font);
+    text.setCharacterSize(30);
+    text.setStyle(sf::Text::Bold);
+    text.setFillColor(sf::Color::Red);
+    text.setPosition(sf::Vector2f(10,WINDOW_HEIGHT - 50));
+    window.draw(text);
+}
+
+void Covidmon::draw_pv(sf::RenderWindow &window)
+{
+    int bar;
+    if(this->get_pv() >= 90)
+        bar = 0;
+    else if (this->get_pv() >= 70)
+        bar = 1;
+    else if (this->get_pv() >= 50)
+        bar = 2;
+    else if (this->get_pv() >= 20)
+        bar = 3;
+    else if (this->get_pv() >= 1) 
+        bar = 4;
+    this->__sprite_pv.setTextureRect(sf::IntRect(BARRE_START,100 + bar*NIV_VIE,LONGUEUR_VIE,LARGEUR_VIE));
+    this->__sprite_pv.setPosition(this->get_position_x(),this->get_position_y()- SIZE_BLOCK/3);
+    window.draw(this->__sprite_pv);
+}
+
 void Covidmon::attaque_de_loin(sf::RenderWindow &window)
 {
     if (this->_attaque_de_loin.get_est_lancee())
@@ -83,7 +133,6 @@ void Covidmon::attaque_de_loin(sf::RenderWindow &window)
     }
     else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Space))
     {
-        std::cout << "lancement" << std::endl;
         this->_attaque_de_loin.set_position_x(this->get_position_x());
         this->_attaque_de_loin.set_position_y(this->get_position_y());
         this->_attaque_de_loin.set_direction(this->get_direction());
