@@ -143,18 +143,48 @@ void Player::receive(std::vector<Dresseur> &dresseurs)
         std::cout << "animation : " << animation << std::endl;
         std::cout << "x : " << x << std::endl;
         std::cout << "y : " << y << std::endl;*/
-
-        for (auto it = dresseurs.begin(); it != dresseurs.end(); it++)
-        {
-            if (it->get_nom() == nom)
+        //if(current_bg != arene)
+        //{
+            for (auto it = dresseurs.begin(); it != dresseurs.end(); it++)
             {
-                it->set_position_x(x);
-                it->set_position_y(y);
-                it->set_direction(d);
-                it->set_animation(animation);
-                it->set_current_bg(current_bg);
+                if (it->get_nom() == nom)
+                {
+                    it->set_position_x(x);
+                    it->set_position_y(y);
+                    it->set_direction(d);
+                    it->set_animation(animation);
+                    it->set_current_bg(current_bg);
+                }
+            }
+        //}
+        /*else if(_first_on_arene)
+        {
+            for (auto it = dresseurs.begin(); it != dresseurs.end(); it++)
+            {
+                if (it->get_nom() == nom)
+                {
+                    it->set_direction(Left);
+			        it->set_position_x(WINDOW_WIDTH - SIZE_WIDTH_PERSO);
+                    it->set_position_y(WINDOW_WIDTH / 2 - 100);
+                    it->set_animation(0);
+                    it->set_current_bg(current_bg);
+                }
             }
         }
+        else
+        {
+            for (auto it = dresseurs.begin(); it != dresseurs.end(); it++)
+            {
+                if (it->get_nom() == nom)
+                {
+                    it->set_direction(Right);
+			        it->set_position_x(0);
+                    it->set_position_y(WINDOW_WIDTH / 2 - 100);
+                    it->set_animation(0);
+                    it->set_current_bg(current_bg);
+                }
+            }
+        }*/
     }
 }
 
