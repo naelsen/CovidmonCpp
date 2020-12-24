@@ -280,8 +280,10 @@ void Covidmon::receive_degat(Covidmon &P)
     else
         P.set_pv_current(get_pv_current() - this->_attaque_de_loin.get_degats());
 
-    if(P.get_pv_current() <= 0 || P.get_pv_current() >= 30000)
+    if(P.get_pv_current() <= 1 || P.get_pv_current() >= 30000){
         P.set_est_vivant(false);
+        P.set_position_x(-150);
+    }
 }
 
 void Covidmon::_move_up()
