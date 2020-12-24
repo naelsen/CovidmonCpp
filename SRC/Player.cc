@@ -10,8 +10,8 @@ Player::Player(Dresseur &dresseur) : _dresseur(&dresseur),
                                      _accepted(true),
                                      _first_on_arene(true)
 {
-    this->IP = sf::IpAddress::getLocalAddress();
-    //this->IP = "109.0.200.98";
+    //this->IP = sf::IpAddress::getLocalAddress();
+    this->IP = "109.0.200.98";
 }
 
 Player::Player(Player const &P) : IP(P.IP),

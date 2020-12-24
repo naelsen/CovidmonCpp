@@ -47,8 +47,8 @@ public:
     void set_pv_current(sf::Uint16);
     void set_est_vivant(bool);
     void animate();
-    void attaque_de_loin(sf::RenderWindow&);
-    void attaque_de_pres(sf::RenderWindow&);
+    void attaque_de_loin(sf::RenderWindow&,bool);
+    void attaque_de_pres(sf::RenderWindow&,bool);
     void collision_attaque(Covidmon&);
     bool est_fort_contre(Covidmon&);
     bool est_faible_contre(Covidmon&);

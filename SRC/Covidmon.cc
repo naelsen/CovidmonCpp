@@ -148,7 +148,7 @@ void Covidmon::draw_pv(sf::RenderWindow &window)
     window.draw(this->__sprite_pv);
 }
 
-void Covidmon::attaque_de_loin(sf::RenderWindow &window)
+void Covidmon::attaque_de_loin(sf::RenderWindow &window, bool is_my_covidmon)
 {
     if (this->_attaque_de_loin.get_est_lancee())
     {
@@ -157,7 +157,7 @@ void Covidmon::attaque_de_loin(sf::RenderWindow &window)
         this->_attaque_de_loin.move();
         this->_attaque_de_loin.animate();
     }
-    else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Space))
+    else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Space), is_my_covidmon)
     {
         this->_attaque_de_loin.set_position_x(this->get_position_x());
         this->_attaque_de_loin.set_position_y(this->get_position_y());
@@ -166,7 +166,7 @@ void Covidmon::attaque_de_loin(sf::RenderWindow &window)
     }
 }
 
-void Covidmon::attaque_de_pres(sf::RenderWindow &window)
+void Covidmon::attaque_de_pres(sf::RenderWindow &window, bool is_my_covidmon)
 {
     if (this->_attaque_de_pres.get_est_lancee())
     {
@@ -174,7 +174,7 @@ void Covidmon::attaque_de_pres(sf::RenderWindow &window)
         this->_attaque_de_pres.draw(window);
         this->_attaque_de_pres.animate();
     }
-    else if (sf::Keyboard::isKeyPressed(sf::Keyboard::D))
+    else if (sf::Keyboard::isKeyPressed(sf::Keyboard::D) && is_my_covidmon)
     {
         switch(this->_direction)
         {
@@ -195,7 +195,7 @@ void Covidmon::attaque_de_pres(sf::RenderWindow &window)
             this->_attaque_de_pres.set_position_y(this->get_position_y());
             break;
         }
-    this->_attaque_de_pres.set_est_lancee(true);
+        this->_attaque_de_pres.set_est_lancee(true);
     }
 }
 
@@ -297,7 +297,6 @@ void Covidmon::receive_degat(Covidmon &P)
                 P.set_pv_current(get_pv_current() - this->_attaque_de_pres.get_degats());
         }
     }
-
     if(P.get_pv_current() == 0)
         P.set_est_vivant(false);
 }
