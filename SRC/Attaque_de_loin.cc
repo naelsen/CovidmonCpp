@@ -1,7 +1,7 @@
 #include "Attaque_de_loin.hh"
 
 Attaque_de_loin::Attaque_de_loin(std::string im, std::string nom) : Entite(im, nom),
-                                                                    _degats(50),
+                                                                    _degats(16),
                                                                     _portee(400),
                                                                     _est_lancee(false)
 {

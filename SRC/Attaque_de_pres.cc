@@ -1,7 +1,7 @@
 #include "Attaque_de_pres.hh"
 
 Attaque_de_pres::Attaque_de_pres(std::string im) : Image(im),
-                                                   _degats(50),
+                                                   _degats(36),
                                                    _animation(0)
 {
 }
