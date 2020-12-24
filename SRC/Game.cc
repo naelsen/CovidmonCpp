@@ -256,14 +256,14 @@ void Game::_draw_covidmon()
 	{
 		for (auto it = this->_covidmons.begin(); it != this->_covidmons.end(); it++)
 		{
-			if (it->get_choisi())
+			if (it->get_choisi() && it->get_est_vivant())
 			{
 				it->print_name(this->_window);
 				it->draw(this->_window);
 				it->animate();
 				it->draw_pv(this->_window);
 			}
-			if (it->get_current_bg() == arene)
+			if (it->get_current_bg() == arene && it->get_est_vivant())
 			{
 				it->draw(this->_window);
 				it->animate();
@@ -454,10 +454,10 @@ void Game::_manage_covidmon()
 		this->_players[0].get_covidmon()[0]->attaque_de_pres(this->_window);
 		if(this->_players[0].get_covidmon().size() == 2)
 		{
-			this->_players[0].get_covidmon()[0]->collision_attaque(*(this->_players[0].get_covidmon()[1]));
 			this->_players[0].get_covidmon()[1]->attaque_de_loin(this->_window);
 			this->_players[0].get_covidmon()[1]->attaque_de_pres(this->_window);
 			this->_players[0].get_covidmon()[1]->collision_attaque(*(this->_players[0].get_covidmon()[0]));
+			this->_players[0].get_covidmon()[0]->collision_attaque(*(this->_players[0].get_covidmon()[1]));
 		}
 	}
 }

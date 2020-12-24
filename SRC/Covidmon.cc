@@ -142,6 +142,7 @@ void Covidmon::draw_pv(sf::RenderWindow &window)
     int percent_pv = 100*this->get_pv_current() / this->get_pv_max();
     sf::Text text(std::to_string(percent_pv)+"%", _font);
     text.setCharacterSize(10);
+    text.setFillColor(sf::Color::Black);
     text.setPosition(sf::Vector2f(this->get_position_x()+SIZE_BLOCK/3, this->get_position_y()- SIZE_BLOCK/2));
     window.draw(text);
     window.draw(this->__sprite_pv);
@@ -270,6 +271,8 @@ bool Covidmon::est_fort_contre(Covidmon &P)
 
 void Covidmon::receive_degat(Covidmon &P)
 {
+    if (this->get_pv_current()>30000)
+        this->set_pv_current(0);
     if (this->est_faible_contre(P))
         P.set_pv_current(get_pv_current() - 0.75 * this->_attaque_de_loin.get_degats());
     else if (this->est_fort_contre(P))
@@ -277,7 +280,7 @@ void Covidmon::receive_degat(Covidmon &P)
     else
         P.set_pv_current(get_pv_current() - this->_attaque_de_loin.get_degats());
 
-    if(P.get_pv_current() <= 0 || P.get_pv_current() >= 64000)
+    if(P.get_pv_current() <= 0 || P.get_pv_current() >= 30000)
         P.set_est_vivant(false);
 }
 
