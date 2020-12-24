@@ -2,7 +2,8 @@
 
 Attaque_de_pres::Attaque_de_pres(std::string im) : Image(im),
                                                    _degats(36),
-                                                   _animation(0)
+                                                   _animation(0),
+                                                   _est_lancee(false)
 {
 }
 Attaque_de_pres::Attaque_de_pres() : _degats(50)
@@ -10,7 +11,8 @@ Attaque_de_pres::Attaque_de_pres() : _degats(50)
 }
 
 Attaque_de_pres::Attaque_de_pres(Attaque_de_pres const &at) : Image(at),
-                                                              _degats(at._degats)
+                                                              _degats(at._degats),
+                                                              _est_lancee(at._est_lancee)
 {
 }
 

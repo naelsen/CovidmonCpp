@@ -143,7 +143,8 @@ void Serveur::communication_covidmon(std::size_t i)
             bool is_attacking_far;
             // On a charge les informations dans cette ordre avec le client donc on le recupere dans cet ordre
             receivePacket_data >> nom >> dir >> animation >> x >> y >> bg >> pv_current >> is_attacking_near >> is_attacking_far ;
-
+            std::cout << nom << " : Attaque de pres : " << is_attacking_near << std::endl;
+            std::cout << nom << " : Attaque de loin : " << is_attacking_far << std::endl;
             if(_nom_covidmon.size() == 0)
             {
                 _nom_covidmon.push_back(nom);

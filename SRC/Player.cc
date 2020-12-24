@@ -10,8 +10,8 @@ Player::Player(Dresseur &dresseur) : _dresseur(&dresseur),
                                      _accepted(true),
                                      _first_on_arene(true)
 {
-    //this->IP = sf::IpAddress::getLocalAddress();
-    this->IP = "109.0.200.98";
+    this->IP = sf::IpAddress::getLocalAddress();
+    //this->IP = "109.0.200.98";
 }
 
 Player::Player(Player const &P) : IP(P.IP),
@@ -171,7 +171,8 @@ void Player::receive(std::vector<Covidmon> &Covidmon, sf::RenderWindow& window)
         std::string nom;
         Bg current_bg;
         receivePacket >> nom >> dir >> animation >> x >> y >> bg >> pv_current >> is_attacking_near >> is_attacking_far;
-
+        //std::cout << nom << " : Attaque de pres : " << is_attacking_near << std::endl;
+        //std::cout << nom << " : Attaque de loin : " << is_attacking_far << std::endl;
         // On ajoute le covidmon si il est nouveau dans le vector de covidmon
         bool push = true;
         for(std::size_t it = 0; it < _covidmon.size(); it++)
@@ -191,17 +192,20 @@ void Player::receive(std::vector<Covidmon> &Covidmon, sf::RenderWindow& window)
                 }
             }
         }
+
         if(_covidmon.size() == 2)
         {
-            if(is_attacking_far)
+            if(is_attacking_far && !_covidmon[1]->get_attaque_de_loin().get_est_lancee())
             {
-                _covidmon[1]->get_attaque_de_loin().set_est_lancee(true);
+                _covidmon[1]->get_attaque_de_loin().set_est_lancee(is_attacking_far);
+
             }
-            if(is_attacking_near)
+            if(is_attacking_near && !_covidmon[1]->get_attaque_de_pres().get_est_lancee())
             {
-                _covidmon[1]->get_attaque_de_pres().set_est_lancee(true);
+                _covidmon[1]->get_attaque_de_pres().set_est_lancee(is_attacking_near);
+
             }
-        }
+        } 
 
         if (dir == 0)
             d = Down;

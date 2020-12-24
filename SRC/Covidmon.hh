@@ -40,8 +40,8 @@ public:
     sf::Uint16 get_pv_max();
     sf::Uint16 get_pv_current();
     bool get_est_vivant();
-    Attaque_de_loin get_attaque_de_loin();
-    Attaque_de_pres get_attaque_de_pres();
+    Attaque_de_loin& get_attaque_de_loin();
+    Attaque_de_pres& get_attaque_de_pres();
     void set_type(Type t);
     void set_pv_max(sf::Uint16);
     void set_pv_current(sf::Uint16);
