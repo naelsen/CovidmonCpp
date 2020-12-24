@@ -12,7 +12,7 @@ private:
     bool _done;
     bool is_attacking_near;
     bool is_attacking_far;
-    sf::Uint16 x, y, animation, pv;
+    sf::Uint16 x, y, animation, pv_current;
     sf::TcpListener _listener;
     sf::SocketSelector _selector;
     std::vector<sf::TcpSocket *> _Clients;

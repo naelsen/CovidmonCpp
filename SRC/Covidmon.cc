@@ -6,7 +6,6 @@ Covidmon::Covidmon()
 
 Covidmon::Covidmon(std::string image, std::string nom, Type _type) : Entite(image, nom),
                                                                      _type(_type),
-                                                                     _pv(100),
                                                                      _est_vivant(true)
 {
 
@@ -14,37 +13,51 @@ Covidmon::Covidmon(std::string image, std::string nom, Type _type) : Entite(imag
     {
         this->_attaque_de_loin = Attaque_de_loin("Images/Attaques/lance_vent.png", "jaj");
         this->_attaque_de_pres = Attaque_de_pres("Images/Attaques/explosion_vent.png");
+        this->_pv_max = 500;
+        this->_pv_current = 500;
+        this->_speed = 4;
     }
     else if(_type == Feu)
     {
         this->_attaque_de_loin = Attaque_de_loin("Images/Attaques/lance_feu.png", "jaj");
         this->_attaque_de_pres = Attaque_de_pres("Images/Attaques/explosion_feu.png");
+        this->_pv_max = 650;
+        this->_pv_current = 650;
+        this->_speed = 3;
     }
     else if(_type == Eau)
     {
         this->_attaque_de_loin = Attaque_de_loin("Images/Attaques/lance_eau.png", "jaj");
         this->_attaque_de_pres = Attaque_de_pres("Images/Attaques/explosion_eau.png");
+        this->_pv_max = 800;
+        this->_pv_current = 800;
+        this->_speed = 3;
     }
     else if(_type == Plante)
     {
         this->_attaque_de_loin = Attaque_de_loin("Images/Attaques/lance_plante.png", "jaj");
         this->_attaque_de_pres = Attaque_de_pres("Images/Attaques/explosion_plante.png");
+        this->_pv_max = 800;
+        this->_pv_current = 800;
+        this->_speed = 3;
     }
-    if(!__texture_pv.loadFromFile("Images/vie.png")) {std::cout << "Erreur chargement de vie" << std::endl;}
+    this->_font.loadFromFile("Images/arial.ttf");
+    if(!__texture_pv.loadFromFile("Images/vie2.png")) {std::cout << "Erreur chargement de vie" << std::endl;}
     this->__sprite_pv.setTexture(this->__texture_pv);
-    this->__sprite_pv.setScale(sf::Vector2f(0.05f,0.08f));
+    this->__sprite_pv.setScale(sf::Vector2f(0.08f,0.12f));
 }
 
 Covidmon::Covidmon(Covidmon const &Covidmon) : Entite(Covidmon),
                                                _type(Covidmon._type),
                                                _attaque_de_loin(Covidmon._attaque_de_loin),
                                                _attaque_de_pres(Covidmon._attaque_de_pres),
-                                               _pv(Covidmon._pv)
+                                               _pv_current(Covidmon._pv_current),
+                                               _pv_max(Covidmon._pv_max)
 {
     this->_nom = Covidmon._nom;
-    if(!__texture_pv.loadFromFile("Images/vie.png")) {std::cout << "Erreur chargement de vie" << std::endl;}
+    if(!__texture_pv.loadFromFile("Images/vie2.png")) {std::cout << "Erreur chargement de vie" << std::endl;}
     this->__sprite_pv.setTexture(this->__texture_pv);
-    this->__sprite_pv.setScale(sf::Vector2f(0.1f,0.2f));
+    this->__sprite_pv.setScale(sf::Vector2f(0.08f,0.12f));
 }
 
 Covidmon::~Covidmon()
@@ -55,9 +68,13 @@ Type Covidmon::get_type() { return this->_type; }
 
 void Covidmon::set_type(Type t) { this->_type = t; }
 
-sf::Uint16 Covidmon::get_pv() { return this->_pv; }
+sf::Uint16 Covidmon::get_pv_max() { return this->_pv_max; }
 
-void Covidmon::set_pv(sf::Uint16 pv) { this->_pv = pv; }
+sf::Uint16 Covidmon::get_pv_current() { return this->_pv_current; }
+
+void Covidmon::set_pv_max(sf::Uint16 pv) { this->_pv_max = pv; }
+
+void Covidmon::set_pv_current(sf::Uint16 pv) { this->_pv_current = pv; }
 
 bool Covidmon::get_est_vivant(){ return this->_est_vivant; }
 
@@ -75,11 +92,11 @@ void Covidmon::animate()
                                                     SIZE_BLOCK));
     if(sf::Keyboard::isKeyPressed(sf::Keyboard::P))
     {
-        if(this->_pv >0)
-            this->_pv -= 1;
+        if(this->_pv_current >0)
+            this->_pv_current -= 1;
         else 
         {
-            this->_pv = 0;
+            this->_pv_current = 0;
             this->set_est_vivant(false);
             set_position_x(-100);
         }
@@ -88,7 +105,6 @@ void Covidmon::animate()
 
 void Covidmon::print_name(sf::RenderWindow &window)
 {
-    this->_font.loadFromFile("Images/arial.ttf");
     sf::Text text("Covidmon choisi : " + this->get_nom(), _font);
     text.setCharacterSize(15);
     text.setStyle(sf::Text::Bold);
@@ -97,32 +113,35 @@ void Covidmon::print_name(sf::RenderWindow &window)
     window.draw(text);
 }
 
-void Covidmon::print_pv(sf::RenderWindow &window)
-{
-    this->_font.loadFromFile("Images/arial.ttf");
-    sf::Text text("Pv restants: " + std::to_string(this->get_pv()) + "%", _font);
-    text.setCharacterSize(30);
-    text.setStyle(sf::Text::Bold);
-    text.setFillColor(sf::Color::Red);
-    text.setPosition(sf::Vector2f(10,WINDOW_HEIGHT - 50));
-    window.draw(text);
-}
-
 void Covidmon::draw_pv(sf::RenderWindow &window)
 {
     int bar;
-    if(this->get_pv() >= 90)
-        bar = 0;
-    else if (this->get_pv() >= 70)
-        bar = 1;
-    else if (this->get_pv() >= 50)
-        bar = 2;
-    else if (this->get_pv() >= 20)
-        bar = 3;
-    else if (this->get_pv() >= 1) 
-        bar = 4;
-    this->__sprite_pv.setTextureRect(sf::IntRect(BARRE_START,100 + bar*NIV_VIE,LONGUEUR_VIE,LARGEUR_VIE));
-    this->__sprite_pv.setPosition(this->get_position_x(),this->get_position_y()- SIZE_BLOCK/3);
+
+    if(100*this->get_pv_current() / this->get_pv_max() >= 100){ bar = 0;}
+    else if(100*this->get_pv_current() / this->get_pv_max() >= 92) { bar = 1;}
+    else if(100*this->get_pv_current() / this->get_pv_max() >= 85) { bar = 2;}
+    else if(100*this->get_pv_current() / this->get_pv_max() >= 78) { bar = 3;}
+    else if(100*this->get_pv_current() / this->get_pv_max() >= 71) { bar = 4;}
+    else if(100*this->get_pv_current() / this->get_pv_max() >= 64) { bar = 5;}
+    else if(100*this->get_pv_current() / this->get_pv_max() >= 57) { bar = 6;}
+    else if(100*this->get_pv_current() / this->get_pv_max() >= 42) { bar = 7;}
+    else if(100*this->get_pv_current() / this->get_pv_max() >= 35) { bar = 8;}
+    else if(100*this->get_pv_current() / this->get_pv_max() >= 28) { bar = 9;}
+    else if(100*this->get_pv_current() / this->get_pv_max() >= 21) { bar = 10;}
+    else if(100*this->get_pv_current() / this->get_pv_max() >= 14) { bar = 11;}
+    else if(100*this->get_pv_current() / this->get_pv_max() >= 7)  { bar = 12;}
+    else if(100*this->get_pv_current() / this->get_pv_max() >= 1)  { bar = 13;}
+
+    this->__sprite_pv.setTextureRect(sf::IntRect(0,
+                                                 bar*LARGEUR_VIE,
+                                                 LONGUEUR_VIE,
+                                                 LARGEUR_VIE));
+    this->__sprite_pv.setPosition(this->get_position_x(),this->get_position_y()- SIZE_BLOCK/4);
+    std::cout << 100*this->get_pv_current() / this->get_pv_max();
+    int percent_pv = 100*this->get_pv_current() / this->get_pv_max();
+    sf::Text text(std::to_string(percent_pv)+"%", _font);
+    text.setPosition(sf::Vector2f(this->get_position_x() +120, this->get_position_y()- SIZE_BLOCK/4));
+    window.draw(text);
     window.draw(this->__sprite_pv);
 }
 
@@ -249,12 +268,11 @@ bool Covidmon::est_fort_contre(Covidmon &P)
 void Covidmon::receive_degat(Covidmon &P)
 {
     if (this->est_faible_contre(P))
-        P.set_pv(get_pv() - 0.5 * this->_attaque_de_loin.get_degats());
-
+        P.set_pv_current(get_pv_current() - 0.75 * this->_attaque_de_loin.get_degats());
     else if (this->est_fort_contre(P))
-        P.set_pv(get_pv() - 1.5 * this->_attaque_de_loin.get_degats());
+        P.set_pv_current(get_pv_current() - 1.25 * this->_attaque_de_loin.get_degats());
     else
-        P.set_pv(get_pv() - this->_attaque_de_loin.get_degats());
+        P.set_pv_current(get_pv_current() - this->_attaque_de_loin.get_degats());
 }
 
 void Covidmon::_move_up()

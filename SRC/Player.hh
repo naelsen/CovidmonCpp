@@ -14,7 +14,7 @@ private:
     sf::IpAddress IP;
     sf::TcpSocket socket;
     Dresseur *_dresseur;
-    Covidmon *_covidmon;
+    std::vector<Covidmon*> _covidmon;
     Image _pokeball;
     static int numero_joueur;
     bool _accepted;
@@ -27,7 +27,8 @@ public:
     ~Player();
     void set_covidmon(Covidmon &);
     Dresseur *get_dresseur() const;
-    Covidmon *get_covidmon() const;
+    std::vector<Covidmon*> get_covidmon() const;
+    //Covidmon *get_nom_covidmon_adverse() const;
     bool get_first_on_arene() const;
     void pop_pokeball(sf::RenderWindow &);
     void receive(std::vector<Dresseur> &);

@@ -261,7 +261,6 @@ void Game::_draw_covidmon()
 				it->print_name(this->_window);
 				it->draw(this->_window);
 				it->animate();
-				it->print_pv(this->_window);
 				it->draw_pv(this->_window);
 			}
 			if (it->get_current_bg() == arene)
@@ -269,6 +268,10 @@ void Game::_draw_covidmon()
 				it->draw(this->_window);
 				it->animate();
 			}
+		}
+		if(_players[0].get_covidmon().size() == 2)
+		{
+			_players[0].get_covidmon()[1]->draw_pv(this->_window);
 		}
 	}
 }
@@ -394,7 +397,7 @@ void Game::_manage_bg()
 			{
 				_set_current_background(arene);
 				this->_players[0].get_dresseur()->set_current_bg(arene);
-				this->_players[0].get_covidmon()->set_current_bg(arene);
+				this->_players[0].get_covidmon()[0]->set_current_bg(arene);
 			}
 			this->_players[0].get_dresseur()->set_position_x(0);
 		}
@@ -446,9 +449,14 @@ void Game::_manage_covidmon()
 	{
 		this->_players[0].send_covidmon();
 		this->_players[0].receive(this->_covidmons, this->_window);
-		this->_players[0].get_covidmon()->move();
-		this->_players[0].get_covidmon()->attaque_de_loin(this->_window);
-		this->_players[0].get_covidmon()->attaque_de_pres(this->_window);
+		this->_players[0].get_covidmon()[0]->move();
+		this->_players[0].get_covidmon()[0]->attaque_de_loin(this->_window);
+		this->_players[0].get_covidmon()[0]->attaque_de_pres(this->_window);
+		if(this->_players[0].get_covidmon().size() == 2)
+		{
+			this->_players[0].get_covidmon()[1]->attaque_de_loin(this->_window);
+			this->_players[0].get_covidmon()[1]->attaque_de_pres(this->_window);
+		}
 	}
 }
 

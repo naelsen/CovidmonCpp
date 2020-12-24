@@ -78,7 +78,7 @@ bool Player::is_moving()
 
 void Player::set_covidmon(Covidmon &pok)
 {
-    this->_covidmon = &pok;
+    this->_covidmon.push_back(&pok);
 }
 
 Dresseur *Player::get_dresseur() const
@@ -86,7 +86,7 @@ Dresseur *Player::get_dresseur() const
     return this->_dresseur;
 }
 
-Covidmon *Player::get_covidmon() const
+std::vector<Covidmon*> Player::get_covidmon() const
 {
     return this->_covidmon;
 }
@@ -163,14 +163,46 @@ void Player::receive(std::vector<Covidmon> &Covidmon, sf::RenderWindow& window)
     sf::Packet receivePacket;
     if (socket.receive(receivePacket) == sf::Socket::Done)
     {
-        sf::Uint16 x, y, animation, pv;
+        sf::Uint16 x, y, animation, pv_current;
         int dir, bg;
         bool is_attacking_near;
         bool is_attacking_far;
         Direction d;
         std::string nom;
         Bg current_bg;
-        receivePacket >> nom >> dir >> animation >> x >> y >> bg >> pv >> is_attacking_near >> is_attacking_far;
+        receivePacket >> nom >> dir >> animation >> x >> y >> bg >> pv_current >> is_attacking_near >> is_attacking_far;
+
+        // On ajoute le covidmon si il est nouveau dans le vector de covidmon
+        bool push = true;
+        for(std::size_t it = 0; it < _covidmon.size(); it++)
+        {
+            if(_covidmon[it]->get_nom() == nom)
+                push = false;
+        }
+        // Si aucun pokemon n'appartient a vector
+        if(push)
+        {
+            for (auto it = Covidmon.begin(); it != Covidmon.end(); it++)
+            {
+                if (it->get_nom() == nom)
+                {
+                    std::cout << nom << " push" << std::endl;
+                    set_covidmon(*it);
+                }
+            }
+        }
+        if(_covidmon.size() == 2)
+        {
+            if(is_attacking_far)
+            {
+                _covidmon[1]->get_attaque_de_loin().set_est_lancee(true);
+            }
+            if(is_attacking_near)
+            {
+                _covidmon[1]->get_attaque_de_pres().set_est_lancee(true);
+            }
+        }
+
         if (dir == 0)
             d = Down;
         if (dir == 1)
@@ -205,16 +237,7 @@ void Player::receive(std::vector<Covidmon> &Covidmon, sf::RenderWindow& window)
                 it->set_direction(d);
                 it->set_animation(animation);
                 it->set_current_bg(current_bg);
-                it->set_pv(pv);
-                it->draw_pv(window);
-                if(is_attacking_near)
-                {
-                    it->attaque_de_pres(window);
-                }
-                if(is_attacking_far)
-                {
-                    it->attaque_de_loin(window);
-                }
+                it->set_pv_current(pv_current);
             }
         }
     }
@@ -236,7 +259,7 @@ void Player::send_covidmon()
     sf::Packet sendPacket_type;
     sf::Packet sendPacket_data;
     sendPacket_type << "covidmon";
-    sendPacket_data << this->_covidmon->get_nom() << this->_covidmon->get_direction() << this->get_covidmon()->get_animation() << this->_covidmon->get_position_x() << this->_covidmon->get_position_y() << this->_covidmon->get_current_bg() << this->_covidmon->get_pv() << this->_covidmon->get_attaque_de_pres().get_est_lancee() << this->_covidmon->get_attaque_de_loin().get_est_lancee();
+    sendPacket_data << this->_covidmon[0]->get_nom() << this->_covidmon[0]->get_direction() << this->get_covidmon()[0]->get_animation() << this->_covidmon[0]->get_position_x() << this->_covidmon[0]->get_position_y() << this->_covidmon[0]->get_current_bg() << this->_covidmon[0]->get_pv_current() << this->_covidmon[0]->get_attaque_de_pres().get_est_lancee() << this->_covidmon[0]->get_attaque_de_loin().get_est_lancee();
     socket.send(sendPacket_type);
     socket.send(sendPacket_data);
 }

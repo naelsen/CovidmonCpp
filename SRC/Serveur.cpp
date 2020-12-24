@@ -142,10 +142,8 @@ void Serveur::communication_covidmon(std::size_t i)
             bool is_attacking_near;
             bool is_attacking_far;
             // On a charge les informations dans cette ordre avec le client donc on le recupere dans cet ordre
-            receivePacket_data >> nom >> dir >> animation >> x >> y >> bg >> pv >> is_attacking_near >> is_attacking_far ;
+            receivePacket_data >> nom >> dir >> animation >> x >> y >> bg >> pv_current >> is_attacking_near >> is_attacking_far ;
 
-            std::cout << "Attaque de loin : " << is_attacking_far << std::endl;
-            std::cout << "Attaque de pres : " << is_attacking_near << std::endl;
             if(_nom_covidmon.size() == 0)
             {
                 _nom_covidmon.push_back(nom);
@@ -168,7 +166,7 @@ void Serveur::communication_covidmon(std::size_t i)
                 }
             }
             sf::Packet sendPacket;
-            sendPacket << nom << dir << animation << x << y << bg << pv << is_attacking_near << is_attacking_far;
+            sendPacket << nom << dir << animation << x << y << bg << pv_current << is_attacking_near << is_attacking_far;
             // On envoie le paquet a tout les autres clients pour qu'ils savent ce que l'autre client a envoyé au serveur
             for (std::size_t j = 0; j < this->_Clients.size(); j++)
             {
