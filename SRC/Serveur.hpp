@@ -10,11 +10,14 @@ class Serveur
 private:
     short int _port;
     bool _done;
-    sf::Uint16 x, y, animation;
+    bool is_attacking_near;
+    bool is_attacking_far;
+    sf::Uint16 x, y, animation, pv;
     sf::TcpListener _listener;
     sf::SocketSelector _selector;
     std::vector<sf::TcpSocket *> _Clients;
     std::vector<std::string> _nom_clients;
+    std::vector<std::string> _nom_covidmon;
 
 public:
     Serveur();
@@ -23,4 +26,6 @@ public:
     void run();
     void accept_client();
     void action_clients();
+    void communication_dresseur(std::size_t);
+    void communication_covidmon(std::size_t);
 };

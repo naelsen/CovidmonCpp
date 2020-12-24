@@ -89,23 +89,92 @@ void Serveur::action_clients()
         // et ca va bloquer le programme
         if (this->_selector.isReady(*this->_Clients[i]))
         {
-            sf::Packet receivePacket;
-            // On récupère toute les entrées du client
-            if (this->_Clients[i]->receive(receivePacket) == sf::Socket::Done)
+            communication_dresseur(i);
+            communication_covidmon(i);
+        }
+    }
+}
+
+void Serveur::communication_dresseur(std::size_t i)
+{
+    sf::Packet receivePacket_type;
+    sf::Packet receivePacket_data;
+    // On récupère toute les entrées du client
+    if (this->_Clients[i]->receive(receivePacket_type) == sf::Socket::Done)
+    {
+        this->_Clients[i]->receive(receivePacket_data);
+        std::string type;
+        receivePacket_type >> type;
+        if(type == "dresseur")
+        {
+            int dir, bg;
+            std::string nom;
+            // On a charge les informations dans cette ordre avec le client donc on le recupere dans cet ordre
+            receivePacket_data >> nom >> dir >> animation >> x >> y >> bg;
+            sf::Packet sendPacket;
+            sendPacket << nom << dir << animation << x << y << bg;
+            // On envoie le paquet a tout les autres clients pour qu'ils savent ce que l'autre client a envoyé au serveur
+            for (std::size_t j = 0; j < this->_Clients.size(); j++)
             {
-                int dir, bg;
-                std::string nom;
-                // On a charge les informations dans cette ordre avec le client donc on le recupere dans cet ordre
-                receivePacket >> nom >> dir >> animation >> x >> y >> bg;
-                sf::Packet sendPacket;
-                sendPacket << nom << dir << animation << x << y << bg;
-                // On envoie le paquet a tout les autres clients pour qu'ils savent ce que l'autre client a envoyé au serveur
-                for (std::size_t j = 0; j < this->_Clients.size(); j++)
+                if (i != j)
                 {
-                    if (i != j)
+                    this->_Clients[j]->send(sendPacket);
+                }
+            }
+        }
+    }
+}
+
+void Serveur::communication_covidmon(std::size_t i)
+{
+    sf::Packet receivePacket_type;
+    sf::Packet receivePacket_data;
+    // On récupère toute les entrées du client
+    if (this->_Clients[i]->receive(receivePacket_type) == sf::Socket::Done)
+    {
+        this->_Clients[i]->receive(receivePacket_data);
+        std::string type;
+        receivePacket_type >> type;
+        if(type == "covidmon")
+        {
+            int dir, bg;
+            std::string nom;
+            bool is_attacking_near;
+            bool is_attacking_far;
+            // On a charge les informations dans cette ordre avec le client donc on le recupere dans cet ordre
+            receivePacket_data >> nom >> dir >> animation >> x >> y >> bg >> pv >> is_attacking_near >> is_attacking_far ;
+
+            std::cout << "Attaque de loin : " << is_attacking_far << std::endl;
+            std::cout << "Attaque de pres : " << is_attacking_near << std::endl;
+            if(_nom_covidmon.size() == 0)
+            {
+                _nom_covidmon.push_back(nom);
+                std::cout << nom << " est pret a combattre" << std::endl;
+            }
+            else if(_nom_covidmon.size() == 1)
+            {
+                bool accepted = true;
+                for (std::size_t j = 0; j < _nom_covidmon.size(); j++)
+                {
+                    if (this->_nom_covidmon[j] == nom)
                     {
-                        this->_Clients[j]->send(sendPacket);
+                        accepted = false;
                     }
+                }
+                if(accepted)
+                {
+                    _nom_covidmon.push_back(nom);
+                    std::cout << nom << " est pret a combattre" << std::endl;
+                }
+            }
+            sf::Packet sendPacket;
+            sendPacket << nom << dir << animation << x << y << bg << pv << is_attacking_near << is_attacking_far;
+            // On envoie le paquet a tout les autres clients pour qu'ils savent ce que l'autre client a envoyé au serveur
+            for (std::size_t j = 0; j < this->_Clients.size(); j++)
+            {
+                if (i != j)
+                {
+                    this->_Clients[j]->send(sendPacket);
                 }
             }
         }

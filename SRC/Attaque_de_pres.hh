@@ -6,7 +6,7 @@ class Attaque_de_pres : public Image
 {
 private:
     int _degats;
-    int _animation;
+    sf::Uint16 _animation;
     sf::Uint16 _portee;
     sf::Clock _clock;
     bool _est_lancee;
@@ -19,9 +19,11 @@ public:
 
     int get_degats() const;
     bool get_est_lancee() const;
+    sf::Uint16 get_animation() const;
 
     void set_degats(int);
     void set_est_lancee(bool);
+    void set_animation(sf::Uint16);
 
     void animate();
     void lancement();

@@ -31,10 +31,12 @@ public:
     bool get_first_on_arene() const;
     void pop_pokeball(sf::RenderWindow &);
     void receive(std::vector<Dresseur> &);
-    void receive(std::vector<Covidmon> &);
+    void receive(std::vector<Covidmon> &, sf::RenderWindow&);
     bool is_moving();
     void send();
     void send_covidmon();
+    void send_attaque_pres();
+    void send_attaque_loin();
     bool is_accepted();
     void disconnect();
 };

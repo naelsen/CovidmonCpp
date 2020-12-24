@@ -21,7 +21,7 @@ private:
     Type _type;
     Attaque_de_loin  _attaque_de_loin;
     Attaque_de_pres  _attaque_de_pres;
-    int _pv;
+    sf::Uint16 _pv;
     bool _est_vivant;
     
     void _move_up();
@@ -36,10 +36,12 @@ public:
     ~Covidmon();
 
     Type get_type();
-    int get_pv();
+    sf::Uint16 get_pv();
     bool get_est_vivant();
+    Attaque_de_loin get_attaque_de_loin();
+    Attaque_de_pres get_attaque_de_pres();
     void set_type(Type t);
-    void set_pv(int);
+    void set_pv(sf::Uint16);
     void set_est_vivant(bool);
     void animate();
     void attaque_de_loin(sf::RenderWindow&);

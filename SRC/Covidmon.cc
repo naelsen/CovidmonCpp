@@ -55,13 +55,17 @@ Type Covidmon::get_type() { return this->_type; }
 
 void Covidmon::set_type(Type t) { this->_type = t; }
 
-int Covidmon::get_pv() { return this->_pv; }
+sf::Uint16 Covidmon::get_pv() { return this->_pv; }
 
-void Covidmon::set_pv(int pv) { this->_pv = pv; }
+void Covidmon::set_pv(sf::Uint16 pv) { this->_pv = pv; }
 
 bool Covidmon::get_est_vivant(){ return this->_est_vivant; }
 
 void Covidmon::set_est_vivant(bool v){ this->_est_vivant = v; }
+
+Attaque_de_loin Covidmon::get_attaque_de_loin() { return this->_attaque_de_loin; }
+
+Attaque_de_pres Covidmon::get_attaque_de_pres() { return this->_attaque_de_pres; }
 
 void Covidmon::animate()
 {

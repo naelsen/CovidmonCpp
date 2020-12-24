@@ -28,6 +28,11 @@ bool Attaque_de_pres::get_est_lancee() const
     return this->_est_lancee;
 }
 
+sf::Uint16 Attaque_de_pres::get_animation() const
+{
+    return this->_animation;
+}
+
 void Attaque_de_pres::set_degats(int d)
 {
     this->_degats = d;
@@ -37,6 +42,12 @@ void Attaque_de_pres::set_est_lancee(bool e)
 {
     this->_est_lancee = e;
 }
+
+void Attaque_de_pres::set_animation(sf::Uint16 animation)
+{
+    this->_animation = animation;
+}
+
 void Attaque_de_pres::animate()
 {
     this->__sprite_image.setTextureRect(sf::IntRect(SIZE_BLOCK * this->_animation,

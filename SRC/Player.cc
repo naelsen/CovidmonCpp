@@ -143,62 +143,34 @@ void Player::receive(std::vector<Dresseur> &dresseurs)
         std::cout << "animation : " << animation << std::endl;
         std::cout << "x : " << x << std::endl;
         std::cout << "y : " << y << std::endl;*/
-        //if(current_bg != arene)
-        //{
-            for (auto it = dresseurs.begin(); it != dresseurs.end(); it++)
-            {
-                if (it->get_nom() == nom)
-                {
-                    it->set_position_x(x);
-                    it->set_position_y(y);
-                    it->set_direction(d);
-                    it->set_animation(animation);
-                    it->set_current_bg(current_bg);
-                }
-            }
-        //}
-        /*else if(_first_on_arene)
+
+        for (auto it = dresseurs.begin(); it != dresseurs.end(); it++)
         {
-            for (auto it = dresseurs.begin(); it != dresseurs.end(); it++)
+            if (it->get_nom() == nom)
             {
-                if (it->get_nom() == nom)
-                {
-                    it->set_direction(Left);
-			        it->set_position_x(WINDOW_WIDTH - SIZE_WIDTH_PERSO);
-                    it->set_position_y(WINDOW_WIDTH / 2 - 100);
-                    it->set_animation(0);
-                    it->set_current_bg(current_bg);
-                }
+                it->set_position_x(x);
+                it->set_position_y(y);
+                it->set_direction(d);
+                it->set_animation(animation);
+                it->set_current_bg(current_bg);
             }
         }
-        else
-        {
-            for (auto it = dresseurs.begin(); it != dresseurs.end(); it++)
-            {
-                if (it->get_nom() == nom)
-                {
-                    it->set_direction(Right);
-			        it->set_position_x(0);
-                    it->set_position_y(WINDOW_WIDTH / 2 - 100);
-                    it->set_animation(0);
-                    it->set_current_bg(current_bg);
-                }
-            }
-        }*/
     }
 }
 
-void Player::receive(std::vector<Covidmon> &Covidmon)
+void Player::receive(std::vector<Covidmon> &Covidmon, sf::RenderWindow& window)
 {
     sf::Packet receivePacket;
     if (socket.receive(receivePacket) == sf::Socket::Done)
     {
-        sf::Uint16 x, y, animation;
+        sf::Uint16 x, y, animation, pv;
         int dir, bg;
+        bool is_attacking_near;
+        bool is_attacking_far;
         Direction d;
         std::string nom;
         Bg current_bg;
-        receivePacket >> nom >> dir >> animation >> x >> y >> bg;
+        receivePacket >> nom >> dir >> animation >> x >> y >> bg >> pv >> is_attacking_near >> is_attacking_far;
         if (dir == 0)
             d = Down;
         if (dir == 1)
@@ -233,24 +205,40 @@ void Player::receive(std::vector<Covidmon> &Covidmon)
                 it->set_direction(d);
                 it->set_animation(animation);
                 it->set_current_bg(current_bg);
+                it->set_pv(pv);
+                it->draw_pv(window);
+                if(is_attacking_near)
+                {
+                    it->attaque_de_pres(window);
+                }
+                if(is_attacking_far)
+                {
+                    it->attaque_de_loin(window);
+                }
             }
         }
     }
 }
 
+
 void Player::send()
 {
-    sf::Packet sendPacket;
-    sendPacket << this->_dresseur->get_nom() << this->_dresseur->get_direction() << this->get_dresseur()->get_animation() << this->_dresseur->get_position_x() << this->_dresseur->get_position_y() << this->_dresseur->get_current_bg();
-    socket.send(sendPacket);
+    sf::Packet sendPacket_type;
+    sf::Packet sendPacket_data;
+    sendPacket_type << "dresseur";
+    sendPacket_data << this->_dresseur->get_nom() << this->_dresseur->get_direction() << this->get_dresseur()->get_animation() << this->_dresseur->get_position_x() << this->_dresseur->get_position_y() << this->_dresseur->get_current_bg();
+    socket.send(sendPacket_type);
+    socket.send(sendPacket_data);
 }
 
 void Player::send_covidmon()
 {
-    //std::cout << "send" << std::endl;
-    sf::Packet sendPacket;
-    sendPacket << this->_covidmon->get_nom() << this->_covidmon->get_direction() << this->get_covidmon()->get_animation() << this->_covidmon->get_position_x() << this->_covidmon->get_position_y() << this->_covidmon->get_current_bg();
-    socket.send(sendPacket);
+    sf::Packet sendPacket_type;
+    sf::Packet sendPacket_data;
+    sendPacket_type << "covidmon";
+    sendPacket_data << this->_covidmon->get_nom() << this->_covidmon->get_direction() << this->get_covidmon()->get_animation() << this->_covidmon->get_position_x() << this->_covidmon->get_position_y() << this->_covidmon->get_current_bg() << this->_covidmon->get_pv() << this->_covidmon->get_attaque_de_pres().get_est_lancee() << this->_covidmon->get_attaque_de_loin().get_est_lancee();
+    socket.send(sendPacket_type);
+    socket.send(sendPacket_data);
 }
 
 bool Player::is_accepted()

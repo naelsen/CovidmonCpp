@@ -416,6 +416,7 @@ void Game::_manage_dresseur()
 		this->_players[0].send();
 		this->_players[0].receive(this->_dresseurs);
 		this->_players[0].get_dresseur()->move();
+		_manage_covidmon();
 	}
 	if (this->_current_background == arene)
 	{
@@ -444,7 +445,7 @@ void Game::_manage_covidmon()
 	if (this->_current_background == arene)
 	{
 		this->_players[0].send_covidmon();
-		this->_players[0].receive(this->_covidmons);
+		this->_players[0].receive(this->_covidmons, this->_window);
 		this->_players[0].get_covidmon()->move();
 		this->_players[0].get_covidmon()->attaque_de_loin(this->_window);
 		this->_players[0].get_covidmon()->attaque_de_pres(this->_window);
