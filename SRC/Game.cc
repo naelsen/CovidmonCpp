@@ -143,6 +143,16 @@ void Game::run()
 		this->_draw();
 		this->_manage();
 		this->_window.display();
+		if(this->_players[0].get_covidmon().size() == 2)
+		{
+			if(this->_players[0].get_end())
+			{
+				if(this->_players[0].get_win())
+					std::cout << "Win" << std::endl;
+				else
+					std::cout << "Looser" << std::endl;
+			}
+		}
 	}
 }
 

@@ -19,6 +19,8 @@ private:
     static int numero_joueur;
     bool _accepted;
     bool _first_on_arene;
+    bool _end;
+    bool _win;
 
 public:
     Player();
@@ -30,6 +32,8 @@ public:
     std::vector<Covidmon*> get_covidmon() const;
     //Covidmon *get_nom_covidmon_adverse() const;
     bool get_first_on_arene() const;
+    bool get_win();
+    bool get_end();
     void pop_pokeball(sf::RenderWindow &);
     void receive(std::vector<Dresseur> &);
     void receive(std::vector<Covidmon> &, sf::RenderWindow&);
@@ -38,6 +42,7 @@ public:
     void send_covidmon();
     void send_attaque_pres();
     void send_attaque_loin();
+    void send_win();
     bool is_accepted();
     void disconnect();
 };

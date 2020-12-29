@@ -118,7 +118,7 @@ void Covidmon::draw_pv(sf::RenderWindow &window)
 {
     int bar;
 
-    if(100*this->get_pv_current() / this->get_pv_max() >= 100){ bar = 0;}
+    if(100*this->get_pv_current() / this->get_pv_max() >= 100)     { bar = 0;}
     else if(100*this->get_pv_current() / this->get_pv_max() >= 92) { bar = 1;}
     else if(100*this->get_pv_current() / this->get_pv_max() >= 85) { bar = 2;}
     else if(100*this->get_pv_current() / this->get_pv_max() >= 78) { bar = 3;}
@@ -219,10 +219,12 @@ void Covidmon::collision_attaque(Covidmon &P)
         this->_attaque_de_loin.set_position_y(-SIZE_BLOCK);
     }
 
-    if (this->_attaque_de_pres.distance(P) < 2 * SIZE_BLOCK)
+    if (this->_attaque_de_pres.distance(P) < SIZE_BLOCK / 2)
     {
         this->receive_degat(P);
         this->_attaque_de_pres.set_est_lancee(false);
+        this->_attaque_de_pres.set_position_x(-SIZE_BLOCK);
+        this->_attaque_de_pres.set_position_y(-SIZE_BLOCK);
     }
 }
 

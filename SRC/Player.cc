@@ -8,17 +8,21 @@ Player::Player()
 Player::Player(Dresseur &dresseur) : _dresseur(&dresseur),
                                      _pokeball("Images/pokeball.png"),
                                      _accepted(true),
-                                     _first_on_arene(true)
+                                     _first_on_arene(true),
+                                     _end(false),
+                                     _win(false)
 {
-    this->IP = sf::IpAddress::getLocalAddress();
-    //this->IP = "109.0.200.98";
+    //this->IP = sf::IpAddress::getLocalAddress();
+    this->IP = "109.0.200.98";
 }
 
 Player::Player(Player const &P) : IP(P.IP),
                                   _dresseur(P._dresseur),
                                   _pokeball(P._pokeball),
-                                  _accepted(true),
-                                  _first_on_arene(true)
+                                  _accepted(P._accepted),
+                                  _first_on_arene(P._first_on_arene),
+                                  _end(P._end),
+                                  _win(P._win)
 {
     short int port = 30000;
 
@@ -94,6 +98,23 @@ std::vector<Covidmon*> Player::get_covidmon() const
 bool Player::get_first_on_arene() const
 {
     return this->_first_on_arene;
+}
+
+bool Player::get_end()
+{
+    if(!this->_covidmon[0]->get_est_vivant() || !this->_covidmon[1]->get_est_vivant())
+        this->_end = true;
+    return _end;
+}
+
+bool Player::get_win()
+{
+    if(!this->_covidmon[0]->get_est_vivant() || !this->_covidmon[1]->get_est_vivant())
+    {
+        if(this->_covidmon[0]->get_est_vivant())
+            this->_win = true;
+    }
+    return _win;
 }
 
 void Player::pop_pokeball(sf::RenderWindow &window)
@@ -277,6 +298,7 @@ void Player::send_covidmon()
     socket.send(sendPacket_type);
     socket.send(sendPacket_data);
 }
+
 
 bool Player::is_accepted()
 {
