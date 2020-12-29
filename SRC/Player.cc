@@ -102,8 +102,9 @@ bool Player::get_first_on_arene() const
 
 bool Player::get_end()
 {
-    if(!this->_covidmon[0]->get_est_vivant() || !this->_covidmon[1]->get_est_vivant())
-        this->_end = true;
+    if(this->get_covidmon().size() == 2)
+        if(!this->_covidmon[0]->get_est_vivant() || !this->_covidmon[1]->get_est_vivant())
+            this->_end = true;
     return _end;
 }
 

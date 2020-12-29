@@ -118,7 +118,7 @@ void Covidmon::draw_pv(sf::RenderWindow &window)
 {
     int bar;
 
-    if(100*this->get_pv_current() / this->get_pv_max() >= 100)     { bar = 0;}
+    if(100*this->get_pv_current() / this->get_pv_max() >= 100){ bar = 0;}
     else if(100*this->get_pv_current() / this->get_pv_max() >= 92) { bar = 1;}
     else if(100*this->get_pv_current() / this->get_pv_max() >= 85) { bar = 2;}
     else if(100*this->get_pv_current() / this->get_pv_max() >= 78) { bar = 3;}
@@ -204,8 +204,25 @@ void Covidmon::attaque_de_pres(sf::RenderWindow &window, bool is_my_covidmon)
     }
     else if(!is_my_covidmon)
     {
-        this->_attaque_de_pres.set_position_x(this->get_position_x());
-        this->_attaque_de_pres.set_position_y(this->get_position_y());
+        switch(this->_direction)
+        {
+        case Up:
+            this->_attaque_de_pres.set_position_x(this->get_position_x());
+            this->_attaque_de_pres.set_position_y(this->get_position_y() - SIZE_BLOCK/2);
+            break;
+        case Down:
+            this->_attaque_de_pres.set_position_x(this->get_position_x());
+            this->_attaque_de_pres.set_position_y(this->get_position_y() + SIZE_BLOCK/2);
+            break;
+        case Right:
+            this->_attaque_de_pres.set_position_x(this->get_position_x() + SIZE_BLOCK/2);
+            this->_attaque_de_pres.set_position_y(this->get_position_y());
+            break;
+        case Left:
+            this->_attaque_de_pres.set_position_x(this->get_position_x() - SIZE_BLOCK/2);
+            this->_attaque_de_pres.set_position_y(this->get_position_y());
+            break;
+        }
     }
 }
 
@@ -214,17 +231,15 @@ void Covidmon::collision_attaque(Covidmon &P)
     if (this->_attaque_de_loin.distance(P) < SIZE_BLOCK / 3)
     {
         this->receive_degat(P);
+        std::cout << this->_nom << " : " << this->get_pv_current() << "Pv"<< std::endl;
         this->_attaque_de_loin.set_est_lancee(false);
-        this->_attaque_de_loin.set_position_x(-SIZE_BLOCK);
-        this->_attaque_de_loin.set_position_y(-SIZE_BLOCK);
     }
 
-    if (this->_attaque_de_pres.distance(P) < SIZE_BLOCK / 2)
+    if (this->_attaque_de_pres.distance(P) < 2 * SIZE_BLOCK)
     {
         this->receive_degat(P);
+        std::cout << this->_nom << " : " << this->get_pv_current() << "Pv"<< std::endl;
         this->_attaque_de_pres.set_est_lancee(false);
-        this->_attaque_de_pres.set_position_x(-SIZE_BLOCK);
-        this->_attaque_de_pres.set_position_y(-SIZE_BLOCK);
     }
 }
 
@@ -281,7 +296,7 @@ bool Covidmon::est_fort_contre(Covidmon &P)
 
 void Covidmon::receive_degat(Covidmon &P)
 {
-    if (this->get_pv_current()>30000)
+    if (this->get_pv_current()>30000 || this->get_pv_current()<0)
         this->set_pv_current(0);
     else
     {
