@@ -253,7 +253,12 @@ void Player::send()
     sf::Packet sendPacket_type;
     sf::Packet sendPacket_data;
     sendPacket_type << "dresseur";
-    sendPacket_data << this->_dresseur->get_nom() << this->_dresseur->get_direction() << this->get_dresseur()->get_animation() << this->_dresseur->get_position_x() << this->_dresseur->get_position_y() << this->_dresseur->get_current_bg();
+    sendPacket_data << this->_dresseur->get_nom() 
+    << this->_dresseur->get_direction() 
+    << this->get_dresseur()->get_animation() 
+    << this->_dresseur->get_position_x() 
+    << this->_dresseur->get_position_y() 
+    << this->_dresseur->get_current_bg();
     socket.send(sendPacket_type);
     socket.send(sendPacket_data);
 }
@@ -263,7 +268,12 @@ void Player::send_covidmon()
     sf::Packet sendPacket_type;
     sf::Packet sendPacket_data;
     sendPacket_type << "covidmon";
-    sendPacket_data << this->_covidmon[0]->get_nom() << this->_covidmon[0]->get_direction() << this->get_covidmon()[0]->get_animation() << this->_covidmon[0]->get_position_x() << this->_covidmon[0]->get_position_y() << this->_covidmon[0]->get_current_bg() << this->_covidmon[0]->get_pv_current() << this->_covidmon[0]->get_attaque_de_pres().get_est_lancee() << this->_covidmon[0]->get_attaque_de_loin().get_est_lancee();
+    sendPacket_data << this->_covidmon[0]->get_nom() 
+    << this->_covidmon[0]->get_direction() << this->get_covidmon()[0]->get_animation()
+    << this->_covidmon[0]->get_position_x() << this->_covidmon[0]->get_position_y()
+    << this->_covidmon[0]->get_current_bg() << this->_covidmon[0]->get_pv_current()
+    << this->_covidmon[0]->get_attaque_de_pres().get_est_lancee() 
+    << this->_covidmon[0]->get_attaque_de_loin().get_est_lancee();
     socket.send(sendPacket_type);
     socket.send(sendPacket_data);
 }

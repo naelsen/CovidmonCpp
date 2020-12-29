@@ -461,8 +461,8 @@ void Game::_manage_covidmon()
 			{
 				this->_players[0].get_covidmon()[1]->attaque_de_loin(this->_window,false);
 				this->_players[0].get_covidmon()[1]->attaque_de_pres(this->_window,false);
-				this->_players[0].get_covidmon()[1]->collision_attaque(*(this->_players[0].get_covidmon()[0]));
 				this->_players[0].get_covidmon()[0]->collision_attaque(*(this->_players[0].get_covidmon()[1]));
+				this->_players[0].get_covidmon()[1]->collision_attaque(*(this->_players[0].get_covidmon()[0]));
 			}
 		}
 	}

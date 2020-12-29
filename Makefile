@@ -1,16 +1,17 @@
 CC = g++
-CCFLAGS = -Wall -Werror -std=c++11 -g
+CCFLAGS = -Wall -Werror -std=c++17 -g
+LIBFLAGS = -lsfml-graphics -lsfml-window -lsfml-system -lsfml-network -lsfml-audio
 SRC = $(wildcard SRC/*.cc)
 OBJ = $(SRC:.cc=.o)
+LIB = libgames.a
 EXEC = jeu
 
 all: $(EXEC)
 
 $(EXEC): $(OBJ)
-	g++ $(CCFLAGS) -o SRC/Serveur.o -c SRC/Serveur.cpp
-	g++ $(CCFLAGS) -o SRC/main_serveur.o -c SRC/main_serveur.cpp
-	$(CC) SRC/Serveur.o SRC/main_serveur.o -o serveur -lsfml-graphics -lsfml-window -lsfml-system -lsfml-network -lsfml-audio
-	$(CC) $^ -o $@ -lsfml-graphics -lsfml-window -lsfml-system -lsfml-network -lsfml-audio
+	$(CC) SRC/main_serveur.cpp  SRC/Serveur.o -o serveur $(LIBFLAGS)
+	ar -cr $(LIB) $(OBJ)
+	$(CC) $(LIB) -o $@ $(LIBFLAGS)
 
 %.o : %.cc
 	$(CC) $(CCFLAGS) -o $@ -c $<
@@ -20,4 +21,4 @@ play:
 
 clean:
 	# Car serveur est un cpp et pas cc donc il est pas compyer dans les .o
-	rm -f $(OBJ) SRC/Serveur.o SRC/main_serveur.o $(EXEC) serveur
+	rm -f $(OBJ) SRC/Serveur.o SRC/main_serveur.o $(EXEC) serveur $(LIB)

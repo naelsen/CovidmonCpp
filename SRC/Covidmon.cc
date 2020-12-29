@@ -219,12 +219,10 @@ void Covidmon::collision_attaque(Covidmon &P)
         this->_attaque_de_loin.set_position_y(-SIZE_BLOCK);
     }
 
-    if (this->_attaque_de_pres.distance(P) < SIZE_BLOCK / 2)
+    if (this->_attaque_de_pres.distance(P) < 2 * SIZE_BLOCK)
     {
         this->receive_degat(P);
         this->_attaque_de_pres.set_est_lancee(false);
-        //this->_attaque_de_pres.set_position_x(-SIZE_BLOCK);
-        //this->_attaque_de_pres.set_position_y(-SIZE_BLOCK);
     }
 }
 
