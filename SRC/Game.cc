@@ -124,7 +124,6 @@ void Game::_set_current_background(Bg bg)
 {
 	this->_current_background = bg;
 }
-
 void Game::run()
 {
 	while (this->_window.isOpen())
@@ -143,16 +142,28 @@ void Game::run()
 		this->_draw();
 		this->_manage();
 		this->_window.display();
-		if (_current_background == arene )
+		if (_current_background == arene)
 		{
-			if(this->_players[0].get_covidmon().size() == 2)
+			if (this->_players[0].get_covidmon().size() == 2)
 			{
-				if(this->_players[0].get_end())
+				if (this->_players[0].get_end())
 				{
-					if(this->_players[0].get_win())
+					if (this->_players[0].get_win())
 						std::cout << "Win" << std::endl;
 					else
 						std::cout << "Looser" << std::endl;
+					char recommence;
+					sf::Clock tictac;
+					while (tictac.getElapsedTime().asSeconds() > 1)
+					{
+					}
+					std::cout << "Recommencer ? : (o/n)";
+					std::cin >> recommence;
+					if (recommence == 'o')
+					{
+						this->run();
+					}
+					exit(0);
 				}
 			}
 		}
@@ -282,7 +293,7 @@ void Game::_draw_covidmon()
 				it->animate();
 			}
 		}
-		if(_players[0].get_covidmon().size() == 2 && _players[0].get_covidmon()[1]->get_est_vivant())
+		if (_players[0].get_covidmon().size() == 2 && _players[0].get_covidmon()[1]->get_est_vivant())
 		{
 			_players[0].get_covidmon()[1]->draw_pv(this->_window);
 		}
@@ -462,18 +473,18 @@ void Game::_manage_covidmon()
 	{
 		this->_players[0].send_covidmon();
 		this->_players[0].receive(this->_covidmons, this->_window);
-		if(this->_players[0].get_covidmon()[0]->get_est_vivant())
+		if (this->_players[0].get_covidmon()[0]->get_est_vivant())
 		{
 			this->_players[0].get_covidmon()[0]->move();
-			this->_players[0].get_covidmon()[0]->attaque_de_loin(this->_window,true);
-			this->_players[0].get_covidmon()[0]->attaque_de_pres(this->_window,true);
+			this->_players[0].get_covidmon()[0]->attaque_de_loin(this->_window, true);
+			this->_players[0].get_covidmon()[0]->attaque_de_pres(this->_window, true);
 		}
-		if(this->_players[0].get_covidmon().size() == 2)
+		if (this->_players[0].get_covidmon().size() == 2)
 		{
-			if(this->_players[0].get_covidmon()[1]->get_est_vivant())
+			if (this->_players[0].get_covidmon()[1]->get_est_vivant())
 			{
-				this->_players[0].get_covidmon()[1]->attaque_de_loin(this->_window,false);
-				this->_players[0].get_covidmon()[1]->attaque_de_pres(this->_window,false);
+				this->_players[0].get_covidmon()[1]->attaque_de_loin(this->_window, false);
+				this->_players[0].get_covidmon()[1]->attaque_de_pres(this->_window, false);
 				this->_players[0].get_covidmon()[0]->collision_attaque(*(this->_players[0].get_covidmon()[1]));
 				this->_players[0].get_covidmon()[1]->collision_attaque(*(this->_players[0].get_covidmon()[0]));
 			}

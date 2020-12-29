@@ -52,7 +52,8 @@ Covidmon::Covidmon(Covidmon const &Covidmon) : Entite(Covidmon),
                                                _attaque_de_loin(Covidmon._attaque_de_loin),
                                                _attaque_de_pres(Covidmon._attaque_de_pres),
                                                _pv_current(Covidmon._pv_current),
-                                               _pv_max(Covidmon._pv_max)
+                                               _pv_max(Covidmon._pv_max),
+                                               _est_vivant(true)
 {
     this->_nom = Covidmon._nom;
     this->_font.loadFromFile("Images/arial.ttf");
@@ -138,8 +139,7 @@ void Covidmon::draw_pv(sf::RenderWindow &window)
                                                  LONGUEUR_VIE,
                                                  LARGEUR_VIE));
     this->__sprite_pv.setPosition(this->get_position_x(),this->get_position_y()- SIZE_BLOCK/4);
-    //std::cout << 100*this->get_pv_current() / this->get_pv_max();
-    int percent_pv = 100*this->get_pv_current() / this->get_pv_max();
+    sf::Uint16 percent_pv = 100*this->get_pv_current() / this->get_pv_max();
     sf::Text text(std::to_string(percent_pv)+"%", _font);
     text.setCharacterSize(10);
     text.setFillColor(sf::Color::Black);
@@ -231,14 +231,14 @@ void Covidmon::collision_attaque(Covidmon &P)
     if (this->_attaque_de_loin.distance(P) < SIZE_BLOCK / 3)
     {
         this->receive_degat(P);
-        std::cout << this->_nom << " : " << this->get_pv_current() << "Pv"<< std::endl;
+        std::cout << this->_nom << " : " << this->get_pv_current() << " Pv"<< std::endl;
         this->_attaque_de_loin.set_est_lancee(false);
     }
 
     if (this->_attaque_de_pres.distance(P) < 2 * SIZE_BLOCK)
     {
         this->receive_degat(P);
-        std::cout << this->_nom << " : " << this->get_pv_current() << "Pv"<< std::endl;
+        std::cout << this->_nom << " : " << this->get_pv_current() << " Pv"<< std::endl;
         this->_attaque_de_pres.set_est_lancee(false);
     }
 }
