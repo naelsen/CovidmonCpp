@@ -2,7 +2,6 @@
 
 Attaque_de_loin::Attaque_de_loin(std::string im, std::string nom) : Entite(im, nom),
                                                                     _degats(16),
-                                                                    _portee(400),
                                                                     _est_lancee(false),
                                                                     _just_clicked(true)
 {
@@ -15,7 +14,6 @@ Attaque_de_loin::Attaque_de_loin()
 
 Attaque_de_loin::Attaque_de_loin(Attaque_de_loin const &at) : Entite(at),
                                                               _degats(at._degats),
-                                                              _portee(at._portee),
                                                               _est_lancee(at._est_lancee),
                                                               _just_clicked(true)
 {
