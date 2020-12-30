@@ -49,14 +49,10 @@ Game::Game() : _current_background(intro),
 	this->_placement_covidmon();
 	sf::Clock c1;
 	sf::Clock c2;
-	sf::Clock c3;
-	sf::Clock c4;
 	bool sound_switched1 = false;
 	bool sound_switched2 = false;
 	this->_clocks.push_back(c1);
 	this->_clocks.push_back(c2);
-	this->_clocks.push_back(c3);
-	this->_clocks.push_back(c4);
 	this->_sounds_switched.push_back(sound_switched1);
 	this->_sounds_switched.push_back(sound_switched2);
 	this->_clocks[0].restart();
@@ -90,11 +86,11 @@ void Game::run()
 				this->_players[0].disconnect();
 			}
 		}
-		this->_check_end();
 		this->_choisir_dresseur();
 		this->_choisir_covidmon();
 		this->_draw();
 		this->_manage();
+		this->_check_end();
 		this->_window.display();
 	}
 }
@@ -233,7 +229,6 @@ void Game::_manage()
 	this->_manage_bg();
 	this->_manage_sound();
 	this->_manage_dresseur();
-	//this->_manage_pokemon();
 }
 
 void Game::_back_sound()
@@ -356,6 +351,7 @@ void Game::_manage_bg()
 		}
 	}
 }
+
 void Game::_manage_dresseur()
 {
 	if (this->_current_background == choix_personnage)
@@ -484,42 +480,26 @@ void Game::_check_end()
 		{
 			if (this->_players[0].get_end())
 			{
-				if (this->_clocks[2].getElapsedTime().asSeconds() > 5)
+				if (this->_players[0].get_win())
 				{
-					this->_clocks[2].restart();
-					this->_clocks[3].restart();
+					Image win("Images/win.png");
+					win.set_position_x(120);
+					win.set_position_y(WINDOW_HEIGHT / 3 -20);
+					win.draw(this->_window);
 				}
-				if (this->_clocks[3].getElapsedTime().asMilliseconds() > 500)
+				else
 				{
-					if (this->_players[0].get_win())
-					{
-						Image win("Images/win.png");
-						win.set_position_x(120);
-						win.set_position_y(WINDOW_HEIGHT / 3);
-						win.draw(this->_window);
-						this->_window.display();
-						std::cout << "Win" << std::endl;
-					}
-					else
-					{
-						Image loose("Images/looser.png");
-						loose.set_position_x(100);
-						loose.set_position_y(WINDOW_HEIGHT / 3);
-						loose.draw(this->_window);
-						this->_window.display();
-						std::cout << "Looser" << std::endl;
-					}
-
-					char recommence;
-					std::cout << "Recommencer ? (o/n) : ";
-					std::cin >> recommence;
-					if (recommence == 'o')
-					{
-						this->_clean();
-						this->run();
-					}
-					exit(0);
+					Image loose("Images/looser.png");
+					loose.set_position_x(100);
+					loose.set_position_y(WINDOW_HEIGHT / 3 +20);
+					loose.draw(this->_window);
 				}
+				if(sf::Keyboard::isKeyPressed(sf::Keyboard::Return))
+				{
+					this->_clean();
+					this->run();
+				}
+				
 			}
 		}
 	}

@@ -210,7 +210,6 @@ void Covidmon::collision_attaque(Covidmon &P)
         if (!this->_attaque_de_loin.get_just_clicked())
         {
             this->receive_degat(P);
-            std::cout << this->_nom << " distance : " << this->get_pv_current() << " Pv" << std::endl;
             this->_attaque_de_loin.set_est_lancee(false);
         }
         this->_attaque_de_loin.set_just_clicked(true);
@@ -221,7 +220,6 @@ void Covidmon::collision_attaque(Covidmon &P)
         if (!this->_attaque_de_pres.get_just_clicked())
         {
             this->receive_degat(P);
-            std::cout << this->_nom << " pres : " << this->get_pv_current() << " Pv" << std::endl;
             this->_attaque_de_pres.set_est_lancee(false);
         }
         this->_attaque_de_pres.set_just_clicked(true);
