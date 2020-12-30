@@ -15,6 +15,16 @@ Serveur::~Serveur()
 {
 }
 
+short int Serveur::get_port() const
+{
+    return this->_port;
+}
+
+void Serveur::set_port(short int p )
+{
+    this->_port = p;
+}
+
 void Serveur::run()
 {
     while (!this->_done)

@@ -11,7 +11,7 @@ Covidmon::Covidmon(std::string image, std::string nom, Type _type) : Entite(imag
 
     if(_type == Vol)
     {
-        this->_attaque_de_loin = Attaque_de_loin("Images/Attaques/lance_vent.png", "jaj");
+        this->_attaque_de_loin = Attaque_de_loin("Images/Attaques/lance_vent.png", "Cru-aile");
         this->_attaque_de_pres = Attaque_de_pres("Images/Attaques/explosion_vent.png");
         this->_pv_max = 500;
         this->_pv_current = 500;
@@ -19,7 +19,7 @@ Covidmon::Covidmon(std::string image, std::string nom, Type _type) : Entite(imag
     }
     else if(_type == Feu)
     {
-        this->_attaque_de_loin = Attaque_de_loin("Images/Attaques/lance_feu.png", "jaj");
+        this->_attaque_de_loin = Attaque_de_loin("Images/Attaques/lance_feu.png", "Lance flamme");
         this->_attaque_de_pres = Attaque_de_pres("Images/Attaques/explosion_feu.png");
         this->_pv_max = 650;
         this->_pv_current = 650;
@@ -27,7 +27,7 @@ Covidmon::Covidmon(std::string image, std::string nom, Type _type) : Entite(imag
     }
     else if(_type == Eau)
     {
-        this->_attaque_de_loin = Attaque_de_loin("Images/Attaques/lance_eau.png", "jaj");
+        this->_attaque_de_loin = Attaque_de_loin("Images/Attaques/lance_eau.png", "Canon à eau");
         this->_attaque_de_pres = Attaque_de_pres("Images/Attaques/explosion_eau.png");
         this->_pv_max = 800;
         this->_pv_current = 800;
@@ -35,7 +35,7 @@ Covidmon::Covidmon(std::string image, std::string nom, Type _type) : Entite(imag
     }
     else if(_type == Plante)
     {
-        this->_attaque_de_loin = Attaque_de_loin("Images/Attaques/lance_plante.png", "jaj");
+        this->_attaque_de_loin = Attaque_de_loin("Images/Attaques/lance_plante.png", "Tranche-herbe");
         this->_attaque_de_pres = Attaque_de_pres("Images/Attaques/explosion_plante.png");
         this->_pv_max = 800;
         this->_pv_current = 800;

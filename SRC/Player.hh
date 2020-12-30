@@ -17,6 +17,7 @@ private:
     std::vector<Covidmon*> _covidmon;
     Image _pokeball;
     static int numero_joueur;
+    int _port;
     bool _accepted;
     bool _first_on_arene;
     bool _end;
@@ -30,6 +31,7 @@ public:
     void set_covidmon(Covidmon &);
     Dresseur *get_dresseur() const;
     std::vector<Covidmon*> get_covidmon() const;
+    int get_port()const;
     //Covidmon *get_nom_covidmon_adverse() const;
     bool get_first_on_arene() const;
     bool get_win();
@@ -37,6 +39,7 @@ public:
     void set_win(bool);
     void set_end(bool);
     void set_first_on_arene(bool);
+    void set_port(int);
     void pop_pokeball(sf::RenderWindow &);
     void receive(std::vector<Dresseur> &);
     void receive(std::vector<Covidmon> &, sf::RenderWindow&);

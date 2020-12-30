@@ -32,11 +32,6 @@ int Attaque_de_loin::get_degats() const
     return this->_degats;
 }
 
-sf::Uint16 Attaque_de_loin::get_portee() const
-{
-    return this->_portee;
-}
-
 bool Attaque_de_loin::get_est_lancee() const
 {
     return this->_est_lancee;

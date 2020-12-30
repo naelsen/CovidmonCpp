@@ -22,7 +22,8 @@ private:
 public:
     Serveur();
     ~Serveur();
-
+    short int get_port() const;
+    void set_port(short int p );
     void run();
     void accept_client();
     void action_clients();

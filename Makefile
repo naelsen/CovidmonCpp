@@ -2,6 +2,7 @@ CC = g++
 CCFLAGS = -Wall -Werror -std=c++11 -g
 LIBFLAGS = -lsfml-graphics -lsfml-window -lsfml-system -lsfml-network -lsfml-audio
 SRC = $(wildcard SRC/*.cc)
+TST_DIR = tests/
 OBJ = $(SRC:.cc=.o)
 LIB = libgames.a
 EXEC = jeu
@@ -21,6 +22,7 @@ play:
 
 testcase : 
 	cd $(TST_DIR) ;  make
+	./tests/testcase
 
 clean:
 	rm -f $(OBJ) SRC/Serveur.o SRC/main_serveur.o $(EXEC) serveur $(LIB)

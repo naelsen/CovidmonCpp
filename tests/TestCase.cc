@@ -17,91 +17,43 @@
 #include "../SRC/Covidmon.hh"
 #include "../SRC/Attaque_de_loin.hh"
 #include "../SRC/Attaque_de_pres.hh"
+#include "../SRC/Serveur.hpp"
+#include "../SRC/Game.hh"
 
-TEST_CASE("1: Type de pokémon")
+
+TEST_CASE("1: Serveur")
 {
-  Covidmon Draco("../Images/Covidmons/F_dracofeu.png", "Dracofeu", Feu);
-  Covidmon Torta("../Images/Covidmons/E_tortank.png", "Tortank", Eau);
+  Dresseur D("Images/Personnages/M_toto.png", "Toto");
+  Serveur S;
+  Player P(D);
+  REQUIRE(S.get_port() == P.get_port());
+}
+
+TEST_CASE("2: Dresseur")
+{
+  Dresseur D1("Images/Personnages/M_zepekenia.png", "Zepekenia");
+  REQUIRE(D1.get_current_bg() == choix_personnage);
+  REQUIRE(!D1.get_choisi());
+  Dresseur D2(D1);
+  REQUIRE(D2.get_nom() == D1.get_nom());
+}
+
+TEST_CASE("3: Covidmon")
+{
+  Covidmon Draco("Images/Covidmons/F_dracofeu.png", "Dracofeu", Feu);
+  Covidmon Torta("Images/Covidmons/E_tortank.png", "Tortank", Eau);
   REQUIRE(Draco.get_pv_max() == 650);
-  std::cout << " ---------- Type Covidmon ---------------" << std::endl;
   REQUIRE(Draco.est_faible_contre(Torta));
   REQUIRE(Torta.est_fort_contre(Draco));
+  REQUIRE(Draco.get_est_vivant());
 }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-/*
-TEST_CASE("2: Tableau2D with string")
+TEST_CASE("4: Attaques")
 {
-  Tableau2D<std::string> tab(10,10,"");
-  tab(1,3) = "ABC";
-  REQUIRE(tab(1,3)== "ABC");
-  REQUIRE(tab(3,3)== "");
-  std::cout << " ----------- Tableau string --------------" << std::endl;
-  std::cout << tab << std::endl;
+  Attaque_de_loin A1("Images/Attaques/lance_vent.png", "Cru-aile");
+  Attaque_de_pres A2("Images/Attaques/explosion_vent.png");
+  REQUIRE(!A1.get_est_lancee());
+  REQUIRE(A2.get_just_clicked());
+  Attaque_de_loin AL(A1);
+  REQUIRE(AL.get_degats()==A1.get_degats());
 }
-
-TEST_CASE("3: Matrix operation avec un réel")
-{
-  Matrix<int> mat(5,5,0);
-  mat(0,1) = 2;
-  mat(1,0) = 3;
-
-  mat =  5 * mat;
-  REQUIRE(mat(0,1) == 10);
-  REQUIRE(mat(1,0) == 15);
-
-  mat =  mat * 2 ;
-  REQUIRE(mat(0,1) == 20);
-  REQUIRE(mat(1,0) == 30);
-
-  mat =  mat / 2 ;
-  REQUIRE(mat(0,1) == 10);
-  REQUIRE(mat(1,0) == 15);
-  
-  std::cout << " -------- Matrix int -----------------" << std::endl;
-  std::cout << mat << std::endl;
-}
-
-TEST_CASE("5: Matrix operation between matix")
-{
-  Matrix<float> a1(5, 5, 0);
-  Matrix<float> a2(5, 5, 1);
-  Matrix<float> a3 = a2;
-  Matrix<float> a4 = 2 * (a1 + a2 + a3);
-  for(size_t i = 0; i < 5; i++)
-    for(size_t j = 0; j < 5; j++)
-      CHECK(a4(i,j) == 4);
-
-}
-
-TEST_CASE("4: Matrix init")
-{
-  Matrix<float> a1(5, 5, Matrix<float>::identity);
-  for(size_t i = 0; i < 5; i++)
-    for(size_t j = 0; j < 5; j++)
-      if(i==j)
-        CHECK(a1(i,j) == 1);
-      else
-        CHECK(a1(i,j) == 0);
-
-  std::cout << " ----------Matrix id ---------------" << std::endl;
-  std::cout << a1 << std::endl;
-  Matrix<float> a2(5, 5, 2);
-  for(size_t i = 0; i < 5; i++)
-    for(size_t j = 0; j < 5; j++)
-        CHECK(a2(i,j) == 2);
-  std::cout << " ---------matrix with init----------------" << std::endl;
-  std::cout << a2 << std::endl;
-}*/

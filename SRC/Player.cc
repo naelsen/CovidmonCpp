@@ -7,6 +7,7 @@ Player::Player()
 
 Player::Player(Dresseur &dresseur) : _dresseur(&dresseur),
                                      _pokeball("Images/pokeball.png"),
+                                     _port(30001),
                                      _accepted(true),
                                      _first_on_arene(true),
                                      _end(false),
@@ -19,15 +20,14 @@ Player::Player(Dresseur &dresseur) : _dresseur(&dresseur),
 Player::Player(Player const &P) : IP(P.IP),
                                   _dresseur(P._dresseur),
                                   _pokeball(P._pokeball),
+                                  _port(P._port),
                                   _accepted(P._accepted),
                                   _first_on_arene(P._first_on_arene),
                                   _end(P._end),
                                   _win(P._win)
 {
-    short int port = 30001;
-
     // Le client se connecte au port avec son IP a condition que le serveur ai deja été lancé
-    if (this->socket.connect(IP, port) == sf::Socket::Done)
+    if (this->socket.connect(IP,_port) == sf::Socket::Done)
     {
         std::cout << "Tentative de connexion au serveur..." << std::endl;
         sf::Packet sendPacket;
@@ -44,7 +44,7 @@ Player::Player(Player const &P) : IP(P.IP),
         {
             std::cout << "Deconnecte du serveur car soit : " << std::endl;
             std::cout << "Un joueur possède déjà ce personage" << std::endl;
-            std::cout << "Déja 2 personnes sont connécter" << std::endl;
+            std::cout << "Déja 2 personnes sont connéctés" << std::endl;
             this->socket.disconnect();
             this->_accepted = false;
         }
@@ -66,8 +66,17 @@ Player::Player(Player const &P) : IP(P.IP),
 Player::~Player()
 {
 }
-// Fonction ajoutée pour le bruit des pas
-// elle evite de faire les 4 conditions a chaque fois
+
+int Player::get_port()const
+{
+    return this->_port;
+}
+
+void Player::set_port(int p) 
+{
+    this->_port = p;
+}
+
 bool Player::is_moving()
 {
     if (sf::Keyboard::isKeyPressed(sf::Keyboard::Right))
