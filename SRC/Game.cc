@@ -527,7 +527,7 @@ void Game::_choisir_covidmon()
 			it->got_a_clic(this->_window);
 			if (it->get_choisi())
 			{
-				if (this->_players[0].get_dresseur()[0].distance(*it) > 10)
+				if (this->_players[0].get_dresseur()[0].distance(*it) > 4*SIZE_BLOCK/9)
 				{
 					this->_text.setString("Capture du Covidmon, rapprochez \nvous de la case le recuperer !");
 					this->_window.draw(this->_text);

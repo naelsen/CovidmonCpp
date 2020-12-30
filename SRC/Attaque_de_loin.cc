@@ -3,7 +3,8 @@
 Attaque_de_loin::Attaque_de_loin(std::string im, std::string nom) : Entite(im, nom),
                                                                     _degats(16),
                                                                     _portee(400),
-                                                                    _est_lancee(false)
+                                                                    _est_lancee(false),
+                                                                    _just_clicked(true)
 {
     this->_speed = 10;
     this->_direction = Up;
@@ -15,7 +16,8 @@ Attaque_de_loin::Attaque_de_loin()
 Attaque_de_loin::Attaque_de_loin(Attaque_de_loin const &at) : Entite(at),
                                                               _degats(at._degats),
                                                               _portee(at._portee),
-                                                              _est_lancee(at._est_lancee)
+                                                              _est_lancee(at._est_lancee),
+                                                              _just_clicked(true)
 {
    // std::cout << "charge !\n";
     this->_speed = at._speed;
@@ -99,7 +101,9 @@ void Attaque_de_loin::move()
         }
     }
     else
-        this->__position_x = -SIZE_BLOCK;
+    {
+        this->set_position_x(WINDOW_WIDTH);
+    }
 }
 
 void Attaque_de_loin::_move_up()

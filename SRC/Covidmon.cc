@@ -154,10 +154,10 @@ void Covidmon::attaque_de_loin(sf::RenderWindow &window, bool is_my_covidmon)
     {
         if(this->_attaque_de_loin.get_just_clicked())
         {
-            this->_attaque_de_loin.set_just_clicked(false);
             this->_attaque_de_loin.set_position_x(this->get_position_x());
             this->_attaque_de_loin.set_position_y(this->get_position_y());
             this->_attaque_de_loin.set_direction(this->get_direction());
+            this->_attaque_de_loin.set_just_clicked(false);
         }
         this->_attaque_de_loin.draw(window);
         this->_attaque_de_loin.move();
@@ -166,6 +166,7 @@ void Covidmon::attaque_de_loin(sf::RenderWindow &window, bool is_my_covidmon)
     else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Space) && is_my_covidmon)
     {
         this->_attaque_de_loin.set_est_lancee(true);
+        this->_attaque_de_loin.set_just_clicked(true);
     }
 }
 
@@ -175,7 +176,6 @@ void Covidmon::attaque_de_pres(sf::RenderWindow &window, bool is_my_covidmon)
     {
         if(this->_attaque_de_pres.get_just_clicked())
         {
-            this->_attaque_de_pres.set_just_clicked(false);
             switch(this->_direction)
             {
             case Up:
@@ -195,6 +195,7 @@ void Covidmon::attaque_de_pres(sf::RenderWindow &window, bool is_my_covidmon)
                 this->_attaque_de_pres.set_position_y(this->get_position_y());
                 break;
             }
+            this->_attaque_de_pres.set_just_clicked(false);
         }
         this->_attaque_de_pres.lancement();
         this->_attaque_de_pres.draw(window);
@@ -203,6 +204,7 @@ void Covidmon::attaque_de_pres(sf::RenderWindow &window, bool is_my_covidmon)
     else if (sf::Keyboard::isKeyPressed(sf::Keyboard::D) && is_my_covidmon)
     {
         this->_attaque_de_pres.set_est_lancee(true);
+        this->_attaque_de_pres.set_just_clicked(true);
     }
 }
 

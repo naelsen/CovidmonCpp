@@ -3,7 +3,8 @@
 Attaque_de_pres::Attaque_de_pres(std::string im) : Image(im),
                                                    _degats(36),
                                                    _animation(0),
-                                                   _est_lancee(false)
+                                                   _est_lancee(false),
+                                                   _just_clicked(true)
 {
 }
 Attaque_de_pres::Attaque_de_pres() : _degats(50)
@@ -12,7 +13,10 @@ Attaque_de_pres::Attaque_de_pres() : _degats(50)
 
 Attaque_de_pres::Attaque_de_pres(Attaque_de_pres const &at) : Image(at),
                                                               _degats(at._degats),
-                                                              _est_lancee(at._est_lancee)
+                                                              _animation(at._animation),
+                                                              _est_lancee(at._est_lancee),
+                                                              _just_clicked(true)
+                                                              
 {
 }
 
@@ -78,7 +82,8 @@ void Attaque_de_pres::lancement()
         {
             this->_animation = 0;
             set_est_lancee(false);
-            this->set_position_x(-SIZE_BLOCK);
+            this->set_just_clicked(true);
+            this->set_position_x(WINDOW_WIDTH);
         }
         this->_clock.restart();
     }
