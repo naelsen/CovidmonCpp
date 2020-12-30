@@ -117,9 +117,6 @@ void Covidmon::print_name(sf::RenderWindow &window)
 
 void Covidmon::draw_pv(sf::RenderWindow &window)
 {
-    if (this->get_pv_current()>50000)
-        this->set_pv_current(0);
-
     if(this->get_pv_current() == 0)
         set_est_vivant(false);
     int bar;

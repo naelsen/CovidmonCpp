@@ -489,15 +489,29 @@ void Game::check_end()
 					_clocks[2].restart();
 					_clocks[3].restart();
 				}
-				if (_clocks[3].getElapsedTime().asSeconds() > 2)
+				if (_clocks[3].getElapsedTime().asMilliseconds() > 500)
 				{
 					if (this->_players[0].get_win())
+					{
+						Image win("Images/win.png");
+						win.set_position_x(120);
+						win.set_position_y(WINDOW_HEIGHT/3);
+						win.draw(this->_window);
+						this->_window.display();
 						std::cout << "Win" << std::endl;
+					}
 					else
+					{
+						Image loose("Images/looser.png");
+						loose.set_position_x(100);
+						loose.set_position_y(WINDOW_HEIGHT/3);
+						loose.draw(this->_window);
+						this->_window.display();
 						std::cout << "Looser" << std::endl;
+					}
 
 					char recommence;
-					std::cout << "Recommencer ? : (o/n)";
+					std::cout << "Recommencer ? (o/n) : ";
 					std::cin >> recommence;
 					if (recommence == 'o')
 					{
