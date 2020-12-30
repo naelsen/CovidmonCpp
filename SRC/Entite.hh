@@ -41,7 +41,7 @@ public:
     void set_choisi(bool);
     void set_current_bg(Bg);
     void set_animation(sf::Uint16);
+    void move();
     virtual void animate() = 0;
     virtual void got_a_clic(sf::RenderWindow &) = 0;
-    void move();
 };

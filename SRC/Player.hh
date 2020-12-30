@@ -27,27 +27,26 @@ public:
     Player(Dresseur &);
     Player(Player const &);
     ~Player();
-    void set_covidmon(Covidmon &);
-    Dresseur *get_dresseur() const;
-    std::vector<Covidmon *> get_covidmon() const;
+
     int get_port() const;
-    //Covidmon *get_nom_covidmon_adverse() const;
     bool get_first_on_arene() const;
     bool get_win();
     bool get_end();
+    std::vector<Covidmon *> get_covidmon() const;
+    Dresseur *get_dresseur() const;
+
+    void set_port(int);
+    void set_first_on_arene(bool);
     void set_win(bool);
     void set_end(bool);
-    void set_first_on_arene(bool);
-    void set_port(int);
+    void set_covidmon(Covidmon &);
+
+    bool is_moving();
     void pop_pokeball(sf::RenderWindow &);
     void receive(std::vector<Dresseur> &);
     void receive(std::vector<Covidmon> &, sf::RenderWindow &);
-    bool is_moving();
-    void send();
+    void send_dresseur();
     void send_covidmon();
-    void send_attaque_pres();
-    void send_attaque_loin();
-    void send_win();
     bool is_accepted();
     void disconnect();
 };

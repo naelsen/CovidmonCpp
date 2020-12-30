@@ -31,17 +31,35 @@ void Dresseur::animate()
     this->__sprite_image.setTextureRect(sf::IntRect(SIZE_BLOCK * this->_animation, SIZE_BLOCK * this->_direction, SIZE_BLOCK, SIZE_BLOCK));
 }
 
-void Dresseur::print_name(sf::RenderWindow &window)
-{
-    window.draw(this->_text);
-}
-
 bool Dresseur::is_out()
 {
     if (this->__position_x > WINDOW_WIDTH && this->__position_x < 2 * WINDOW_WIDTH)
         return true;
 
     return false;
+}
+
+void Dresseur::got_a_clic(sf::RenderWindow &window)
+{
+    sf::Vector2i pos = sf::Mouse::getPosition(window);
+    sf::Uint16 dx = pos.x - this->__position_x;
+    sf::Uint16 dy = pos.y - this->__position_y;
+    bool collision_x = dx < SIZE_BLOCK;
+    bool collision_y = dy < SIZE_BLOCK;
+    if (sf::Mouse::isButtonPressed(sf::Mouse::Right) || sf::Mouse::isButtonPressed(sf::Mouse::Left))
+    {
+        if (collision_x && collision_y)
+        {
+            this->_choisi = true;
+        }
+        else
+            this->_choisi = false;
+    }
+}
+
+void Dresseur::print_name(sf::RenderWindow &window)
+{
+    window.draw(this->_text);
 }
 
 void Dresseur::_move_up()
@@ -139,22 +157,4 @@ void Dresseur::_move_left()
     }
     else
         this->__position_x = 0;
-}
-
-void Dresseur::got_a_clic(sf::RenderWindow &window)
-{
-    sf::Vector2i pos = sf::Mouse::getPosition(window);
-    sf::Uint16 dx = pos.x - this->__position_x;
-    sf::Uint16 dy = pos.y - this->__position_y;
-    bool collision_x = dx < SIZE_BLOCK;
-    bool collision_y = dy < SIZE_BLOCK;
-    if (sf::Mouse::isButtonPressed(sf::Mouse::Right) || sf::Mouse::isButtonPressed(sf::Mouse::Left))
-    {
-        if (collision_x && collision_y)
-        {
-            this->_choisi = true;
-        }
-        else
-            this->_choisi = false;
-    }
 }

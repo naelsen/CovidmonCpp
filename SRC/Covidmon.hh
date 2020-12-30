@@ -45,19 +45,20 @@ public:
     bool get_est_vivant() const;
     Attaque_de_loin &get_attaque_de_loin();
     Attaque_de_pres &get_attaque_de_pres();
+
     void set_type(Type t);
     void set_pv_max(sf::Uint16);
     void set_pv_current(sf::Uint16);
     void set_est_vivant(bool);
+
     void animate();
     void attaque_de_loin(sf::RenderWindow &, bool);
     void attaque_de_pres(sf::RenderWindow &, bool);
     void collision_attaque(Covidmon &);
     void receive_degat(Covidmon &);
+    void draw_pv(sf::RenderWindow &);
     void got_a_clic(sf::RenderWindow &);
     void print_name(sf::RenderWindow &);
-    void print_pv(sf::RenderWindow &);
-    void draw_pv(sf::RenderWindow &);
 
     void operator-=(sf::Uint16);
 };

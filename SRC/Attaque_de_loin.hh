@@ -27,8 +27,7 @@ public:
     void set_degats(int);
     void set_est_lancee(bool);
     void set_just_clicked(bool);
-
-    void move();
     void animate();
+    void move();
     void got_a_clic(sf::RenderWindow &);
 };

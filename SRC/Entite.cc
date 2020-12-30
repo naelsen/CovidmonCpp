@@ -88,10 +88,6 @@ void Entite::set_animation(sf::Uint16 animation)
     this->_animation = animation;
 }
 
-void Entite::got_a_clic(sf::RenderWindow &window)
-{
-}
-
 void Entite::move()
 {
     if (this->_clock.getElapsedTime().asSeconds() > 0.30f)

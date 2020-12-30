@@ -109,11 +109,6 @@ void Covidmon::set_type(Type t)
     this->_type = t;
 }
 
-void Covidmon::set_est_vivant(bool v)
-{
-    this->_est_vivant = v;
-}
-
 void Covidmon::set_pv_max(sf::Uint16 pv)
 {
     this->_pv_max = pv;
@@ -122,6 +117,11 @@ void Covidmon::set_pv_max(sf::Uint16 pv)
 void Covidmon::set_pv_current(sf::Uint16 pv)
 {
     this->_pv_current = pv;
+}
+
+void Covidmon::set_est_vivant(bool v)
+{
+    this->_est_vivant = v;
 }
 
 void Covidmon::animate()
@@ -141,89 +141,6 @@ void Covidmon::animate()
             set_position_x(-100);
         }
     }
-}
-
-void Covidmon::print_name(sf::RenderWindow &window)
-{
-    sf::Text text("Covidmon choisi : " + this->get_nom(), _font);
-    text.setCharacterSize(15);
-    text.setStyle(sf::Text::Bold);
-    text.setFillColor(sf::Color::Black);
-    text.setPosition(sf::Vector2f(WINDOW_WIDTH / 2, 6));
-    window.draw(text);
-}
-
-void Covidmon::draw_pv(sf::RenderWindow &window)
-{
-    if (100 * this->get_pv_current() / this->get_pv_max() >= 100)
-    {
-        _bar = 0;
-    }
-    else if (100 * this->get_pv_current() / this->get_pv_max() >= 92)
-    {
-        _bar = 1;
-    }
-    else if (100 * this->get_pv_current() / this->get_pv_max() >= 85)
-    {
-        _bar = 2;
-    }
-    else if (100 * this->get_pv_current() / this->get_pv_max() >= 78)
-    {
-        _bar = 3;
-    }
-    else if (100 * this->get_pv_current() / this->get_pv_max() >= 71)
-    {
-        _bar = 4;
-    }
-    else if (100 * this->get_pv_current() / this->get_pv_max() >= 64)
-    {
-        _bar = 5;
-    }
-    else if (100 * this->get_pv_current() / this->get_pv_max() >= 57)
-    {
-        _bar = 6;
-    }
-    else if (100 * this->get_pv_current() / this->get_pv_max() >= 42)
-    {
-        _bar = 7;
-    }
-    else if (100 * this->get_pv_current() / this->get_pv_max() >= 35)
-    {
-        _bar = 8;
-    }
-    else if (100 * this->get_pv_current() / this->get_pv_max() >= 28)
-    {
-        _bar = 9;
-    }
-    else if (100 * this->get_pv_current() / this->get_pv_max() >= 21)
-    {
-        _bar = 10;
-    }
-    else if (100 * this->get_pv_current() / this->get_pv_max() >= 14)
-    {
-        _bar = 11;
-    }
-    else if (100 * this->get_pv_current() / this->get_pv_max() >= 7)
-    {
-        _bar = 12;
-    }
-    else
-    {
-        _bar = 13;
-    }
-
-    this->__sprite_pv.setTextureRect(sf::IntRect(0,
-                                                 _bar * LARGEUR_VIE,
-                                                 LONGUEUR_VIE,
-                                                 LARGEUR_VIE));
-    this->__sprite_pv.setPosition(this->get_position_x(), this->get_position_y() - SIZE_BLOCK / 4);
-    sf::Uint16 percent_pv = 100 * this->get_pv_current() / this->get_pv_max();
-    sf::Text text(std::to_string(percent_pv) + "%", _font);
-    text.setCharacterSize(10);
-    text.setFillColor(sf::Color::Black);
-    text.setPosition(sf::Vector2f(this->get_position_x() + SIZE_BLOCK / 3, this->get_position_y() - SIZE_BLOCK / 2));
-    window.draw(text);
-    window.draw(this->__sprite_pv);
 }
 
 void Covidmon::attaque_de_loin(sf::RenderWindow &window, bool is_my_covidmon)
@@ -311,6 +228,92 @@ void Covidmon::collision_attaque(Covidmon &P)
     }
 }
 
+void Covidmon::receive_degat(Covidmon &P)
+{
+    if (this->est_faible_contre(P))
+    {
+        if (this->_attaque_de_loin.get_est_lancee())
+            P -= 0.75 * this->_attaque_de_loin.get_degats();
+        if (this->_attaque_de_pres.get_est_lancee())
+            P -= 0.75 * this->_attaque_de_pres.get_degats();
+    }
+    else if (this->est_fort_contre(P))
+    {
+        if (this->_attaque_de_loin.get_est_lancee())
+            P -= 1.25 * this->_attaque_de_loin.get_degats();
+        if (this->_attaque_de_pres.get_est_lancee())
+            P -= 1.25 * this->_attaque_de_pres.get_degats();
+    }
+    else
+    {
+        if (this->_attaque_de_loin.get_est_lancee())
+            P -= this->_attaque_de_loin.get_degats();
+        if (this->_attaque_de_pres.get_est_lancee())
+            P -= this->_attaque_de_pres.get_degats();
+    }
+    if (P.get_pv_current() == 0)
+        P.set_est_vivant(false);
+}
+
+void Covidmon::draw_pv(sf::RenderWindow &window)
+{
+    if (100 * this->get_pv_current() / this->get_pv_max() >= 100)    {_bar = 0;}
+    else if (100 * this->get_pv_current() / this->get_pv_max() >= 92){_bar = 1;}
+    else if (100 * this->get_pv_current() / this->get_pv_max() >= 85){_bar = 2;}
+    else if (100 * this->get_pv_current() / this->get_pv_max() >= 78){_bar = 3;}
+    else if (100 * this->get_pv_current() / this->get_pv_max() >= 71){_bar = 4;}
+    else if (100 * this->get_pv_current() / this->get_pv_max() >= 64){_bar = 5;}
+    else if (100 * this->get_pv_current() / this->get_pv_max() >= 57){_bar = 6;}
+    else if (100 * this->get_pv_current() / this->get_pv_max() >= 42){_bar = 7;}
+    else if (100 * this->get_pv_current() / this->get_pv_max() >= 35){_bar = 8;}
+    else if (100 * this->get_pv_current() / this->get_pv_max() >= 28){_bar = 9;}
+    else if (100 * this->get_pv_current() / this->get_pv_max() >= 21){_bar = 10;}
+    else if (100 * this->get_pv_current() / this->get_pv_max() >= 14){_bar = 11;}
+    else if (100 * this->get_pv_current() / this->get_pv_max() >= 7){_bar = 12;}
+    else                                                            {_bar = 13;}
+
+    this->__sprite_pv.setTextureRect(sf::IntRect(0,
+                                                 _bar * LARGEUR_VIE,
+                                                 LONGUEUR_VIE,
+                                                 LARGEUR_VIE));
+    this->__sprite_pv.setPosition(this->get_position_x(), this->get_position_y() - SIZE_BLOCK / 4);
+    sf::Uint16 percent_pv = 100 * this->get_pv_current() / this->get_pv_max();
+    sf::Text text(std::to_string(percent_pv) + "%", _font);
+    text.setCharacterSize(10);
+    text.setFillColor(sf::Color::Black);
+    text.setPosition(sf::Vector2f(this->get_position_x() + SIZE_BLOCK / 3, this->get_position_y() - SIZE_BLOCK / 2));
+    window.draw(text);
+    window.draw(this->__sprite_pv);
+}
+
+void Covidmon::got_a_clic(sf::RenderWindow &window)
+{
+    sf::Vector2i pos = sf::Mouse::getPosition(window);
+    sf::Uint16 dx = pos.x - this->__position_x;
+    sf::Uint16 dy = pos.y - this->__position_y;
+    bool collision_x = dx < SIZE_BLOCK;
+    bool collision_y = dy < SIZE_BLOCK;
+    if (sf::Mouse::isButtonPressed(sf::Mouse::Right) || sf::Mouse::isButtonPressed(sf::Mouse::Left))
+    {
+        if (collision_x && collision_y)
+        {
+            _choisi = true;
+        }
+        else
+            _choisi = false;
+    }
+}
+
+void Covidmon::print_name(sf::RenderWindow &window)
+{
+    sf::Text text("Covidmon choisi : " + this->get_nom(), _font);
+    text.setCharacterSize(15);
+    text.setStyle(sf::Text::Bold);
+    text.setFillColor(sf::Color::Black);
+    text.setPosition(sf::Vector2f(WINDOW_WIDTH / 2, 6));
+    window.draw(text);
+}
+
 bool Covidmon::est_faible_contre(const Covidmon &P) const
 {
     switch (this->_type)
@@ -360,33 +363,6 @@ bool Covidmon::est_fort_contre(const Covidmon &P) const
         break;
     }
     return false;
-}
-
-void Covidmon::receive_degat(Covidmon &P)
-{
-    if (this->est_faible_contre(P))
-    {
-        if (this->_attaque_de_loin.get_est_lancee())
-            P -= 0.75 * this->_attaque_de_loin.get_degats();
-        if (this->_attaque_de_pres.get_est_lancee())
-            P -= 0.75 * this->_attaque_de_pres.get_degats();
-    }
-    else if (this->est_fort_contre(P))
-    {
-        if (this->_attaque_de_loin.get_est_lancee())
-            P -= 1.25 * this->_attaque_de_loin.get_degats();
-        if (this->_attaque_de_pres.get_est_lancee())
-            P -= 1.25 * this->_attaque_de_pres.get_degats();
-    }
-    else
-    {
-        if (this->_attaque_de_loin.get_est_lancee())
-            P -= this->_attaque_de_loin.get_degats();
-        if (this->_attaque_de_pres.get_est_lancee())
-            P -= this->_attaque_de_pres.get_degats();
-    }
-    if (P.get_pv_current() == 0)
-        P.set_est_vivant(false);
 }
 
 void Covidmon::_move_up()
@@ -447,24 +423,6 @@ void Covidmon::_move_left()
     this->_direction = Left;
     if (this->__position_x > ARENE_START)
         this->__position_x -= this->_speed;
-}
-
-void Covidmon::got_a_clic(sf::RenderWindow &window)
-{
-    sf::Vector2i pos = sf::Mouse::getPosition(window);
-    sf::Uint16 dx = pos.x - this->__position_x;
-    sf::Uint16 dy = pos.y - this->__position_y;
-    bool collision_x = dx < SIZE_BLOCK;
-    bool collision_y = dy < SIZE_BLOCK;
-    if (sf::Mouse::isButtonPressed(sf::Mouse::Right) || sf::Mouse::isButtonPressed(sf::Mouse::Left))
-    {
-        if (collision_x && collision_y)
-        {
-            _choisi = true;
-        }
-        else
-            _choisi = false;
-    }
 }
 
 void Covidmon::operator-=(sf::Uint16 degats)

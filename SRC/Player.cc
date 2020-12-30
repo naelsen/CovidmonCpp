@@ -72,9 +72,64 @@ int Player::get_port() const
     return this->_port;
 }
 
+bool Player::get_first_on_arene() const
+{
+    return this->_first_on_arene;
+}
+
+bool Player::get_win()
+{
+    if (!this->_covidmon[0]->get_est_vivant() || !this->_covidmon[1]->get_est_vivant())
+    {
+        if (this->_covidmon[0]->get_est_vivant())
+            this->_win = true;
+    }
+    return this->_win;
+}
+
+bool Player::get_end()
+{
+    if (this->get_covidmon().size() == 2)
+    {
+        if (!this->_covidmon[0]->get_est_vivant() || !this->_covidmon[1]->get_est_vivant())
+            this->_end = true;
+    }
+    return this->_end;
+}
+
+std::vector<Covidmon *> Player::get_covidmon() const
+{
+    return this->_covidmon;
+}
+
+Dresseur *Player::get_dresseur() const
+{
+    return this->_dresseur;
+}
+
 void Player::set_port(int p)
 {
     this->_port = p;
+}
+
+void Player::set_first_on_arene(bool first)
+{
+    this->_first_on_arene = first;
+}
+
+void Player::set_win(bool win)
+{
+    this->_win = win;
+}
+
+void Player::set_end(bool end)
+{
+    this->_end = end;
+}
+
+void Player::set_covidmon(Covidmon &pok)
+{
+    this->_covidmon.push_back(&pok);
 }
 
 bool Player::is_moving()
@@ -89,61 +144,6 @@ bool Player::is_moving()
         return true;
 
     return false;
-}
-
-void Player::set_covidmon(Covidmon &pok)
-{
-    this->_covidmon.push_back(&pok);
-}
-
-Dresseur *Player::get_dresseur() const
-{
-    return this->_dresseur;
-}
-
-std::vector<Covidmon *> Player::get_covidmon() const
-{
-    return this->_covidmon;
-}
-
-bool Player::get_first_on_arene() const
-{
-    return this->_first_on_arene;
-}
-
-bool Player::get_end()
-{
-    if (this->get_covidmon().size() == 2)
-    {
-        if (!this->_covidmon[0]->get_est_vivant() || !this->_covidmon[1]->get_est_vivant())
-            this->_end = true;
-    }
-    return this->_end;
-}
-
-bool Player::get_win()
-{
-    if (!this->_covidmon[0]->get_est_vivant() || !this->_covidmon[1]->get_est_vivant())
-    {
-        if (this->_covidmon[0]->get_est_vivant())
-            this->_win = true;
-    }
-    return this->_win;
-}
-
-void Player::set_win(bool win)
-{
-    this->_win = win;
-}
-
-void Player::set_end(bool end)
-{
-    this->_end = end;
-}
-
-void Player::set_first_on_arene(bool first)
-{
-    this->_first_on_arene = first;
 }
 
 void Player::pop_pokeball(sf::RenderWindow &window)
@@ -188,11 +188,6 @@ void Player::receive(std::vector<Dresseur> &dresseurs)
         {
             this->_first_on_arene = false;
         }
-
-        /*std::cout << "current_bg : " << current_bg << std::endl;
-        std::cout << "animation : " << animation << std::endl;
-        std::cout << "x : " << x << std::endl;
-        std::cout << "y : " << y << std::endl;*/
 
         for (auto it = dresseurs.begin(); it != dresseurs.end(); it++)
         {
@@ -277,11 +272,6 @@ void Player::receive(std::vector<Covidmon> &Covidmon, sf::RenderWindow &window)
         if (bg == 4)
             current_bg = arene;
 
-        /*std::cout << "current_bg : " << current_bg << std::endl;
-        std::cout << "animation : " << animation << std::endl;
-        std::cout << "x : " << x << std::endl;
-        std::cout << "y : " << y << std::endl;*/
-
         for (auto it = Covidmon.begin(); it != Covidmon.end(); it++)
         {
             if (it->get_nom() == nom)
@@ -297,7 +287,7 @@ void Player::receive(std::vector<Covidmon> &Covidmon, sf::RenderWindow &window)
     }
 }
 
-void Player::send()
+void Player::send_dresseur()
 {
     sf::Packet sendPacket_type;
     sf::Packet sendPacket_data;

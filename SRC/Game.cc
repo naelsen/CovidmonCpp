@@ -362,14 +362,14 @@ void Game::_manage_dresseur()
 	{
 		for (auto it = this->_players.begin(); it != this->_players.end(); it++)
 		{
-			it->send();
+			it->send_dresseur();
 			it->receive(this->_dresseurs);
 			it->get_dresseur()->move();
 		}
 	}
 	if (this->_current_background == choix_covidmon)
 	{
-		this->_players[0].send();
+		this->_players[0].send_dresseur();
 		this->_players[0].receive(this->_dresseurs);
 		this->_players[0].get_dresseur()->move();
 		this->_manage_covidmon();
@@ -380,7 +380,7 @@ void Game::_manage_dresseur()
 		{
 			this->_players[0].get_dresseur()->set_position_y(WINDOW_WIDTH / 2 - 100);
 			this->_players[0].get_dresseur()->set_animation(0);
-			this->_players[0].send();
+			this->_players[0].send_dresseur();
 			this->_players[0].receive(this->_dresseurs);
 		}
 		else
