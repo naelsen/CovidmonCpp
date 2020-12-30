@@ -24,7 +24,7 @@ Player::Player(Player const &P) : IP(P.IP),
                                   _end(P._end),
                                   _win(P._win)
 {
-    short int port = 30000;
+    short int port = 30001;
 
     // Le client se connecte au port avec son IP a condition que le serveur ai deja été lancé
     if (this->socket.connect(IP, port) == sf::Socket::Done)

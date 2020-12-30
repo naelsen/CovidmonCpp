@@ -97,11 +97,13 @@ Game::Game() : _current_background(intro),
 	sf::Clock c1;
 	sf::Clock c2;
 	sf::Clock c3;
+	sf::Clock c4;
 	bool sound_switched1 = false;
 	bool sound_switched2 = false;
 	this->_clocks.push_back(c1);
 	this->_clocks.push_back(c2);
 	this->_clocks.push_back(c3);
+	this->_clocks.push_back(c4);
 	this->_sounds_switched.push_back(sound_switched1);
 	this->_sounds_switched.push_back(sound_switched2);
 	this->_clocks[0].restart();
@@ -141,18 +143,19 @@ void Game::run()
 			{
 				if (this->_players[0].get_end())
 				{
-					if (this->_players[0].get_win())
-						std::cout << "Win" << std::endl;
-					else
-						std::cout << "Looser" << std::endl;
-					char recommence;
 					if(_clocks[2].getElapsedTime().asSeconds() > 5)
 					{
 						_clocks[2].restart();
 						_clocks[3].restart();
 					}
-					if(_clocks[3].getElapsedTime().asSeconds() < 2)
+					if(_clocks[3].getElapsedTime().asSeconds() > 2)
 					{
+						if (this->_players[0].get_win())
+							std::cout << "Win" << std::endl;
+						else
+							std::cout << "Looser" << std::endl;
+
+						char recommence;
 						std::cout << "Recommencer ? : (o/n)";
 						std::cin >> recommence;
 						if (recommence == 'o')
@@ -475,25 +478,27 @@ void Game::_manage_covidmon()
 	{
 		this->_players[0].send_covidmon();
 		this->_players[0].receive(this->_covidmons, this->_window);
-		if (this->_players[0].get_covidmon().size() == 2)
-		{
-			if (this->_players[0].get_covidmon()[0]->get_est_vivant() && this->_players[0].get_covidmon()[1]->get_est_vivant())
-			{
-				this->_players[0].get_covidmon()[0]->collision_attaque(*(this->_players[0].get_covidmon()[1]));
-				this->_players[0].get_covidmon()[1]->collision_attaque(*(this->_players[0].get_covidmon()[0]));
-			}
-			if (this->_players[0].get_covidmon()[1]->get_est_vivant())
-			{
-				this->_players[0].get_covidmon()[1]->attaque_de_loin(this->_window, false);
-				this->_players[0].get_covidmon()[1]->attaque_de_pres(this->_window, false);
-			}
-		}
 		if (this->_players[0].get_covidmon()[0]->get_est_vivant())
 		{
 			this->_players[0].get_covidmon()[0]->move();
 			this->_players[0].get_covidmon()[0]->attaque_de_loin(this->_window, true);
 			this->_players[0].get_covidmon()[0]->attaque_de_pres(this->_window, true);
 		} 
+		if (this->_players[0].get_covidmon().size() == 2)
+		{
+			if (this->_players[0].get_covidmon()[1]->get_est_vivant())
+			{
+				this->_players[0].get_covidmon()[1]->attaque_de_loin(this->_window, false);
+				this->_players[0].get_covidmon()[1]->attaque_de_pres(this->_window, false);
+			}
+			if (this->_players[0].get_covidmon()[0]->get_est_vivant() && this->_players[0].get_covidmon()[1]->get_est_vivant())
+			{
+				this->_players[0].get_covidmon()[0]->collision_attaque(*(this->_players[0].get_covidmon()[1]));
+				this->_players[0].get_covidmon()[1]->collision_attaque(*(this->_players[0].get_covidmon()[0]));
+			}
+		}
+		this->_players[0].send_covidmon();
+		this->_players[0].receive(this->_covidmons, this->_window);
 	}
 }
 

@@ -117,6 +117,11 @@ void Covidmon::print_name(sf::RenderWindow &window)
 
 void Covidmon::draw_pv(sf::RenderWindow &window)
 {
+    if (this->get_pv_current()>50000)
+        this->set_pv_current(0);
+
+    if(this->get_pv_current() == 0)
+        set_est_vivant(false);
     int bar;
 
     if(100*this->get_pv_current() / this->get_pv_max() >= 100){ bar = 0;}
@@ -286,32 +291,30 @@ bool Covidmon::est_fort_contre(Covidmon &P)
 
 void Covidmon::receive_degat(Covidmon &P)
 {
-    if (P.get_pv_current()>60000)
-        P.set_pv_current(0);
+    if (this->est_faible_contre(P))
+    {
+        if(this->_attaque_de_loin.get_est_lancee())
+            P.set_pv_current(P.get_pv_current() - 0.75 * this->_attaque_de_loin.get_degats());
+        if(this->_attaque_de_pres.get_est_lancee())
+            P.set_pv_current(P.get_pv_current() - 0.75 * this->_attaque_de_pres.get_degats());
+    }
+    else if (this->est_fort_contre(P))
+    {
+        if(this->_attaque_de_loin.get_est_lancee())
+            P.set_pv_current(P.get_pv_current() - 1.25 * this->_attaque_de_loin.get_degats());
+        if(this->_attaque_de_pres.get_est_lancee())
+            P.set_pv_current(P.get_pv_current() - 1.25 * this->_attaque_de_pres.get_degats());
+    }
     else
     {
-        if (this->est_faible_contre(P))
-        {
-            if(this->_attaque_de_loin.get_est_lancee())
-                P.set_pv_current(P.get_pv_current() - 0.75 * this->_attaque_de_loin.get_degats());
-            if(this->_attaque_de_pres.get_est_lancee())
-                P.set_pv_current(P.get_pv_current() - 0.75 * this->_attaque_de_pres.get_degats());
-        }
-        else if (this->est_fort_contre(P))
-        {
-            if(this->_attaque_de_loin.get_est_lancee())
-                P.set_pv_current(P.get_pv_current() - 1.25 * this->_attaque_de_loin.get_degats());
-            if(this->_attaque_de_pres.get_est_lancee())
-                P.set_pv_current(P.get_pv_current() - 1.25 * this->_attaque_de_pres.get_degats());
-        }
-        else
-        {
-            if(this->_attaque_de_loin.get_est_lancee())
-                P.set_pv_current(P.get_pv_current() - this->_attaque_de_loin.get_degats());
-            if(this->_attaque_de_pres.get_est_lancee())
-                P.set_pv_current(P.get_pv_current() - this->_attaque_de_pres.get_degats());
-        }
+        if(this->_attaque_de_loin.get_est_lancee())
+            P.set_pv_current(P.get_pv_current() - this->_attaque_de_loin.get_degats());
+        if(this->_attaque_de_pres.get_est_lancee())
+            P.set_pv_current(P.get_pv_current() - this->_attaque_de_pres.get_degats());
     }
+    if (P.get_pv_current()>50000)
+        P.set_pv_current(0);
+
     if(P.get_pv_current() == 0)
         P.set_est_vivant(false);
 }

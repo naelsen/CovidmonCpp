@@ -1,6 +1,6 @@
 #include "Serveur.hpp"
 
-Serveur::Serveur() : _port(30000),
+Serveur::Serveur() : _port(30001),
                      _done(false)
 {
     if (this->_listener.listen(_port) == sf::Socket::Done)
