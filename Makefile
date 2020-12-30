@@ -1,5 +1,5 @@
 CC = g++
-CCFLAGS = -Wall -Werror -std=c++17 -g
+CCFLAGS = -Wall -Werror -std=c++11 -g
 LIBFLAGS = -lsfml-graphics -lsfml-window -lsfml-system -lsfml-network -lsfml-audio
 SRC = $(wildcard SRC/*.cc)
 OBJ = $(SRC:.cc=.o)
@@ -19,6 +19,8 @@ $(EXEC): $(OBJ)
 play:
 	./$(EXEC)
 
+testcase : 
+	cd $(TST_DIR) ;  make
+
 clean:
-	# Car serveur est un cpp et pas cc donc il est pas compyer dans les .o
 	rm -f $(OBJ) SRC/Serveur.o SRC/main_serveur.o $(EXEC) serveur $(LIB)
