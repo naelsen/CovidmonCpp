@@ -12,8 +12,8 @@ Player::Player(Dresseur &dresseur) : _dresseur(&dresseur),
                                      _end(false),
                                      _win(false)
 {
-    //this->IP = sf::IpAddress::getLocalAddress();
-    this->IP = "109.0.200.98";
+    this->IP = sf::IpAddress::getLocalAddress();
+    //this->IP = "109.0.200.98";
 }
 
 Player::Player(Player const &P) : IP(P.IP),
@@ -42,7 +42,9 @@ Player::Player(Player const &P) : IP(P.IP),
         // Non
         if (!_accepted)
         {
-            std::cout << "Deconnecte du serveur car un joueur possède déjà ce personage!" << std::endl;
+            std::cout << "Deconnecte du serveur car soit : " << std::endl;
+            std::cout << "Un joueur possède déjà ce personage" << std::endl;
+            std::cout << "Déja 2 personnes sont connécter" << std::endl;
             this->socket.disconnect();
             this->_accepted = false;
         }
@@ -118,6 +120,21 @@ bool Player::get_win()
             this->_win = true;
     }
     return _win;
+}
+
+void Player::set_win(bool win)
+{
+    this->_win = win;
+}
+
+void Player::set_end(bool end)
+{
+    this->_end = end;
+}
+
+void Player::set_first_on_arene(bool first)
+{
+    this->_first_on_arene = first;
 }
 
 void Player::pop_pokeball(sf::RenderWindow &window)

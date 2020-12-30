@@ -34,6 +34,9 @@ public:
     bool get_first_on_arene() const;
     bool get_win();
     bool get_end();
+    void set_win(bool);
+    void set_end(bool);
+    void set_first_on_arene(bool);
     void pop_pokeball(sf::RenderWindow &);
     void receive(std::vector<Dresseur> &);
     void receive(std::vector<Covidmon> &, sf::RenderWindow&);

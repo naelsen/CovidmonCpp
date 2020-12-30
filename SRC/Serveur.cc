@@ -49,7 +49,7 @@ void Serveur::accept_client()
         std::string nom;
         // On charge le pseudo du joueur dans le paquet
         receivePacket >> nom;
-        if (this->_nom_clients.size() != 0)
+        if (this->_nom_clients.size() == 1)
         {
             for (std::size_t i = 0; i < _nom_clients.size(); i++)
             {
@@ -59,6 +59,8 @@ void Serveur::accept_client()
                 }
             }
         }
+        else if(this->_nom_clients.size() > 1)
+            accepted = false;
         // On affiche dans le serveur (Mais pas aux joueurs)
         sf::Packet sendPacket;
         sendPacket << accepted;
@@ -73,7 +75,7 @@ void Serveur::accept_client()
         }
         else
         {
-            std::cout << "Un joueur s'est fait refouler car " << nom << " est deja choisi" << std::endl;
+            std::cout << "Joueur refoulé du serveur" << std::endl;
             this->_Clients.pop_back();
         }
         std::cout << "Nombre joueurs connectés: " << this->_nom_clients.size() << std::endl;

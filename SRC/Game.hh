@@ -58,6 +58,10 @@ private:
 	void _choisir_covidmon();
 	void _draw_covidmon();
 	void _switch_sound(std::size_t, std::string);
+	void check_end();
+	void clean();
+	void placement_dresseur();
+	void placement_covidmon();
 
 public:
 	Game();
