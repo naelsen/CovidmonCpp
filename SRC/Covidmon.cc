@@ -294,30 +294,28 @@ void Covidmon::receive_degat(Covidmon &P)
     if (this->est_faible_contre(P))
     {
         if(this->_attaque_de_loin.get_est_lancee())
-            P.set_pv_current(P.get_pv_current() - 0.75 * this->_attaque_de_loin.get_degats());
+            P -=0.75 * this->_attaque_de_loin.get_degats();
         if(this->_attaque_de_pres.get_est_lancee())
-            P.set_pv_current(P.get_pv_current() - 0.75 * this->_attaque_de_pres.get_degats());
+            P-= 0.75 * this->_attaque_de_pres.get_degats();
     }
     else if (this->est_fort_contre(P))
     {
         if(this->_attaque_de_loin.get_est_lancee())
-            P.set_pv_current(P.get_pv_current() - 1.25 * this->_attaque_de_loin.get_degats());
+            P-= 1.25 * this->_attaque_de_loin.get_degats();
         if(this->_attaque_de_pres.get_est_lancee())
-            P.set_pv_current(P.get_pv_current() - 1.25 * this->_attaque_de_pres.get_degats());
+            P -= 1.25 * this->_attaque_de_pres.get_degats();
     }
     else
     {
         if(this->_attaque_de_loin.get_est_lancee())
-            P.set_pv_current(P.get_pv_current() - this->_attaque_de_loin.get_degats());
+            P -= this->_attaque_de_loin.get_degats();
         if(this->_attaque_de_pres.get_est_lancee())
-            P.set_pv_current(P.get_pv_current() - this->_attaque_de_pres.get_degats());
+            P -= this->_attaque_de_pres.get_degats();
     }
-    if (P.get_pv_current()>50000)
-        P.set_pv_current(0);
-
     if(P.get_pv_current() == 0)
         P.set_est_vivant(false);
 }
+
 
 void Covidmon::_move_up()
 {
@@ -395,4 +393,12 @@ void Covidmon::got_a_clic(sf::RenderWindow &window)
         else
             _choisi = false;
     }
+}
+
+void Covidmon::operator-=(sf::Uint16 degats)
+{
+    if (this->_pv_current >= degats)
+        this->_pv_current = this->_pv_current - degats;
+    else
+        this->_pv_current = 0;
 }

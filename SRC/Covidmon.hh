@@ -57,4 +57,6 @@ public:
     void print_name(sf::RenderWindow &);
     void print_pv(sf::RenderWindow &);
     void draw_pv(sf::RenderWindow &);
+
+    void operator-=(sf::Uint16);
 };
