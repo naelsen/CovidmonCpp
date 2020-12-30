@@ -6,10 +6,11 @@ Covidmon::Covidmon()
 
 Covidmon::Covidmon(std::string image, std::string nom, Type _type) : Entite(image, nom),
                                                                      _type(_type),
-                                                                     _est_vivant(true)
+                                                                     _est_vivant(true),
+                                                                     _bar(0)
 {
 
-    if(_type == Vol)
+    if (_type == Vol)
     {
         this->_attaque_de_loin = Attaque_de_loin("Images/Attaques/lance_vent.png", "Cru-aile");
         this->_attaque_de_pres = Attaque_de_pres("Images/Attaques/explosion_vent.png");
@@ -17,7 +18,7 @@ Covidmon::Covidmon(std::string image, std::string nom, Type _type) : Entite(imag
         this->_pv_current = 500;
         this->_speed = 4;
     }
-    else if(_type == Feu)
+    else if (_type == Feu)
     {
         this->_attaque_de_loin = Attaque_de_loin("Images/Attaques/lance_feu.png", "Lance flamme");
         this->_attaque_de_pres = Attaque_de_pres("Images/Attaques/explosion_feu.png");
@@ -25,7 +26,7 @@ Covidmon::Covidmon(std::string image, std::string nom, Type _type) : Entite(imag
         this->_pv_current = 650;
         this->_speed = 3;
     }
-    else if(_type == Eau)
+    else if (_type == Eau)
     {
         this->_attaque_de_loin = Attaque_de_loin("Images/Attaques/lance_eau.png", "Canon à eau");
         this->_attaque_de_pres = Attaque_de_pres("Images/Attaques/explosion_eau.png");
@@ -33,7 +34,7 @@ Covidmon::Covidmon(std::string image, std::string nom, Type _type) : Entite(imag
         this->_pv_current = 800;
         this->_speed = 3;
     }
-    else if(_type == Plante)
+    else if (_type == Plante)
     {
         this->_attaque_de_loin = Attaque_de_loin("Images/Attaques/lance_plante.png", "Tranche-herbe");
         this->_attaque_de_pres = Attaque_de_pres("Images/Attaques/explosion_plante.png");
@@ -42,9 +43,12 @@ Covidmon::Covidmon(std::string image, std::string nom, Type _type) : Entite(imag
         this->_speed = 3;
     }
     this->_font.loadFromFile("Images/arial.ttf");
-    if(!__texture_pv.loadFromFile("Images/vie2.png")) {std::cout << "Erreur chargement de vie" << std::endl;}
+    if (!__texture_pv.loadFromFile("Images/vie2.png"))
+    {
+        std::cout << "Erreur chargement de vie" << std::endl;
+    }
     this->__sprite_pv.setTexture(this->__texture_pv);
-    this->__sprite_pv.setScale(sf::Vector2f(0.08f,0.12f));
+    this->__sprite_pv.setScale(sf::Vector2f(0.08f, 0.12f));
 }
 
 Covidmon::Covidmon(Covidmon const &Covidmon) : Entite(Covidmon),
@@ -53,38 +57,72 @@ Covidmon::Covidmon(Covidmon const &Covidmon) : Entite(Covidmon),
                                                _attaque_de_pres(Covidmon._attaque_de_pres),
                                                _pv_current(Covidmon._pv_current),
                                                _pv_max(Covidmon._pv_max),
-                                               _est_vivant(true)
+                                               _est_vivant(Covidmon._est_vivant),
+                                               _bar(Covidmon._bar)
 {
     this->_nom = Covidmon._nom;
     this->_font.loadFromFile("Images/arial.ttf");
-    if(!__texture_pv.loadFromFile("Images/vie2.png")) {std::cout << "Erreur chargement de vie" << std::endl;}
+    if (!__texture_pv.loadFromFile("Images/vie2.png"))
+    {
+        std::cout << "Erreur chargement de vie" << std::endl;
+    }
     this->__sprite_pv.setTexture(this->__texture_pv);
-    this->__sprite_pv.setScale(sf::Vector2f(0.08f,0.12f));
+    this->__sprite_pv.setScale(sf::Vector2f(0.08f, 0.12f));
 }
 
 Covidmon::~Covidmon()
 {
 }
 
-Type Covidmon::get_type() { return this->_type; }
+Type Covidmon::get_type() const
+{
+    return this->_type;
+}
 
-void Covidmon::set_type(Type t) { this->_type = t; }
+sf::Uint16 Covidmon::get_pv_max() const
+{
+    return this->_pv_max;
+}
 
-sf::Uint16 Covidmon::get_pv_max() { return this->_pv_max; }
+sf::Uint16 Covidmon::get_pv_current() const
+{
+    return this->_pv_current;
+}
 
-sf::Uint16 Covidmon::get_pv_current() { return this->_pv_current; }
+bool Covidmon::get_est_vivant() const
+{
+    return this->_est_vivant;
+}
 
-void Covidmon::set_pv_max(sf::Uint16 pv) { this->_pv_max = pv; }
+Attaque_de_loin &Covidmon::get_attaque_de_loin()
+{
+    return this->_attaque_de_loin;
+}
 
-void Covidmon::set_pv_current(sf::Uint16 pv) { this->_pv_current = pv; }
+Attaque_de_pres &Covidmon::get_attaque_de_pres()
+{
+    return this->_attaque_de_pres;
+}
 
-bool Covidmon::get_est_vivant(){ return this->_est_vivant; }
+void Covidmon::set_type(Type t)
+{
+    this->_type = t;
+}
 
-void Covidmon::set_est_vivant(bool v){ this->_est_vivant = v; }
+void Covidmon::set_est_vivant(bool v)
+{
+    this->_est_vivant = v;
+}
 
-Attaque_de_loin& Covidmon::get_attaque_de_loin() { return this->_attaque_de_loin; }
+void Covidmon::set_pv_max(sf::Uint16 pv)
+{
+    this->_pv_max = pv;
+}
 
-Attaque_de_pres& Covidmon::get_attaque_de_pres() { return this->_attaque_de_pres; }
+void Covidmon::set_pv_current(sf::Uint16 pv)
+{
+    this->_pv_current = pv;
+}
 
 void Covidmon::animate()
 {
@@ -92,11 +130,11 @@ void Covidmon::animate()
                                                     SIZE_BLOCK * this->_direction,
                                                     SIZE_BLOCK,
                                                     SIZE_BLOCK));
-    if(sf::Keyboard::isKeyPressed(sf::Keyboard::P))
+    if (sf::Keyboard::isKeyPressed(sf::Keyboard::P))
     {
-        if(this->_pv_current >0)
+        if (this->_pv_current > 0)
             this->_pv_current -= 1;
-        else 
+        else
         {
             this->_pv_current = 0;
             this->set_est_vivant(false);
@@ -117,35 +155,73 @@ void Covidmon::print_name(sf::RenderWindow &window)
 
 void Covidmon::draw_pv(sf::RenderWindow &window)
 {
-    if(this->get_pv_current() == 0)
-        set_est_vivant(false);
-    int bar;
-
-    if(100*this->get_pv_current() / this->get_pv_max() >= 100){ bar = 0;}
-    else if(100*this->get_pv_current() / this->get_pv_max() >= 92) { bar = 1;}
-    else if(100*this->get_pv_current() / this->get_pv_max() >= 85) { bar = 2;}
-    else if(100*this->get_pv_current() / this->get_pv_max() >= 78) { bar = 3;}
-    else if(100*this->get_pv_current() / this->get_pv_max() >= 71) { bar = 4;}
-    else if(100*this->get_pv_current() / this->get_pv_max() >= 64) { bar = 5;}
-    else if(100*this->get_pv_current() / this->get_pv_max() >= 57) { bar = 6;}
-    else if(100*this->get_pv_current() / this->get_pv_max() >= 42) { bar = 7;}
-    else if(100*this->get_pv_current() / this->get_pv_max() >= 35) { bar = 8;}
-    else if(100*this->get_pv_current() / this->get_pv_max() >= 28) { bar = 9;}
-    else if(100*this->get_pv_current() / this->get_pv_max() >= 21) { bar = 10;}
-    else if(100*this->get_pv_current() / this->get_pv_max() >= 14) { bar = 11;}
-    else if(100*this->get_pv_current() / this->get_pv_max() >= 7)  { bar = 12;}
-    else                                                           { bar = 13;}
+    if (100 * this->get_pv_current() / this->get_pv_max() >= 100)
+    {
+        _bar = 0;
+    }
+    else if (100 * this->get_pv_current() / this->get_pv_max() >= 92)
+    {
+        _bar = 1;
+    }
+    else if (100 * this->get_pv_current() / this->get_pv_max() >= 85)
+    {
+        _bar = 2;
+    }
+    else if (100 * this->get_pv_current() / this->get_pv_max() >= 78)
+    {
+        _bar = 3;
+    }
+    else if (100 * this->get_pv_current() / this->get_pv_max() >= 71)
+    {
+        _bar = 4;
+    }
+    else if (100 * this->get_pv_current() / this->get_pv_max() >= 64)
+    {
+        _bar = 5;
+    }
+    else if (100 * this->get_pv_current() / this->get_pv_max() >= 57)
+    {
+        _bar = 6;
+    }
+    else if (100 * this->get_pv_current() / this->get_pv_max() >= 42)
+    {
+        _bar = 7;
+    }
+    else if (100 * this->get_pv_current() / this->get_pv_max() >= 35)
+    {
+        _bar = 8;
+    }
+    else if (100 * this->get_pv_current() / this->get_pv_max() >= 28)
+    {
+        _bar = 9;
+    }
+    else if (100 * this->get_pv_current() / this->get_pv_max() >= 21)
+    {
+        _bar = 10;
+    }
+    else if (100 * this->get_pv_current() / this->get_pv_max() >= 14)
+    {
+        _bar = 11;
+    }
+    else if (100 * this->get_pv_current() / this->get_pv_max() >= 7)
+    {
+        _bar = 12;
+    }
+    else
+    {
+        _bar = 13;
+    }
 
     this->__sprite_pv.setTextureRect(sf::IntRect(0,
-                                                 bar*LARGEUR_VIE,
+                                                 _bar * LARGEUR_VIE,
                                                  LONGUEUR_VIE,
                                                  LARGEUR_VIE));
-    this->__sprite_pv.setPosition(this->get_position_x(),this->get_position_y()- SIZE_BLOCK/4);
-    sf::Uint16 percent_pv = 100*this->get_pv_current() / this->get_pv_max();
-    sf::Text text(std::to_string(percent_pv)+"%", _font);
+    this->__sprite_pv.setPosition(this->get_position_x(), this->get_position_y() - SIZE_BLOCK / 4);
+    sf::Uint16 percent_pv = 100 * this->get_pv_current() / this->get_pv_max();
+    sf::Text text(std::to_string(percent_pv) + "%", _font);
     text.setCharacterSize(10);
     text.setFillColor(sf::Color::Black);
-    text.setPosition(sf::Vector2f(this->get_position_x()+SIZE_BLOCK/3, this->get_position_y()- SIZE_BLOCK/2));
+    text.setPosition(sf::Vector2f(this->get_position_x() + SIZE_BLOCK / 3, this->get_position_y() - SIZE_BLOCK / 2));
     window.draw(text);
     window.draw(this->__sprite_pv);
 }
@@ -154,7 +230,7 @@ void Covidmon::attaque_de_loin(sf::RenderWindow &window, bool is_my_covidmon)
 {
     if (this->_attaque_de_loin.get_est_lancee())
     {
-        if(this->_attaque_de_loin.get_just_clicked())
+        if (this->_attaque_de_loin.get_just_clicked())
         {
             this->_attaque_de_loin.set_position_x(this->get_position_x());
             this->_attaque_de_loin.set_position_y(this->get_position_y());
@@ -176,24 +252,24 @@ void Covidmon::attaque_de_pres(sf::RenderWindow &window, bool is_my_covidmon)
 {
     if (this->_attaque_de_pres.get_est_lancee())
     {
-        if(this->_attaque_de_pres.get_just_clicked())
+        if (this->_attaque_de_pres.get_just_clicked())
         {
-            switch(this->_direction)
+            switch (this->_direction)
             {
             case Up:
                 this->_attaque_de_pres.set_position_x(this->get_position_x());
-                this->_attaque_de_pres.set_position_y(this->get_position_y() - SIZE_BLOCK/2);
+                this->_attaque_de_pres.set_position_y(this->get_position_y() - SIZE_BLOCK / 2);
                 break;
             case Down:
                 this->_attaque_de_pres.set_position_x(this->get_position_x());
-                this->_attaque_de_pres.set_position_y(this->get_position_y() + SIZE_BLOCK/2);
+                this->_attaque_de_pres.set_position_y(this->get_position_y() + SIZE_BLOCK / 2);
                 break;
             case Right:
-                this->_attaque_de_pres.set_position_x(this->get_position_x() + SIZE_BLOCK/2);
+                this->_attaque_de_pres.set_position_x(this->get_position_x() + SIZE_BLOCK / 2);
                 this->_attaque_de_pres.set_position_y(this->get_position_y());
                 break;
             case Left:
-                this->_attaque_de_pres.set_position_x(this->get_position_x() - SIZE_BLOCK/2);
+                this->_attaque_de_pres.set_position_x(this->get_position_x() - SIZE_BLOCK / 2);
                 this->_attaque_de_pres.set_position_y(this->get_position_y());
                 break;
             }
@@ -214,10 +290,10 @@ void Covidmon::collision_attaque(Covidmon &P)
 {
     if (this->_attaque_de_loin.distance(P) < SIZE_BLOCK / 3)
     {
-        if(!this->_attaque_de_loin.get_just_clicked())
+        if (!this->_attaque_de_loin.get_just_clicked())
         {
             this->receive_degat(P);
-            std::cout << this->_nom << " distance : " << this->get_pv_current() << " Pv"<< std::endl;
+            std::cout << this->_nom << " distance : " << this->get_pv_current() << " Pv" << std::endl;
             this->_attaque_de_loin.set_est_lancee(false);
         }
         this->_attaque_de_loin.set_just_clicked(true);
@@ -225,17 +301,17 @@ void Covidmon::collision_attaque(Covidmon &P)
 
     if (this->_attaque_de_pres.distance(P) < SIZE_BLOCK)
     {
-        if(!this->_attaque_de_pres.get_just_clicked())
+        if (!this->_attaque_de_pres.get_just_clicked())
         {
             this->receive_degat(P);
-            std::cout << this->_nom << " pres : " << this->get_pv_current() << " Pv"<< std::endl;
+            std::cout << this->_nom << " pres : " << this->get_pv_current() << " Pv" << std::endl;
             this->_attaque_de_pres.set_est_lancee(false);
         }
         this->_attaque_de_pres.set_just_clicked(true);
     }
 }
 
-bool Covidmon::est_faible_contre(Covidmon &P)
+bool Covidmon::est_faible_contre(const Covidmon &P) const
 {
     switch (this->_type)
     {
@@ -260,7 +336,7 @@ bool Covidmon::est_faible_contre(Covidmon &P)
     return false;
 }
 
-bool Covidmon::est_fort_contre(Covidmon &P)
+bool Covidmon::est_fort_contre(const Covidmon &P) const
 {
     switch (this->_type)
     {
@@ -290,29 +366,28 @@ void Covidmon::receive_degat(Covidmon &P)
 {
     if (this->est_faible_contre(P))
     {
-        if(this->_attaque_de_loin.get_est_lancee())
-            P -=0.75 * this->_attaque_de_loin.get_degats();
-        if(this->_attaque_de_pres.get_est_lancee())
-            P-= 0.75 * this->_attaque_de_pres.get_degats();
+        if (this->_attaque_de_loin.get_est_lancee())
+            P -= 0.75 * this->_attaque_de_loin.get_degats();
+        if (this->_attaque_de_pres.get_est_lancee())
+            P -= 0.75 * this->_attaque_de_pres.get_degats();
     }
     else if (this->est_fort_contre(P))
     {
-        if(this->_attaque_de_loin.get_est_lancee())
-            P-= 1.25 * this->_attaque_de_loin.get_degats();
-        if(this->_attaque_de_pres.get_est_lancee())
+        if (this->_attaque_de_loin.get_est_lancee())
+            P -= 1.25 * this->_attaque_de_loin.get_degats();
+        if (this->_attaque_de_pres.get_est_lancee())
             P -= 1.25 * this->_attaque_de_pres.get_degats();
     }
     else
     {
-        if(this->_attaque_de_loin.get_est_lancee())
+        if (this->_attaque_de_loin.get_est_lancee())
             P -= this->_attaque_de_loin.get_degats();
-        if(this->_attaque_de_pres.get_est_lancee())
+        if (this->_attaque_de_pres.get_est_lancee())
             P -= this->_attaque_de_pres.get_degats();
     }
-    if(P.get_pv_current() == 0)
+    if (P.get_pv_current() == 0)
         P.set_est_vivant(false);
 }
-
 
 void Covidmon::_move_up()
 {

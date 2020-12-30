@@ -44,9 +44,9 @@ Game::Game() : _current_background(intro),
 	this->_covidmons.push_back(Covidmon("Images/Covidmons/V_galacvole.png", "Galacvole", Vol));
 	this->_covidmons.push_back(Covidmon("Images/Covidmons/V_lubegon.png", "Lubegon", Vol));
 	this->_covidmons.push_back(Covidmon("Images/Covidmons/V_oh-oh.png", "Oh-oh", Vol));
-	
-	this->placement_dresseur();
-	this->placement_covidmon();
+
+	this->_placement_dresseur();
+	this->_placement_covidmon();
 	sf::Clock c1;
 	sf::Clock c2;
 	sf::Clock c3;
@@ -90,7 +90,7 @@ void Game::run()
 				this->_players[0].disconnect();
 			}
 		}
-		this->check_end();
+		this->_check_end();
 		this->_choisir_dresseur();
 		this->_choisir_covidmon();
 		this->_draw();
@@ -222,9 +222,9 @@ void Game::_draw_covidmon()
 				it->animate();
 			}
 		}
-		if (_players[0].get_covidmon().size() == 2 && _players[0].get_covidmon()[1]->get_est_vivant())
+		if (this->_players[0].get_covidmon().size() == 2 && this->_players[0].get_covidmon()[1]->get_est_vivant())
 		{
-			_players[0].get_covidmon()[1]->draw_pv(this->_window);
+			this->_players[0].get_covidmon()[1]->draw_pv(this->_window);
 		}
 	}
 }
@@ -329,13 +329,13 @@ void Game::_manage_bg()
 {
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Return) && this->_current_background == intro)
 	{
-		_set_current_background(menu);
+		this->_set_current_background(menu);
 		this->_clocks[0].restart();
 	}
 	else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Return) && this->_current_background == menu)
 	{
 		if (this->_clocks[0].getElapsedTime().asMilliseconds() > 200)
-			_set_current_background(choix_personnage);
+			this->_set_current_background(choix_personnage);
 	}
 	else if (this->_selec_dresseur)
 	{
@@ -343,12 +343,12 @@ void Game::_manage_bg()
 		{
 			if (this->_current_background == choix_personnage)
 			{
-				_set_current_background(choix_covidmon);
+				this->_set_current_background(choix_covidmon);
 				this->_players[0].get_dresseur()->set_current_bg(choix_covidmon);
 			}
 			else if (this->_current_background == choix_covidmon)
 			{
-				_set_current_background(arene);
+				this->_set_current_background(arene);
 				this->_players[0].get_dresseur()->set_current_bg(arene);
 				this->_players[0].get_covidmon()[0]->set_current_bg(arene);
 			}
@@ -372,7 +372,7 @@ void Game::_manage_dresseur()
 		this->_players[0].send();
 		this->_players[0].receive(this->_dresseurs);
 		this->_players[0].get_dresseur()->move();
-		_manage_covidmon();
+		this->_manage_covidmon();
 	}
 	if (this->_current_background == arene)
 	{
@@ -385,13 +385,13 @@ void Game::_manage_dresseur()
 		}
 		else
 		{
-			_manage_covidmon();
+			this->_manage_covidmon();
 		}
 
 		if (!this->_players[0].get_first_on_arene())
 		{
 			this->_players[0].get_dresseur()->set_direction(Left);
-			this->_players[0].get_dresseur()->set_position_x(WINDOW_WIDTH - SIZE_WIDTH_PERSO);
+			this->_players[0].get_dresseur()->set_position_x(WINDOW_WIDTH - SIZE_BLOCK);
 		}
 	}
 }
@@ -407,7 +407,7 @@ void Game::_manage_covidmon()
 			this->_players[0].get_covidmon()[0]->move();
 			this->_players[0].get_covidmon()[0]->attaque_de_loin(this->_window, true);
 			this->_players[0].get_covidmon()[0]->attaque_de_pres(this->_window, true);
-		} 
+		}
 		if (this->_players[0].get_covidmon().size() == 2)
 		{
 			if (this->_players[0].get_covidmon()[1]->get_est_vivant())
@@ -437,14 +437,14 @@ void Game::_choisir_dresseur()
 			{
 				Player P(*it);
 				this->_players.push_back(P);
-				if (_players[0].is_accepted())
+				if (this->_players[0].is_accepted())
 				{
 					this->_selec_dresseur = true;
 					this->_text.setString("Choisissez un covidmon \n   (avec la souris!)");
 				}
 				else
 				{
-					_players.pop_back();
+					this->_players.pop_back();
 					it->set_choisi(false);
 				}
 			}
@@ -461,7 +461,7 @@ void Game::_choisir_covidmon()
 			it->got_a_clic(this->_window);
 			if (it->get_choisi())
 			{
-				if (this->_players[0].get_dresseur()[0].distance(*it) > 4*SIZE_BLOCK/9)
+				if (this->_players[0].get_dresseur()[0].distance(*it) > 4 * SIZE_BLOCK / 9)
 				{
 					this->_text.setString("Capture du Covidmon, rapprochez \nvous de la case le recuperer !");
 					this->_window.draw(this->_text);
@@ -476,26 +476,26 @@ void Game::_choisir_covidmon()
 	}
 }
 
-void Game::check_end()
+void Game::_check_end()
 {
-	if (_current_background == arene)
+	if (this->_current_background == arene)
 	{
 		if (this->_players[0].get_covidmon().size() == 2)
 		{
 			if (this->_players[0].get_end())
 			{
-				if (_clocks[2].getElapsedTime().asSeconds() > 5)
+				if (this->_clocks[2].getElapsedTime().asSeconds() > 5)
 				{
-					_clocks[2].restart();
-					_clocks[3].restart();
+					this->_clocks[2].restart();
+					this->_clocks[3].restart();
 				}
-				if (_clocks[3].getElapsedTime().asMilliseconds() > 500)
+				if (this->_clocks[3].getElapsedTime().asMilliseconds() > 500)
 				{
 					if (this->_players[0].get_win())
 					{
 						Image win("Images/win.png");
 						win.set_position_x(120);
-						win.set_position_y(WINDOW_HEIGHT/3);
+						win.set_position_y(WINDOW_HEIGHT / 3);
 						win.draw(this->_window);
 						this->_window.display();
 						std::cout << "Win" << std::endl;
@@ -504,7 +504,7 @@ void Game::check_end()
 					{
 						Image loose("Images/looser.png");
 						loose.set_position_x(100);
-						loose.set_position_y(WINDOW_HEIGHT/3);
+						loose.set_position_y(WINDOW_HEIGHT / 3);
 						loose.draw(this->_window);
 						this->_window.display();
 						std::cout << "Looser" << std::endl;
@@ -515,7 +515,7 @@ void Game::check_end()
 					std::cin >> recommence;
 					if (recommence == 'o')
 					{
-						this->clean();
+						this->_clean();
 						this->run();
 					}
 					exit(0);
@@ -525,7 +525,7 @@ void Game::check_end()
 	}
 }
 
-void Game::clean()
+void Game::_clean()
 {
 	this->_current_background = choix_covidmon;
 	this->_players[0].get_covidmon()[0]->set_pv_current(this->_players[0].get_covidmon()[0]->get_pv_max());
@@ -536,16 +536,16 @@ void Game::clean()
 	this->_players[0].get_covidmon()[1]->set_est_vivant(true);
 	this->_players[0].get_covidmon()[1]->set_current_bg(choix_covidmon);
 	this->_players[0].get_dresseur()->set_current_bg(choix_covidmon);
-	this->_players[0].get_dresseur()->set_position_x(WINDOW_WIDTH/2);
-	this->_players[0].get_dresseur()->set_position_y(WINDOW_HEIGHT/2);
+	this->_players[0].get_dresseur()->set_position_x(WINDOW_WIDTH / 2);
+	this->_players[0].get_dresseur()->set_position_y(WINDOW_HEIGHT / 2);
 	this->_players[0].set_first_on_arene(false);
-	this->placement_covidmon();
+	this->_placement_covidmon();
 	//this->placement_dresseur();
 	this->_players[0].set_end(false);
 	this->_players[0].set_win(false);
 }
 
-void Game::placement_dresseur()
+void Game::_placement_dresseur()
 {
 	sf::Uint16 i = 1;
 	sf::Uint16 j = 1;
@@ -560,14 +560,13 @@ void Game::placement_dresseur()
 		else
 		{
 			it->set_position_x(j * WINDOW_WIDTH / 6);
-			it->set_position_y(620.f - SIZE_HEIGHT_PERSO);
+			it->set_position_y(620.f - SIZE_BLOCK);
 			j++;
 		}
 	}
 }
 
-
-void Game::placement_covidmon()
+void Game::_placement_covidmon()
 {
 	sf::Uint16 i = 1;
 	sf::Uint16 j = 1;

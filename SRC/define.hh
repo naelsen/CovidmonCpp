@@ -10,9 +10,9 @@ static const sf::Uint16 SIZE_BLOCK = 64;
 static const sf::Uint16 SIZE_HEIGHT_PERSO = 64;
 static const sf::Uint16 SIZE_WIDTH_PERSO = 64;
 static const sf::Uint16 SIZE_BLOCK_POKEBALL = 16;
-static const sf::Uint16  LARGEUR_VIE = 131;
-static const sf::Uint16  LONGUEUR_VIE = 762;
-static const sf::Uint16  NIV_VIE = 150;
+static const sf::Uint16 LARGEUR_VIE = 131;
+static const sf::Uint16 LONGUEUR_VIE = 762;
+static const sf::Uint16 NIV_VIE = 150;
 
 typedef enum Bg
 {

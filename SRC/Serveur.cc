@@ -3,7 +3,7 @@
 Serveur::Serveur() : _port(30001),
                      _done(false)
 {
-    if (this->_listener.listen(_port) == sf::Socket::Done)
+    if (this->_listener.listen(this->_port) == sf::Socket::Done)
         std::cout << "Server is Ready" << std::endl;
     else
         exit(0);
@@ -20,7 +20,7 @@ short int Serveur::get_port() const
     return this->_port;
 }
 
-void Serveur::set_port(short int p )
+void Serveur::set_port(short int p)
 {
     this->_port = p;
 }
@@ -56,20 +56,19 @@ void Serveur::accept_client()
 
     if (socket->receive(receivePacket) == sf::Socket::Done)
     {
-        std::string nom;
         // On charge le pseudo du joueur dans le paquet
-        receivePacket >> nom;
+        receivePacket >> this->_nom;
         if (this->_nom_clients.size() == 1)
         {
             for (std::size_t i = 0; i < _nom_clients.size(); i++)
             {
-                if (this->_nom_clients[i] == nom)
+                if (this->_nom_clients[i] == this->_nom)
                 {
                     accepted = false;
                 }
             }
         }
-        else if(this->_nom_clients.size() > 1)
+        else if (this->_nom_clients.size() > 1)
             accepted = false;
         // On affiche dans le serveur (Mais pas aux joueurs)
         sf::Packet sendPacket;
@@ -80,8 +79,8 @@ void Serveur::accept_client()
 
         if (accepted)
         {
-            this->_nom_clients.push_back(nom);
-            std::cout << "Un joueur viens de se connecter en choisissant " << nom << std::endl;
+            this->_nom_clients.push_back(this->_nom);
+            std::cout << "Un joueur viens de se connecter en choisissant " << this->_nom << std::endl;
         }
         else
         {
@@ -101,8 +100,8 @@ void Serveur::action_clients()
         // et ca va bloquer le programme
         if (this->_selector.isReady(*this->_Clients[i]))
         {
-            communication_dresseur(i);
-            communication_covidmon(i);
+            this->communication_dresseur(i);
+            this->communication_covidmon(i);
         }
     }
 }
@@ -115,16 +114,13 @@ void Serveur::communication_dresseur(std::size_t i)
     if (this->_Clients[i]->receive(receivePacket_type) == sf::Socket::Done)
     {
         this->_Clients[i]->receive(receivePacket_data);
-        std::string type;
-        receivePacket_type >> type;
-        if(type == "dresseur")
+        receivePacket_type >> this->_type;
+        if (this->_type == "dresseur")
         {
-            int dir, bg;
-            std::string nom;
             // On a charge les informations dans cette ordre avec le client donc on le recupere dans cet ordre
-            receivePacket_data >> nom >> dir >> animation >> x >> y >> bg;
+            receivePacket_data >> this->_nom >> this->_dir >> this->_animation >> this->_x >> this->_y >> this->_bg;
             sf::Packet sendPacket;
-            sendPacket << nom << dir << animation << x << y << bg;
+            sendPacket << this->_nom << this->_dir << this->_animation << this->_x << this->_y << this->_bg;
             // On envoie le paquet a tout les autres clients pour qu'ils savent ce que l'autre client a envoyé au serveur
             for (std::size_t j = 0; j < this->_Clients.size(); j++)
             {
@@ -145,39 +141,34 @@ void Serveur::communication_covidmon(std::size_t i)
     if (this->_Clients[i]->receive(receivePacket_type) == sf::Socket::Done)
     {
         this->_Clients[i]->receive(receivePacket_data);
-        std::string type;
-        receivePacket_type >> type;
-        if(type == "covidmon")
+        receivePacket_type >> this->_type;
+        if (this->_type == "covidmon")
         {
-            int dir, bg;
-            std::string nom;
-            bool is_attacking_near;
-            bool is_attacking_far;
             // On a charge les informations dans cette ordre avec le client donc on le recupere dans cet ordre
-            receivePacket_data >> nom >> dir >> animation >> x >> y >> bg >> pv_current >> is_attacking_near >> is_attacking_far ;
-            if(_nom_covidmon.size() == 0)
+            receivePacket_data >> this->_nom >> this->_dir >> this->_animation >> this->_x >> this->_y >> this->_bg >> this->_pv_current >> this->_is_attacking_near >> this->_is_attacking_far;
+            if (this->_nom_covidmon.size() == 0)
             {
-                _nom_covidmon.push_back(nom);
-                std::cout << nom << " est pret a combattre" << std::endl;
+                this->_nom_covidmon.push_back(this->_nom);
+                std::cout << this->_nom << " est pret a combattre" << std::endl;
             }
-            else if(_nom_covidmon.size() == 1)
+            else if (this->_nom_covidmon.size() == 1)
             {
                 bool accepted = true;
-                for (std::size_t j = 0; j < _nom_covidmon.size(); j++)
+                for (std::size_t j = 0; j < this->_nom_covidmon.size(); j++)
                 {
-                    if (this->_nom_covidmon[j] == nom)
+                    if (this->_nom_covidmon[j] == this->_nom)
                     {
                         accepted = false;
                     }
                 }
-                if(accepted)
+                if (accepted)
                 {
-                    _nom_covidmon.push_back(nom);
-                    std::cout << nom << " est pret a combattre" << std::endl;
+                    this->_nom_covidmon.push_back(this->_nom);
+                    std::cout << this->_nom << " est pret a combattre" << std::endl;
                 }
             }
             sf::Packet sendPacket;
-            sendPacket << nom << dir << animation << x << y << bg << pv_current << is_attacking_near << is_attacking_far;
+            sendPacket << this->_nom << this->_dir << this->_animation << this->_x << this->_y << this->_bg << this->_pv_current << this->_is_attacking_near << this->_is_attacking_far;
             // On envoie le paquet a tout les autres clients pour qu'ils savent ce que l'autre client a envoyé au serveur
             for (std::size_t j = 0; j < this->_Clients.size(); j++)
             {

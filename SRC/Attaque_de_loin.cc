@@ -17,7 +17,7 @@ Attaque_de_loin::Attaque_de_loin(Attaque_de_loin const &at) : Entite(at),
                                                               _est_lancee(at._est_lancee),
                                                               _just_clicked(true)
 {
-   // std::cout << "charge !\n";
+    // std::cout << "charge !\n";
     this->_speed = at._speed;
     this->_direction = at._direction;
     this->_nom = at._nom;
@@ -67,7 +67,7 @@ void Attaque_de_loin::animate()
 
 void Attaque_de_loin::move()
 {
-  /*  std::cout << "moving" << std::endl;
+    /*  std::cout << "moving" << std::endl;
     std::cout << "x : " << __position_x << std::endl;
     std::cout << "y: " << __position_y << std::endl;
     std::cout << "animation " << _animation << std::endl;
@@ -110,7 +110,7 @@ void Attaque_de_loin::_move_up()
         this->_clock.restart();
     }
     this->_direction = Up;
-    if(this->__position_y > ARENE_START)
+    if (this->__position_y > ARENE_START)
         this->__position_y -= this->_speed;
     else
         set_est_lancee(false);
@@ -127,7 +127,7 @@ void Attaque_de_loin::_move_down()
         this->_clock.restart();
     }
     this->_direction = Down;
-    if(this->__position_y < ARENE_END - SIZE_BLOCK)
+    if (this->__position_y < ARENE_END - SIZE_BLOCK)
         this->__position_y += this->_speed;
     else
         set_est_lancee(false);
@@ -144,7 +144,7 @@ void Attaque_de_loin::_move_right()
         this->_clock.restart();
     }
     this->_direction = Right;
-    if(this->__position_x < ARENE_END - SIZE_BLOCK)
+    if (this->__position_x < ARENE_END - SIZE_BLOCK)
         this->__position_x += this->_speed;
     else
         set_est_lancee(false);
@@ -161,11 +161,10 @@ void Attaque_de_loin::_move_left()
         this->_clock.restart();
     }
     this->_direction = Left;
-    if(this->__position_x > ARENE_START )
+    if (this->__position_x > ARENE_START)
         this->__position_x -= this->_speed;
     else
         set_est_lancee(false);
-
 }
 
 void Attaque_de_loin::got_a_clic(sf::RenderWindow &W)

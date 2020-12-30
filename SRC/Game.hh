@@ -25,12 +25,9 @@ private:
 	std::vector<Dresseur> _dresseurs;
 	std::vector<Covidmon> _covidmons;
 	std::vector<Player> _players;
-	// Clock i sert a gerer le temps du son i dans les conditions de game
 	std::vector<sf::Clock> _clocks;
-	// Buffer i correspond au son i
 	sf::Music _sound_front;
 	sf::Music _sound_back;
-	// Sert à gerer les differents sons des backgrounds
 	std::vector<bool> _sounds_switched;
 	Bg _current_background;
 	bool _selec_dresseur;
@@ -58,10 +55,10 @@ private:
 	void _choisir_covidmon();
 	void _draw_covidmon();
 	void _switch_sound(std::size_t, std::string);
-	void check_end();
-	void clean();
-	void placement_dresseur();
-	void placement_covidmon();
+	void _check_end();
+	void _clean();
+	void _placement_dresseur();
+	void _placement_covidmon();
 
 public:
 	Game();

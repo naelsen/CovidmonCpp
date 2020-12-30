@@ -13,11 +13,11 @@ Player::Player(Dresseur &dresseur) : _dresseur(&dresseur),
                                      _end(false),
                                      _win(false)
 {
-    this->IP = sf::IpAddress::getLocalAddress();
+    this->_IP = sf::IpAddress::getLocalAddress();
     //this->IP = "109.0.200.98";
 }
 
-Player::Player(Player const &P) : IP(P.IP),
+Player::Player(Player const &P) : _IP(P._IP),
                                   _dresseur(P._dresseur),
                                   _pokeball(P._pokeball),
                                   _port(P._port),
@@ -27,25 +27,25 @@ Player::Player(Player const &P) : IP(P.IP),
                                   _win(P._win)
 {
     // Le client se connecte au port avec son IP a condition que le serveur ai deja été lancé
-    if (this->socket.connect(IP,_port) == sf::Socket::Done)
+    if (this->_socket.connect(_IP, _port) == sf::Socket::Done)
     {
         std::cout << "Tentative de connexion au serveur..." << std::endl;
         sf::Packet sendPacket;
         // On charge le pseudo dans le paquet a envoyer au serveur
         sendPacket << this->get_dresseur()->get_nom();
         // On envoie
-        socket.send(sendPacket);
+        this->_socket.send(sendPacket);
         sf::Packet receivePacket;
         // Le joueur a t il ete accepter par le serveur ?
-        if (socket.receive(receivePacket) == sf::Socket::Done)
-            receivePacket >> _accepted;
+        if (this->_socket.receive(receivePacket) == sf::Socket::Done)
+            receivePacket >> this->_accepted;
         // Non
-        if (!_accepted)
+        if (!this->_accepted)
         {
             std::cout << "Deconnecte du serveur car soit : " << std::endl;
             std::cout << "Un joueur possède déjà ce personage" << std::endl;
             std::cout << "Déja 2 personnes sont connéctés" << std::endl;
-            this->socket.disconnect();
+            this->_socket.disconnect();
             this->_accepted = false;
         }
         // Oui
@@ -60,19 +60,19 @@ Player::Player(Player const &P) : IP(P.IP),
         exit(0);
     }
     // Afin de ne pas bloquer le programme quand on attend une socket
-    this->socket.setBlocking(false);
+    this->_socket.setBlocking(false);
 }
 
 Player::~Player()
 {
 }
 
-int Player::get_port()const
+int Player::get_port() const
 {
     return this->_port;
 }
 
-void Player::set_port(int p) 
+void Player::set_port(int p)
 {
     this->_port = p;
 }
@@ -101,7 +101,7 @@ Dresseur *Player::get_dresseur() const
     return this->_dresseur;
 }
 
-std::vector<Covidmon*> Player::get_covidmon() const
+std::vector<Covidmon *> Player::get_covidmon() const
 {
     return this->_covidmon;
 }
@@ -113,22 +113,22 @@ bool Player::get_first_on_arene() const
 
 bool Player::get_end()
 {
-    if(this->get_covidmon().size() == 2)
+    if (this->get_covidmon().size() == 2)
     {
-        if(!this->_covidmon[0]->get_est_vivant() || !this->_covidmon[1]->get_est_vivant())
+        if (!this->_covidmon[0]->get_est_vivant() || !this->_covidmon[1]->get_est_vivant())
             this->_end = true;
     }
-    return _end;
+    return this->_end;
 }
 
 bool Player::get_win()
 {
-    if(!this->_covidmon[0]->get_est_vivant() || !this->_covidmon[1]->get_est_vivant())
+    if (!this->_covidmon[0]->get_est_vivant() || !this->_covidmon[1]->get_est_vivant())
     {
-        if(this->_covidmon[0]->get_est_vivant())
+        if (this->_covidmon[0]->get_est_vivant())
             this->_win = true;
     }
-    return _win;
+    return this->_win;
 }
 
 void Player::set_win(bool win)
@@ -148,7 +148,7 @@ void Player::set_first_on_arene(bool first)
 
 void Player::pop_pokeball(sf::RenderWindow &window)
 {
-    this->_pokeball.set_position_x(this->_dresseur->get_position_x() + SIZE_WIDTH_PERSO / 2 - SIZE_BLOCK_POKEBALL / 2);
+    this->_pokeball.set_position_x(this->_dresseur->get_position_x() + SIZE_BLOCK / 2 - SIZE_BLOCK_POKEBALL / 2);
     this->_pokeball.set_position_y(this->_dresseur->get_position_y() - SIZE_BLOCK_POKEBALL / 2);
     this->_pokeball.draw(window);
 }
@@ -156,7 +156,7 @@ void Player::pop_pokeball(sf::RenderWindow &window)
 void Player::receive(std::vector<Dresseur> &dresseurs)
 {
     sf::Packet receivePacket;
-    if (socket.receive(receivePacket) == sf::Socket::Done)
+    if (this->_socket.receive(receivePacket) == sf::Socket::Done)
     {
         sf::Uint16 x, y, animation;
         int dir, bg;
@@ -184,9 +184,9 @@ void Player::receive(std::vector<Dresseur> &dresseurs)
         if (bg == 4)
             current_bg = arene;
 
-        if (current_bg == arene && get_dresseur()->get_current_bg() != arene && _first_on_arene)
+        if (current_bg == arene && this->get_dresseur()->get_current_bg() != arene && this->_first_on_arene)
         {
-            _first_on_arene = false;
+            this->_first_on_arene = false;
         }
 
         /*std::cout << "current_bg : " << current_bg << std::endl;
@@ -208,10 +208,10 @@ void Player::receive(std::vector<Dresseur> &dresseurs)
     }
 }
 
-void Player::receive(std::vector<Covidmon> &Covidmon, sf::RenderWindow& window)
+void Player::receive(std::vector<Covidmon> &Covidmon, sf::RenderWindow &window)
 {
     sf::Packet receivePacket;
-    if (socket.receive(receivePacket) == sf::Socket::Done)
+    if (this->_socket.receive(receivePacket) == sf::Socket::Done)
     {
         sf::Uint16 x, y, animation, pv_current;
         int dir, bg;
@@ -225,38 +225,37 @@ void Player::receive(std::vector<Covidmon> &Covidmon, sf::RenderWindow& window)
         //std::cout << nom << " : Attaque de loin : " << is_attacking_far << std::endl;
         // On ajoute le covidmon si il est nouveau dans le vector de covidmon
         bool push = true;
-        for(std::size_t it = 0; it < _covidmon.size(); it++)
+        for (std::size_t it = 0; it < _covidmon.size(); it++)
         {
-            if(_covidmon[it]->get_nom() == nom)
+            if (_covidmon[it]->get_nom() == nom)
                 push = false;
         }
         // Si aucun pokemon n'appartient a vector
-        if(push)
+        if (push)
         {
             for (auto it = Covidmon.begin(); it != Covidmon.end(); it++)
             {
                 if (it->get_nom() == nom)
                 {
                     std::cout << nom << " push" << std::endl;
-                    set_covidmon(*it);
+                    this->set_covidmon(*it);
                 }
             }
         }
 
-        if(_covidmon.size() == 2)
+        if (this->_covidmon.size() == 2)
         {
-            if(is_attacking_far && !_covidmon[1]->get_attaque_de_loin().get_est_lancee())
+            if (is_attacking_far && !this->_covidmon[1]->get_attaque_de_loin().get_est_lancee())
             {
-                _covidmon[1]->get_attaque_de_loin().set_est_lancee(is_attacking_far);
-                _covidmon[1]->get_attaque_de_loin().set_just_clicked(true);
-
+                this->_covidmon[1]->get_attaque_de_loin().set_est_lancee(is_attacking_far);
+                this->_covidmon[1]->get_attaque_de_loin().set_just_clicked(true);
             }
-            if(is_attacking_near && !_covidmon[1]->get_attaque_de_pres().get_est_lancee())
+            if (is_attacking_near && !this->_covidmon[1]->get_attaque_de_pres().get_est_lancee())
             {
-                _covidmon[1]->get_attaque_de_pres().set_est_lancee(is_attacking_near);
-                _covidmon[1]->get_attaque_de_pres().set_just_clicked(true);
+                this->_covidmon[1]->get_attaque_de_pres().set_est_lancee(is_attacking_near);
+                this->_covidmon[1]->get_attaque_de_pres().set_just_clicked(true);
             }
-        } 
+        }
 
         if (dir == 0)
             d = Down;
@@ -298,20 +297,19 @@ void Player::receive(std::vector<Covidmon> &Covidmon, sf::RenderWindow& window)
     }
 }
 
-
 void Player::send()
 {
     sf::Packet sendPacket_type;
     sf::Packet sendPacket_data;
     sendPacket_type << "dresseur";
-    sendPacket_data << this->_dresseur->get_nom() 
-    << this->_dresseur->get_direction() 
-    << this->get_dresseur()->get_animation() 
-    << this->_dresseur->get_position_x() 
-    << this->_dresseur->get_position_y() 
-    << this->_dresseur->get_current_bg();
-    socket.send(sendPacket_type);
-    socket.send(sendPacket_data);
+    sendPacket_data << this->_dresseur->get_nom()
+                    << this->_dresseur->get_direction()
+                    << this->get_dresseur()->get_animation()
+                    << this->_dresseur->get_position_x()
+                    << this->_dresseur->get_position_y()
+                    << this->_dresseur->get_current_bg();
+    this->_socket.send(sendPacket_type);
+    this->_socket.send(sendPacket_data);
 }
 
 void Player::send_covidmon()
@@ -319,16 +317,15 @@ void Player::send_covidmon()
     sf::Packet sendPacket_type;
     sf::Packet sendPacket_data;
     sendPacket_type << "covidmon";
-    sendPacket_data << this->_covidmon[0]->get_nom() 
-    << this->_covidmon[0]->get_direction() << this->get_covidmon()[0]->get_animation()
-    << this->_covidmon[0]->get_position_x() << this->_covidmon[0]->get_position_y()
-    << this->_covidmon[0]->get_current_bg() << this->_covidmon[0]->get_pv_current()
-    << this->_covidmon[0]->get_attaque_de_pres().get_est_lancee() 
-    << this->_covidmon[0]->get_attaque_de_loin().get_est_lancee();
-    socket.send(sendPacket_type);
-    socket.send(sendPacket_data);
+    sendPacket_data << this->_covidmon[0]->get_nom()
+                    << this->_covidmon[0]->get_direction() << this->get_covidmon()[0]->get_animation()
+                    << this->_covidmon[0]->get_position_x() << this->_covidmon[0]->get_position_y()
+                    << this->_covidmon[0]->get_current_bg() << this->_covidmon[0]->get_pv_current()
+                    << this->_covidmon[0]->get_attaque_de_pres().get_est_lancee()
+                    << this->_covidmon[0]->get_attaque_de_loin().get_est_lancee();
+    this->_socket.send(sendPacket_type);
+    this->_socket.send(sendPacket_data);
 }
-
 
 bool Player::is_accepted()
 {
@@ -339,21 +336,6 @@ void Player::disconnect()
 {
     sf::Packet sendPacket;
     sendPacket << this->_dresseur->get_nom();
-    this->socket.disconnect();
+    this->_socket.disconnect();
     std::cout << "Deconnexion du serveur !" << std::endl;
 }
-
-/*sf::Packet& operator <<(sf::Packet& packet, Direction dir)
-{
-    return packet << dir
-}
-*/
-/*sf::Packet& operator <<(sf::Packet& packet, const Player& P)
-{
-    return packet << P.get_dresseur()->get_nom() << P.get_dresseur()->get_position_x() << P.get_dresseur()->get_position_y();
-}
-
-sf::Packet& operator >>(sf::Packet& packet, Player& P)
-{
-    return packet >> P.get_dresseur()->get_nom() >> P.get_dresseur()->get_position_x() >> P.get_dresseur()->get_position_y();
-}*/

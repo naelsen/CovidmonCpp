@@ -16,7 +16,7 @@ Attaque_de_pres::Attaque_de_pres(Attaque_de_pres const &at) : Image(at),
                                                               _animation(at._animation),
                                                               _est_lancee(at._est_lancee),
                                                               _just_clicked(true)
-                                                              
+
 {
 }
 

@@ -55,5 +55,5 @@ float Image::distance(Image const &I)
 {
     float dx = this->__position_x - I.__position_x;
     float dy = this->__position_y - I.__position_y;
-    return sqrt(dx*dx + dy*dy);
+    return sqrt(dx * dx + dy * dy);
 }
