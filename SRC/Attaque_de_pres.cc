@@ -30,6 +30,11 @@ bool Attaque_de_pres::get_est_lancee() const
     return this->_est_lancee;
 }
 
+bool Attaque_de_pres::get_just_clicked() const
+{
+    return this->_just_clicked;
+}
+
 sf::Uint16 Attaque_de_pres::get_animation() const
 {
     return this->_animation;
@@ -43,6 +48,11 @@ void Attaque_de_pres::set_degats(int d)
 void Attaque_de_pres::set_est_lancee(bool e)
 {
     this->_est_lancee = e;
+}
+
+void Attaque_de_pres::set_just_clicked(bool click)
+{
+    this->_just_clicked = click;
 }
 
 void Attaque_de_pres::set_animation(sf::Uint16 animation)
@@ -68,6 +78,7 @@ void Attaque_de_pres::lancement()
         {
             this->_animation = 0;
             set_est_lancee(false);
+            this->set_position_x(-SIZE_BLOCK);
         }
         this->_clock.restart();
     }

@@ -8,6 +8,7 @@ private:
     int _degats;
     sf::Uint16 _portee;
     bool _est_lancee;
+    bool _just_clicked;
     void _move_up();
     void _move_down();
     void _move_right();
@@ -22,9 +23,11 @@ public:
     int get_degats() const;
     sf::Uint16 get_portee() const;
     bool get_est_lancee() const;
+    bool get_just_clicked() const;
 
     void set_degats(int);
     void set_est_lancee(bool);
+    void set_just_clicked(bool);
 
     void move();
     void animate();

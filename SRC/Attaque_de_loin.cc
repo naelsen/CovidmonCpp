@@ -42,6 +42,11 @@ bool Attaque_de_loin::get_est_lancee() const
     return this->_est_lancee;
 }
 
+bool Attaque_de_loin::get_just_clicked() const
+{
+    return this->_just_clicked;
+}
+
 void Attaque_de_loin::set_degats(int d)
 {
     this->_degats = d;
@@ -50,6 +55,11 @@ void Attaque_de_loin::set_degats(int d)
 void Attaque_de_loin::set_est_lancee(bool e)
 {
     this->_est_lancee = e;
+}
+
+void Attaque_de_loin::set_just_clicked(bool click)
+{
+    this->_just_clicked = click;
 }
 
 void Attaque_de_loin::animate()
@@ -88,6 +98,8 @@ void Attaque_de_loin::move()
             break;
         }
     }
+    else
+        this->__position_x = -SIZE_BLOCK;
 }
 
 void Attaque_de_loin::_move_up()

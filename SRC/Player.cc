@@ -104,8 +104,6 @@ bool Player::get_end()
 {
     if(this->get_covidmon().size() == 2)
     {
-        std::cout <<"Notre covidmon : " <<this->_covidmon[0]->get_est_vivant() << std::endl;
-        std::cout <<"Covidmon ennemi: " <<this->_covidmon[1]->get_est_vivant() << std::endl;
         if(!this->_covidmon[0]->get_est_vivant() || !this->_covidmon[1]->get_est_vivant())
             this->_end = true;
     }

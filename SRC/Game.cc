@@ -154,7 +154,7 @@ void Game::run()
 						std::cout << "Looser" << std::endl;
 					char recommence;
 					sf::Clock tictac;
-					while (tictac.getElapsedTime().asSeconds() > 1)
+					while (tictac.getElapsedTime().asSeconds() > 2)
 					{
 					}
 					std::cout << "Recommencer ? : (o/n)";

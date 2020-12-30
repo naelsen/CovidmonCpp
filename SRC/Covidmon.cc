@@ -152,22 +152,20 @@ void Covidmon::attaque_de_loin(sf::RenderWindow &window, bool is_my_covidmon)
 {
     if (this->_attaque_de_loin.get_est_lancee())
     {
+        if(this->_attaque_de_loin.get_just_clicked())
+        {
+            this->_attaque_de_loin.set_just_clicked(false);
+            this->_attaque_de_loin.set_position_x(this->get_position_x());
+            this->_attaque_de_loin.set_position_y(this->get_position_y());
+            this->_attaque_de_loin.set_direction(this->get_direction());
+        }
         this->_attaque_de_loin.draw(window);
         this->_attaque_de_loin.move();
         this->_attaque_de_loin.animate();
     }
     else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Space) && is_my_covidmon)
     {
-        this->_attaque_de_loin.set_position_x(this->get_position_x());
-        this->_attaque_de_loin.set_position_y(this->get_position_y());
-        this->_attaque_de_loin.set_direction(this->get_direction());
         this->_attaque_de_loin.set_est_lancee(true);
-    }
-    else if(!is_my_covidmon)
-    {
-        this->_attaque_de_loin.set_position_x(this->get_position_x());
-        this->_attaque_de_loin.set_position_y(this->get_position_y());
-        this->_attaque_de_loin.set_direction(this->get_direction());
     }
 }
 
@@ -175,54 +173,36 @@ void Covidmon::attaque_de_pres(sf::RenderWindow &window, bool is_my_covidmon)
 {
     if (this->_attaque_de_pres.get_est_lancee())
     {
+        if(this->_attaque_de_pres.get_just_clicked())
+        {
+            this->_attaque_de_pres.set_just_clicked(false);
+            switch(this->_direction)
+            {
+            case Up:
+                this->_attaque_de_pres.set_position_x(this->get_position_x());
+                this->_attaque_de_pres.set_position_y(this->get_position_y() - SIZE_BLOCK/2);
+                break;
+            case Down:
+                this->_attaque_de_pres.set_position_x(this->get_position_x());
+                this->_attaque_de_pres.set_position_y(this->get_position_y() + SIZE_BLOCK/2);
+                break;
+            case Right:
+                this->_attaque_de_pres.set_position_x(this->get_position_x() + SIZE_BLOCK/2);
+                this->_attaque_de_pres.set_position_y(this->get_position_y());
+                break;
+            case Left:
+                this->_attaque_de_pres.set_position_x(this->get_position_x() - SIZE_BLOCK/2);
+                this->_attaque_de_pres.set_position_y(this->get_position_y());
+                break;
+            }
+        }
         this->_attaque_de_pres.lancement();
         this->_attaque_de_pres.draw(window);
         this->_attaque_de_pres.animate();
     }
     else if (sf::Keyboard::isKeyPressed(sf::Keyboard::D) && is_my_covidmon)
     {
-        switch(this->_direction)
-        {
-        case Up:
-            this->_attaque_de_pres.set_position_x(this->get_position_x());
-            this->_attaque_de_pres.set_position_y(this->get_position_y() - SIZE_BLOCK/2);
-            break;
-        case Down:
-            this->_attaque_de_pres.set_position_x(this->get_position_x());
-            this->_attaque_de_pres.set_position_y(this->get_position_y() + SIZE_BLOCK/2);
-            break;
-        case Right:
-            this->_attaque_de_pres.set_position_x(this->get_position_x() + SIZE_BLOCK/2);
-            this->_attaque_de_pres.set_position_y(this->get_position_y());
-            break;
-        case Left:
-            this->_attaque_de_pres.set_position_x(this->get_position_x() - SIZE_BLOCK/2);
-            this->_attaque_de_pres.set_position_y(this->get_position_y());
-            break;
-        }
         this->_attaque_de_pres.set_est_lancee(true);
-    }
-    else if(!is_my_covidmon)
-    {
-        switch(this->_direction)
-        {
-        case Up:
-            this->_attaque_de_pres.set_position_x(this->get_position_x());
-            this->_attaque_de_pres.set_position_y(this->get_position_y() - SIZE_BLOCK/2);
-            break;
-        case Down:
-            this->_attaque_de_pres.set_position_x(this->get_position_x());
-            this->_attaque_de_pres.set_position_y(this->get_position_y() + SIZE_BLOCK/2);
-            break;
-        case Right:
-            this->_attaque_de_pres.set_position_x(this->get_position_x() + SIZE_BLOCK/2);
-            this->_attaque_de_pres.set_position_y(this->get_position_y());
-            break;
-        case Left:
-            this->_attaque_de_pres.set_position_x(this->get_position_x() - SIZE_BLOCK/2);
-            this->_attaque_de_pres.set_position_y(this->get_position_y());
-            break;
-        }
     }
 }
 
@@ -231,15 +211,17 @@ void Covidmon::collision_attaque(Covidmon &P)
     if (this->_attaque_de_loin.distance(P) < SIZE_BLOCK / 3)
     {
         this->receive_degat(P);
-        std::cout << this->_nom << " : " << this->get_pv_current() << " Pv"<< std::endl;
+        std::cout << this->_nom << " distance : " << this->get_pv_current() << " Pv"<< std::endl;
         this->_attaque_de_loin.set_est_lancee(false);
+        this->_attaque_de_loin.set_just_clicked(true);
     }
 
-    if (this->_attaque_de_pres.distance(P) < 2 * SIZE_BLOCK)
+    if (this->_attaque_de_pres.distance(P) < SIZE_BLOCK)
     {
         this->receive_degat(P);
-        std::cout << this->_nom << " : " << this->get_pv_current() << " Pv"<< std::endl;
+        std::cout << this->_nom << " pres : " << this->get_pv_current() << " Pv"<< std::endl;
         this->_attaque_de_pres.set_est_lancee(false);
+        this->_attaque_de_pres.set_just_clicked(true);
     }
 }
 

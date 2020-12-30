@@ -10,6 +10,7 @@ private:
     sf::Uint16 _portee;
     sf::Clock _clock;
     bool _est_lancee;
+    bool _just_clicked;
 
 public:
     Attaque_de_pres();
@@ -20,10 +21,12 @@ public:
     int get_degats() const;
     bool get_est_lancee() const;
     sf::Uint16 get_animation() const;
+    bool get_just_clicked() const;
 
     void set_degats(int);
     void set_est_lancee(bool);
     void set_animation(sf::Uint16);
+    void set_just_clicked(bool);
 
     void animate();
     void lancement();
