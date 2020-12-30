@@ -12,13 +12,13 @@ int main(int argc, char* argv[])
 
 	else if (argc == 2)
 	{
-		short int p = atoi(argv[1]);
-		if( p < 1024 || p > 65535){
+		short int port = atoi(argv[1]);
+		if( port < 1024 || port > 65535){
 			std::cerr << "Ça va pas non ?"<<std::endl;
 		}
 		else
 		{
-			Serveur serveur(p);
+			Serveur serveur(port);
 			serveur.run();
 		}
 	}

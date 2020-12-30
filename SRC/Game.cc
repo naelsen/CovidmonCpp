@@ -1,64 +1,26 @@
 #include "Game.hh"
 
-Game::Game() : _current_background(intro),
-			   _selec_dresseur(false),
-			   _selec_covidmon(false),
+Game::Game() : _port(30001),
+			   _IP("local"),
 			   _window(sf::VideoMode(WINDOW_WIDTH, WINDOW_HEIGHT), "LE MONDE D'APRES ...")
 {
-	this->_font.loadFromFile("Images/arial.ttf");
-	this->_text.setFont(this->_font);
-	this->_text.setString("Choisissez un joueur \n   (avec la souris!)");
-	this->_text.setCharacterSize(17);
-	this->_text.setStyle(sf::Text::Bold);
-	this->_text.setFillColor(sf::Color::Black);
-	this->_text.setPosition(sf::Vector2f(245, 220));
-
-	this->_backgrounds.insert(couple("intro", Image("Images/Backgrounds/intro3.png")));
-	this->_backgrounds.insert(couple("menu", Image("Images/Backgrounds/menu.png")));
-	this->_backgrounds.insert(couple("choix_personnage", Image("Images/Backgrounds/choix_personnage.png")));
-	this->_backgrounds.insert(couple("choix_covidmon", Image("Images/Backgrounds/choix_covidmon.png")));
-	this->_backgrounds.insert(couple("arene", Image("Images/Backgrounds/arene.png")));
-
-	this->_dresseurs.push_back(Dresseur("Images/Personnages/G_charo.png", "Charo"));
-	this->_dresseurs.push_back(Dresseur("Images/Personnages/G_tantine.png", "Tantine"));
-	this->_dresseurs.push_back(Dresseur("Images/Personnages/G_tchang.png", "Tchang"));
-	this->_dresseurs.push_back(Dresseur("Images/Personnages/G_zepekenio.png", "Zepekenio"));
-	this->_dresseurs.push_back(Dresseur("Images/Personnages/M_magelan.png", "Magelan"));
-	this->_dresseurs.push_back(Dresseur("Images/Personnages/M_magman.png", "Magman"));
-	this->_dresseurs.push_back(Dresseur("Images/Personnages/M_toto.png", "Toto"));
-	this->_dresseurs.push_back(Dresseur("Images/Personnages/M_zepekenia.png", "Zepekenia"));
-
-	this->_covidmons.push_back(Covidmon("Images/Covidmons/E_galarian.png", "Galarian", Eau));
-	this->_covidmons.push_back(Covidmon("Images/Covidmons/E_leviator.png", "Leviator", Eau));
-	this->_covidmons.push_back(Covidmon("Images/Covidmons/E_mewtoo.png", "Mewtoo", Eau));
-	this->_covidmons.push_back(Covidmon("Images/Covidmons/E_tortank.png", "Tortank", Eau));
-	this->_covidmons.push_back(Covidmon("Images/Covidmons/F_camerupt.png", "Camerupt", Feu));
-	this->_covidmons.push_back(Covidmon("Images/Covidmons/F_darumaka.png", "Darumaka", Feu));
-	this->_covidmons.push_back(Covidmon("Images/Covidmons/F_dracofeu.png", "Dracofeu", Feu));
-	this->_covidmons.push_back(Covidmon("Images/Covidmons/F_incinerator.png", "Incinerator", Feu));
-	this->_covidmons.push_back(Covidmon("Images/Covidmons/P_chierbe.png", "Chierbe", Plante));
-	this->_covidmons.push_back(Covidmon("Images/Covidmons/P_gardevoir.png", "Gardevoir", Plante));
-	this->_covidmons.push_back(Covidmon("Images/Covidmons/P_herbiossa.png", "Herbiossa", Plante));
-	this->_covidmons.push_back(Covidmon("Images/Covidmons/P_pandours.png", "Pandours", Plante));
-	this->_covidmons.push_back(Covidmon("Images/Covidmons/V_articodin.png", "Articodin", Vol));
-	this->_covidmons.push_back(Covidmon("Images/Covidmons/V_galacvole.png", "Galacvole", Vol));
-	this->_covidmons.push_back(Covidmon("Images/Covidmons/V_lubegon.png", "Lubegon", Vol));
-	this->_covidmons.push_back(Covidmon("Images/Covidmons/V_oh-oh.png", "Oh-oh", Vol));
-
-	this->_placement_dresseur();
-	this->_placement_covidmon();
-	sf::Clock c1;
-	sf::Clock c2;
-	bool sound_switched1 = false;
-	bool sound_switched2 = false;
-	this->_clocks.push_back(c1);
-	this->_clocks.push_back(c2);
-	this->_sounds_switched.push_back(sound_switched1);
-	this->_sounds_switched.push_back(sound_switched2);
-	this->_clocks[0].restart();
-	this->_clocks[1].restart();
-	this->_window.setFramerateLimit(60);
+	this->build();
 }
+
+Game::Game(short int port) : _port(port),
+							 _IP("local"),
+							 _window(sf::VideoMode(WINDOW_WIDTH, WINDOW_HEIGHT), "LE MONDE D'APRES ...")
+{
+	this->build();
+}
+
+Game::Game(short int port, std::string IP) : _port(port),
+											 _IP(IP),
+							 				 _window(sf::VideoMode(WINDOW_WIDTH, WINDOW_HEIGHT), "LE MONDE D'APRES ...")
+{
+	this->build();
+}
+
 
 Game::~Game()
 {
@@ -431,8 +393,21 @@ void Game::_choisir_dresseur()
 			it->got_a_clic(this->_window);
 			if (it->get_choisi())
 			{
-				Player P(*it);
-				this->_players.push_back(P);
+				if(this->_port == 30001 && this->_IP == "local")
+				{
+					Player P(*it);
+					this->_players.push_back(P);
+				}
+				if(this->_port != 30001 && this->_IP == "local")
+				{
+					Player P(*it, this->_port);
+					this->_players.push_back(P);
+				}
+				if(this->_port != 30001 && this->_IP != "local")
+				{
+					Player P(*it, this->_port, this->_IP);
+					this->_players.push_back(P);
+				}
 				if (this->_players[0].is_accepted())
 				{
 					this->_selec_dresseur = true;
@@ -512,6 +487,8 @@ void Game::_clean()
 	this->_players[0].get_covidmon()[1]->set_pv_current(this->_players[0].get_covidmon()[1]->get_pv_max());
 	this->_players[0].get_covidmon()[0]->set_current_bg(choix_covidmon);
 	this->_players[0].get_covidmon()[1]->set_current_bg(choix_covidmon);
+	this->_players[0].get_covidmon()[0]->set_direction(Down);
+	this->_players[0].get_covidmon()[1]->set_direction(Down);
 	this->_players[0].get_covidmon()[0]->set_est_vivant(true);
 	this->_players[0].get_covidmon()[1]->set_est_vivant(true);
 	this->_players[0].get_covidmon()[1]->set_current_bg(choix_covidmon);
@@ -579,4 +556,64 @@ void Game::_placement_covidmon()
 			l++;
 		}
 	}
+}
+
+void Game::build()
+{
+	this->_current_background = intro;
+	this->_selec_dresseur = false;
+	this->_selec_covidmon = false;
+	this->_font.loadFromFile("Images/arial.ttf");
+	this->_text.setFont(this->_font);
+	this->_text.setString("Choisissez un joueur \n   (avec la souris!)");
+	this->_text.setCharacterSize(17);
+	this->_text.setStyle(sf::Text::Bold);
+	this->_text.setFillColor(sf::Color::Black);
+	this->_text.setPosition(sf::Vector2f(245, 220));
+
+	this->_backgrounds.insert(couple("intro", Image("Images/Backgrounds/intro3.png")));
+	this->_backgrounds.insert(couple("menu", Image("Images/Backgrounds/menu.png")));
+	this->_backgrounds.insert(couple("choix_personnage", Image("Images/Backgrounds/choix_personnage.png")));
+	this->_backgrounds.insert(couple("choix_covidmon", Image("Images/Backgrounds/choix_covidmon.png")));
+	this->_backgrounds.insert(couple("arene", Image("Images/Backgrounds/arene.png")));
+
+	this->_dresseurs.push_back(Dresseur("Images/Personnages/G_charo.png", "Charo"));
+	this->_dresseurs.push_back(Dresseur("Images/Personnages/G_tantine.png", "Tantine"));
+	this->_dresseurs.push_back(Dresseur("Images/Personnages/G_tchang.png", "Tchang"));
+	this->_dresseurs.push_back(Dresseur("Images/Personnages/G_zepekenio.png", "Zepekenio"));
+	this->_dresseurs.push_back(Dresseur("Images/Personnages/M_magelan.png", "Magelan"));
+	this->_dresseurs.push_back(Dresseur("Images/Personnages/M_magman.png", "Magman"));
+	this->_dresseurs.push_back(Dresseur("Images/Personnages/M_toto.png", "Toto"));
+	this->_dresseurs.push_back(Dresseur("Images/Personnages/M_zepekenia.png", "Zepekenia"));
+
+	this->_covidmons.push_back(Covidmon("Images/Covidmons/E_galarian.png", "Galarian", Eau));
+	this->_covidmons.push_back(Covidmon("Images/Covidmons/E_leviator.png", "Leviator", Eau));
+	this->_covidmons.push_back(Covidmon("Images/Covidmons/E_mewtoo.png", "Mewtoo", Eau));
+	this->_covidmons.push_back(Covidmon("Images/Covidmons/E_tortank.png", "Tortank", Eau));
+	this->_covidmons.push_back(Covidmon("Images/Covidmons/F_camerupt.png", "Camerupt", Feu));
+	this->_covidmons.push_back(Covidmon("Images/Covidmons/F_darumaka.png", "Darumaka", Feu));
+	this->_covidmons.push_back(Covidmon("Images/Covidmons/F_dracofeu.png", "Dracofeu", Feu));
+	this->_covidmons.push_back(Covidmon("Images/Covidmons/F_incinerator.png", "Incinerator", Feu));
+	this->_covidmons.push_back(Covidmon("Images/Covidmons/P_chierbe.png", "Chierbe", Plante));
+	this->_covidmons.push_back(Covidmon("Images/Covidmons/P_gardevoir.png", "Gardevoir", Plante));
+	this->_covidmons.push_back(Covidmon("Images/Covidmons/P_herbiossa.png", "Herbiossa", Plante));
+	this->_covidmons.push_back(Covidmon("Images/Covidmons/P_pandours.png", "Pandours", Plante));
+	this->_covidmons.push_back(Covidmon("Images/Covidmons/V_articodin.png", "Articodin", Vol));
+	this->_covidmons.push_back(Covidmon("Images/Covidmons/V_galacvole.png", "Galacvole", Vol));
+	this->_covidmons.push_back(Covidmon("Images/Covidmons/V_lubegon.png", "Lubegon", Vol));
+	this->_covidmons.push_back(Covidmon("Images/Covidmons/V_oh-oh.png", "Oh-oh", Vol));
+
+	this->_placement_dresseur();
+	this->_placement_covidmon();
+	sf::Clock c1;
+	sf::Clock c2;
+	bool sound_switched1 = false;
+	bool sound_switched2 = false;
+	this->_clocks.push_back(c1);
+	this->_clocks.push_back(c2);
+	this->_sounds_switched.push_back(sound_switched1);
+	this->_sounds_switched.push_back(sound_switched2);
+	this->_clocks[0].restart();
+	this->_clocks[1].restart();
+	this->_window.setFramerateLimit(60);
 }

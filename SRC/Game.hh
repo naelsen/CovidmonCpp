@@ -32,6 +32,8 @@ private:
 	Bg _current_background;
 	bool _selec_dresseur;
 	bool _selec_covidmon;
+	short int _port;
+	std::string _IP;
 	// Attribut SFML
 	sf::RenderWindow _window;
 	sf::Event _event;
@@ -58,9 +60,12 @@ private:
 	void _clean();
 	void _placement_dresseur();
 	void _placement_covidmon();
+	void build();
 
 public:
 	Game();
+	Game(short int);
+	Game(short int, std::string);
 	~Game();
 	void run();
 };

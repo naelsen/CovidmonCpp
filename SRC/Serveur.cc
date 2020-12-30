@@ -4,7 +4,7 @@ Serveur::Serveur() : _port(30001),
                      _done(false)
 {
     if (this->_listener.listen(this->_port) == sf::Socket::Done)
-        std::cout << "Server is Ready" << std::endl;
+        std::cout << "Server is Ready in the port : " << this->_port << std::endl;
     else
         exit(0);
     this->_selector.add(this->_listener);

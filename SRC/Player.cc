@@ -14,7 +14,28 @@ Player::Player(Dresseur &dresseur) : _dresseur(&dresseur),
                                      _win(false)
 {
     this->_IP = sf::IpAddress::getLocalAddress();
-    //this->IP = "109.0.200.98";
+}
+
+Player::Player(Dresseur &dresseur, short int port) : _dresseur(&dresseur),
+                                                     _pokeball("Images/pokeball.png"),
+                                                     _port(port),
+                                                     _accepted(true),
+                                                     _first_on_arene(true),
+                                                      _end(false),
+                                                     _win(false)
+{
+    this->_IP = sf::IpAddress::getLocalAddress();
+}
+
+Player::Player(Dresseur &dresseur, short int port,std::string ip) : _dresseur(&dresseur),
+                                                                  _pokeball("Images/pokeball.png"),
+                                                                  _port(port),
+                                                                  _accepted(true),
+                                                                  _first_on_arene(true),
+                                                                  _end(false),
+                                                                  _win(false)
+{
+    this->_IP = ip;
 }
 
 Player::Player(Player const &P) : _IP(P._IP),
