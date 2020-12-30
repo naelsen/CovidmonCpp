@@ -4,14 +4,15 @@ LIBFLAGS = -lsfml-graphics -lsfml-window -lsfml-system -lsfml-network -lsfml-aud
 SRC = $(wildcard SRC/*.cc)
 TST_DIR = tests/
 OBJ = $(SRC:.cc=.o)
+OBJ_EXEC = $(filter-out SRC/main_serveur.o , $(OBJ))
 LIB = libgames.a
 EXEC = jeu
 
 all: $(EXEC)
 
 $(EXEC): $(OBJ)
-	$(CC) SRC/main_serveur.cpp  SRC/Serveur.o -o serveur $(LIBFLAGS)
-	ar -cr $(LIB) $(OBJ)
+	$(CC) SRC/main_serveur.cc  SRC/Serveur.o -o serveur $(LIBFLAGS)
+	ar -cr $(LIB) $(OBJ_EXEC)
 	$(CC) $(LIB) -o $@ $(LIBFLAGS)
 
 %.o : %.cc

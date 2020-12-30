@@ -1,8 +1,3 @@
-#include <iostream>
-#include <SFML/Audio.hpp>
-#include <SFML/Graphics.hpp>
-#include <string>
-
 #include "Game.hh"
 
 // IP localhost : 127.0.0.1 (Pareil pour chaque ordi)
@@ -13,7 +8,7 @@
 
 int main(int argc, char *argv[])
 {
-	Game game;
-	game.run();
-	return 0;
-}
+Game game;
+game.run();
+return 0;
+} 
