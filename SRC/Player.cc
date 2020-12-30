@@ -222,12 +222,13 @@ void Player::receive(std::vector<Covidmon> &Covidmon, sf::RenderWindow& window)
             if(is_attacking_far && !_covidmon[1]->get_attaque_de_loin().get_est_lancee())
             {
                 _covidmon[1]->get_attaque_de_loin().set_est_lancee(is_attacking_far);
+                _covidmon[1]->get_attaque_de_loin().set_just_clicked(true);
 
             }
             if(is_attacking_near && !_covidmon[1]->get_attaque_de_pres().get_est_lancee())
             {
                 _covidmon[1]->get_attaque_de_pres().set_est_lancee(is_attacking_near);
-
+                _covidmon[1]->get_attaque_de_pres().set_just_clicked(true);
             }
         } 
 
