@@ -96,15 +96,17 @@ Game::Game() : _current_background(intro),
 	}
 	sf::Clock c1;
 	sf::Clock c2;
+	sf::Clock c3;
 	bool sound_switched1 = false;
 	bool sound_switched2 = false;
 	this->_clocks.push_back(c1);
 	this->_clocks.push_back(c2);
+	this->_clocks.push_back(c3);
 	this->_sounds_switched.push_back(sound_switched1);
 	this->_sounds_switched.push_back(sound_switched2);
 	this->_clocks[0].restart();
 	this->_clocks[1].restart();
-	this->_window.setFramerateLimit(30);
+	this->_window.setFramerateLimit(60);
 }
 
 Game::~Game()
@@ -144,17 +146,21 @@ void Game::run()
 					else
 						std::cout << "Looser" << std::endl;
 					char recommence;
-					sf::Clock tictac;
-					while (tictac.getElapsedTime().asSeconds() > 2)
+					if(_clocks[2].getElapsedTime().asSeconds() > 5)
 					{
+						_clocks[2].restart();
+						_clocks[3].restart();
 					}
-					std::cout << "Recommencer ? : (o/n)";
-					std::cin >> recommence;
-					if (recommence == 'o')
+					if(_clocks[3].getElapsedTime().asSeconds() < 2)
 					{
-						this->run();
+						std::cout << "Recommencer ? : (o/n)";
+						std::cin >> recommence;
+						if (recommence == 'o')
+						{
+							this->run();
+						}
+						exit(0);
 					}
-					exit(0);
 				}
 			}
 		}

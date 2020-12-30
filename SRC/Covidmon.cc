@@ -286,7 +286,7 @@ bool Covidmon::est_fort_contre(Covidmon &P)
 
 void Covidmon::receive_degat(Covidmon &P)
 {
-    if (P.get_pv_current()>30000 || P.get_pv_current()<0)
+    if (P.get_pv_current()>60000)
         P.set_pv_current(0);
     else
     {
