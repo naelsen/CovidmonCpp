@@ -73,6 +73,8 @@ Covidmon::Covidmon(std::string image, std::string nom, Type _type) : Entite(imag
     this->_delai_attaques[0].restart();
     this->_delai_attaques[1].restart();
 }
+/* Constructeur par copie, utilisé 
+   dans les vector de la classe Game */
 
 Covidmon::Covidmon(Covidmon const &Covidmon) : Entite(Covidmon),
                                                _type(Covidmon._type),
@@ -81,7 +83,7 @@ Covidmon::Covidmon(Covidmon const &Covidmon) : Entite(Covidmon),
                                                _pv_current(Covidmon._pv_current),
                                                _pv_max(Covidmon._pv_max),
                                                _est_vivant(Covidmon._est_vivant),
-                                               _bar(Covidmon.this->_bar)
+                                               _bar(Covidmon._bar)
 {
     //Gestion du temps de pause (entre deux attaques successives)
     sf::Clock c1,c2;
@@ -432,13 +434,15 @@ void Covidmon::got_a_clic(sf::RenderWindow &window)
     bool collision_y = dy < SIZE_BLOCK;
     //Les 2 conditions sont respectées si le curseur est sur la case du Covidmon
     if (sf::Mouse::isButtonPressed(sf::Mouse::Right) || sf::Mouse::isButtonPressed(sf::Mouse::Left))
+    {
         if (collision_x && collision_y)
             _choisi = true;
         else
             _choisi = false;
+    }
 }
 //Affiche le nom de l'instance choisie
-//Charge le text avec la fonction text de SFML
+//Charge le text avec la classe text de SFML
 void Covidmon::print_name(sf::RenderWindow &window)
 {
     sf::Text text("Covidmon choisi : " + this->get_nom(), _font);
