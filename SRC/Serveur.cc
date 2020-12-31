@@ -140,20 +140,22 @@ void Serveur::action_clients()
 
 void Serveur::communication_dresseur(std::size_t i)
 {
+    // Paquet qui va servir a savoir si le données concerne le dresseur ou le covidmon
     sf::Packet receivePacket_type;
+    // Les infos recues
     sf::Packet receivePacket_data;
-    // On récupère toute les entrées du client
+    // Si une paquet est recu on entre dans le if
     if (this->_Clients[i]->receive(receivePacket_type) == sf::Socket::Done)
     {
         this->_Clients[i]->receive(receivePacket_data);
         receivePacket_type >> this->_type;
         if (this->_type == "dresseur")
         {
-            // On a charge les informations dans cette ordre avec le client donc on le recupere dans cet ordre
+            // On a chargé les informations dans cette ordre avec le client donc on le recupere dans cet ordre
             receivePacket_data >> this->_nom >> this->_dir >> this->_animation >> this->_x >> this->_y >> this->_bg;
             sf::Packet sendPacket;
             sendPacket << this->_nom << this->_dir << this->_animation << this->_x << this->_y << this->_bg;
-            // On envoie le paquet a tout les autres clients pour qu'ils savent ce que l'autre client a envoyé au serveur
+            // On envoie le paquet au client qui n'a pas envoyer le paquet
             for (std::size_t j = 0; j < this->_Clients.size(); j++)
             {
                 if (i != j)
@@ -165,18 +167,17 @@ void Serveur::communication_dresseur(std::size_t i)
     }
 }
 
+// Meme fonctionnement que précedemment
 void Serveur::communication_covidmon(std::size_t i)
 {
     sf::Packet receivePacket_type;
     sf::Packet receivePacket_data;
-    // On récupère toute les entrées du client
     if (this->_Clients[i]->receive(receivePacket_type) == sf::Socket::Done)
     {
         this->_Clients[i]->receive(receivePacket_data);
         receivePacket_type >> this->_type;
         if (this->_type == "covidmon")
         {
-            // On a charge les informations dans cette ordre avec le client donc on le recupere dans cet ordre
             receivePacket_data >> this->_nom >> this->_dir >> this->_animation >> this->_x >> this->_y >> this->_bg >> this->_pv_current >> this->_is_attacking_near >> this->_is_attacking_far;
             if (this->_nom_covidmon.size() == 0)
             {
@@ -201,7 +202,6 @@ void Serveur::communication_covidmon(std::size_t i)
             }
             sf::Packet sendPacket;
             sendPacket << this->_nom << this->_dir << this->_animation << this->_x << this->_y << this->_bg << this->_pv_current << this->_is_attacking_near << this->_is_attacking_far;
-            // On envoie le paquet a tout les autres clients pour qu'ils savent ce que l'autre client a envoyé au serveur
             for (std::size_t j = 0; j < this->_Clients.size(); j++)
             {
                 if (i != j)
