@@ -60,7 +60,8 @@ private:
 	void _clean();
 	void _placement_dresseur();
 	void _placement_covidmon();
-	void build();
+	void _build();
+	void _show_commande();
 
 public:
 	Game();

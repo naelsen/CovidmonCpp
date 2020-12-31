@@ -65,6 +65,11 @@ Covidmon::Covidmon(Covidmon const &Covidmon) : Entite(Covidmon),
                                                _est_vivant(Covidmon._est_vivant),
                                                _bar(Covidmon._bar)
 {
+    sf::Clock c1,c2;
+    this->_delai_attaques.push_back(c1);
+    this->_delai_attaques.push_back(c2);
+    this->_delai_attaques[0].restart();
+    this->_delai_attaques[1].restart();
     this->_nom = Covidmon._nom;
     this->_font.loadFromFile("Images/arial.ttf");
     if (!__texture_pv.loadFromFile("Images/vie2.png"))
@@ -152,7 +157,7 @@ void Covidmon::attaque_de_loin(sf::RenderWindow &window, bool is_my_covidmon)
         this->_attaque_de_loin.move();
         this->_attaque_de_loin.animate();
     }
-    else if (sf::Keyboard::isKeyPressed(sf::Keyboard::A) && is_my_covidmon && this->_clock[1].getElapsedTime().asMilliseconds()>400)
+    else if (sf::Keyboard::isKeyPressed(sf::Keyboard::A) && is_my_covidmon && this->_delai_attaques[1].getElapsedTime().asMilliseconds()>400)
     {
         this->_delai_attaques[1].restart();
         this->_attaque_de_loin.set_est_lancee(true);
@@ -191,7 +196,7 @@ void Covidmon::attaque_de_pres(sf::RenderWindow &window, bool is_my_covidmon)
         this->_attaque_de_pres.draw(window);
         this->_attaque_de_pres.animate();
     }
-    else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Z) && is_my_covidmon && this->_delai_attaques[0].getElapsedTime().asMilliseconds()>400)
+    else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Z) && is_my_covidmon && this->_delai_attaques[0].getElapsedTime().asMilliseconds()>800)
     {
         this->_delai_attaques[0].restart();
         this->_attaque_de_pres.set_est_lancee(true);

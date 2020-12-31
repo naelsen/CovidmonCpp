@@ -35,6 +35,11 @@ sf::Uint16 Image::get_position_y() const
     return this->__position_y;
 }
 
+void Image::set_scale(float x, float y)
+{
+    this->__sprite_image.setScale(x,y);
+}
+
 void Image::set_position_x(sf::Uint16 x)
 {
     this->__position_x = x;

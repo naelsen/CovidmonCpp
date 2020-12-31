@@ -30,6 +30,8 @@ public:
 	~Image();
 	sf::Uint16 get_position_x() const;
 	sf::Uint16 get_position_y() const;
+
+	void set_scale(float,float);
 	void set_position_x(sf::Uint16);
 	void set_position_y(sf::Uint16);
 	void draw(sf::RenderWindow &);

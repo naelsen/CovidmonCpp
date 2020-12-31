@@ -4,21 +4,21 @@ Game::Game() : _port(30001),
 			   _IP("local"),
 			   _window(sf::VideoMode(WINDOW_WIDTH, WINDOW_HEIGHT), "LE MONDE D'APRES ...")
 {
-	this->build();
+	this->_build();
 }
 
 Game::Game(short int port) : _port(port),
 							 _IP("local"),
 							 _window(sf::VideoMode(WINDOW_WIDTH, WINDOW_HEIGHT), "LE MONDE D'APRES ...")
 {
-	this->build();
+	this->_build();
 }
 
 Game::Game(short int port, std::string IP) : _port(port),
 											 _IP(IP),
 							 				 _window(sf::VideoMode(WINDOW_WIDTH, WINDOW_HEIGHT), "LE MONDE D'APRES ...")
 {
-	this->build();
+	this->_build();
 }
 
 
@@ -53,10 +53,22 @@ void Game::run()
 		this->_draw();
 		this->_manage();
 		this->_check_end();
+		this->_show_commande();
 		this->_window.display();
 	}
 }
 
+void Game::_show_commande()
+{
+	if(this->_current_background == arene)
+	{
+		Image att("Images/cmd.png");
+		att.set_position_x(60);
+		att.set_position_y(WINDOW_HEIGHT - 50);
+		att.set_scale(0.28f,0.27f);
+		att.draw(this->_window);
+	}
+}
 void Game::_draw()
 {
 	this->_draw_bg();
@@ -558,7 +570,7 @@ void Game::_placement_covidmon()
 	}
 }
 
-void Game::build()
+void Game::_build()
 {
 	this->_current_background = intro;
 	this->_selec_dresseur = false;
