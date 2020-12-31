@@ -113,7 +113,8 @@ Covidmon::Covidmon(Covidmon const &Covidmon) : Entite(Covidmon),
     //Chargement des buffers dans les Sounds
     this->_son_attaques[0].setBuffer(this->_buffer_attaques[0]);
     this->_son_attaques[1].setBuffer(this->_buffer_attaques[1]);
-
+    this->_son_attaques[0].setVolume(27);
+    this->_son_attaques[1].setVolume(40);
 }
 
 Covidmon::~Covidmon()
