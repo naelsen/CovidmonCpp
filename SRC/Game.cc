@@ -293,7 +293,7 @@ void Game::_front_sound()
 			this->_sound_front.play();
 		}
 	}
-	else if (this->_players[0].is_moving() && this->_clocks[0].getElapsedTime().asMilliseconds() > 800)
+	else if (this->_players[0].is_moving() && this->_clocks[0].getElapsedTime().asMilliseconds() > 800 && this->_current_background != arene)
 	{
 		if (this->_sounds_switched[0] == true)
 		{
