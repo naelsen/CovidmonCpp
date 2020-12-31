@@ -541,7 +541,7 @@ void Game::_choisir_covidmon()
 				else
 				{
 					// On ajoute le covidmon au player
-					this->_players[0].set_covidmon(*it);$
+					this->_players[0].set_covidmon(*it);
 					// Le covidmon est selectionné
 					this->_selec_covidmon = true;
 				}

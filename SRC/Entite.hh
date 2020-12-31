@@ -18,6 +18,11 @@ typedef enum Direction
     Up
 } Direction;
 
+/* Pas d'instance de cette classe crée dans
+ * le jeu, elle sert à rassembler certains
+ * attributs et fonctions des 3 classes 
+ * "image avec mouvement" qui en héritent
+*/
 class Entite : public Image
 {
 protected:

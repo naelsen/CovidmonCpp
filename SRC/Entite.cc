@@ -78,12 +78,12 @@ void Entite::set_direction(Direction direction)
 {
     this->_direction = direction;
 }
-
 void Entite::set_choisi(bool choix)
 {
     this->_choisi = choix;
 }
-
+// Fond actuel : attribut d'affichage 
+// avce la position
 void Entite::set_current_bg(Bg bg)
 {
     this->_current_bg = bg;
