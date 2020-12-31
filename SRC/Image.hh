@@ -7,13 +7,6 @@
 
 #include "define.hh"
 
-typedef enum Direction
-{
-	Down,
-	Left,
-	Right,
-	Up
-} Direction;
 
 class Image
 {
@@ -28,6 +21,8 @@ public:
 	Image(std::string);
 	Image(Image const &);
 	~Image();
+	/* Attribut déclaré en entier "portable" sur 16 octets
+	   pour transmettre au serveur sans modification */
 	sf::Uint16 get_position_x() const;
 	sf::Uint16 get_position_y() const;
 

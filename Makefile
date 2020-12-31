@@ -27,3 +27,6 @@ testcase :
 
 clean:
 	rm -f $(OBJ) SRC/Serveur.o SRC/main_serveur.o $(EXEC) serveur $(LIB)
+cleantest:
+	cd $(TST_DIR) ; make clean
+distclean : clean cleantest

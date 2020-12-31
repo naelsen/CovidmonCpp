@@ -17,7 +17,7 @@
 #include "../SRC/Covidmon.hh"
 #include "../SRC/Attaque_de_loin.hh"
 #include "../SRC/Attaque_de_pres.hh"
-#include "../SRC/Serveur.hpp"
+#include "../SRC/Serveur.hh"
 #include "../SRC/Game.hh"
 
 
@@ -43,8 +43,7 @@ TEST_CASE("3: Covidmon")
   Covidmon Draco("Images/Covidmons/F_dracofeu.png", "Dracofeu", Feu);
   Covidmon Torta("Images/Covidmons/E_tortank.png", "Tortank", Eau);
   REQUIRE(Draco.get_pv_max() == 650);
-  REQUIRE(Draco.est_faible_contre(Torta));
-  REQUIRE(Torta.est_fort_contre(Draco));
+  REQUIRE(Torta.get_pv_max() == 800);
   REQUIRE(Draco.get_est_vivant());
 }
 

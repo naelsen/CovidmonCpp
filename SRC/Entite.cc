@@ -27,7 +27,7 @@ Entite::Entite()
 Entite::~Entite()
 {
 }
-
+//Getteur
 std::string Entite::get_nom() const
 {
     return this->_nom;
@@ -57,6 +57,7 @@ Bg Entite::get_current_bg() const
 {
     return this->_current_bg;
 }
+// Setteur
 
 void Entite::set_nom(std::string nom)
 {
@@ -90,6 +91,9 @@ void Entite::set_animation(sf::Uint16 animation)
 
 void Entite::move()
 {
+    /*Gère le déplacement de l'entité, les sous-fonctions sont
+       virtelles pures : redifiniton dans les classes filles */
+
     if (this->_clock.getElapsedTime().asSeconds() > 0.30f)
         this->_animation = 0;
     this->animate();

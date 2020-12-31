@@ -7,9 +7,21 @@
 #include "define.hh"
 #include "Image.hh"
 
+/*  Direction des deplacement des 
+personnages et des attaques */
+
+typedef enum Direction
+{
+    Down,
+    Left,
+    Right,
+    Up
+} Direction;
+
 class Entite : public Image
 {
 protected:
+    
     sf::Clock _clock;
     std::string _nom;
     sf::Uint16 _speed;
@@ -19,6 +31,9 @@ protected:
     bool _choisi;
     Bg _current_bg;
 
+    /*Déplacement différents (limites)
+    selon le type d'instance     */
+    
     virtual void _move_up() = 0;
     virtual void _move_down() = 0;
     virtual void _move_right() = 0;

@@ -4,7 +4,7 @@ LIBFLAGS = -lsfml-graphics -lsfml-window -lsfml-system -lsfml-network -lsfml-aud
 SRC= $(wildcard ../SRC/*.cc)
 OBJ= $(SRC:.cc=.o)
 TST= $(wildcard *.cc)
-OBJ_TEST = $(filter-out ../SRC/main.o, $(OBJ)) $(TST:.cc=.o)
+OBJ_TEST = $(filter-out ../SRC/main.o ../SRC/main_serveur.o, $(OBJ)) $(TST:.cc=.o)
 
 testcase : $(OBJ_TEST) 
 	$(CC) $(CCFLAGS) $(OBJ_TEST)  -o $@ $(LIBFLAGS)
