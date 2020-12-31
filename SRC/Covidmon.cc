@@ -78,6 +78,18 @@ Covidmon::Covidmon(Covidmon const &Covidmon) : Entite(Covidmon),
     }
     this->__sprite_pv.setTexture(this->__texture_pv);
     this->__sprite_pv.setScale(sf::Vector2f(0.08f, 0.12f));
+
+    sf::SoundBuffer b1, b2;
+    sf::Sound s1,s2;
+    this->_buffer_attaques.push_back(b1);
+    this->_buffer_attaques.push_back(b2);
+    this->_son_attaques.push_back(s1);
+    this->_son_attaques.push_back(s2);
+    if(!this->_buffer_attaques[0].loadFromFile("Sons/explosion.wav")){std::cerr << "Erreur chargement explosion.wav" << std::endl;}
+    if(!this->_buffer_attaques[1].loadFromFile("Sons/laser.wav")){std::cerr << "Erreur chargement laser.wav" << std::endl;}
+    this->_son_attaques[0].setBuffer(this->_buffer_attaques[0]);
+    this->_son_attaques[1].setBuffer(this->_buffer_attaques[1]);
+
 }
 
 Covidmon::~Covidmon()
@@ -152,6 +164,7 @@ void Covidmon::attaque_de_loin(sf::RenderWindow &window, bool is_my_covidmon)
             this->_attaque_de_loin.set_position_y(this->get_position_y());
             this->_attaque_de_loin.set_direction(this->get_direction());
             this->_attaque_de_loin.set_just_clicked(false);
+            this->_son_attaques[1].play();
         }
         this->_attaque_de_loin.draw(window);
         this->_attaque_de_loin.move();
@@ -191,6 +204,7 @@ void Covidmon::attaque_de_pres(sf::RenderWindow &window, bool is_my_covidmon)
                 break;
             }
             this->_attaque_de_pres.set_just_clicked(false);
+            this->_son_attaques[0].play();
         }
         this->_attaque_de_pres.lancement();
         this->_attaque_de_pres.draw(window);

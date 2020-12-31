@@ -248,7 +248,7 @@ void Game::_back_sound()
 			if (!this->_sound_back.openFromFile("Sons/musique_arene1.wav"))
 				std::cout << "Erreur lors de l'ouverture de Sons/musique_arene1.wav" << std::endl;
 			this->_sounds_switched[1] = true;
-			this->_sound_back.setVolume(5);
+			this->_sound_back.setVolume(20);
 			this->_clocks[1].restart();
 			this->_sound_back.play();
 		}
@@ -260,38 +260,35 @@ void Game::_back_sound()
 	}
 }
 
-void Game::_play_front(std::string fichier)
+void Game::_front_sound()
 {
+	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Return) && this->_current_background != arene && this->_clocks[0].getElapsedTime().asMilliseconds() > 200)
+	{
+		if (this->_sounds_switched[0] == false)
+		{
+			if (!this->_sound_front.openFromFile("Sons/b.wav"))
+				std::cout << "Erreur lors de l'ouverture de Sons/b.wav" << std::endl;
+			this->_sounds_switched[0] = true;
+			this->_clocks[0].restart();
+			this->_sound_front.play();
+		}
+	}
+	else if (this->_players[0].is_moving() && this->_clocks[0].getElapsedTime().asMilliseconds() > 800)
+	{
 		if (this->_sounds_switched[0] == true)
 		{
-			if (!this->_sound_front.openFromFile(fichier))
-				std::cout << "Erreur lors de l'ouverture de" << fichier << std::endl;
+			if (!this->_sound_front.openFromFile("Sons/footstep.wav"))
+				std::cout << "Erreur lors de l'ouverture de Sons/footstep.wav" << std::endl;
 			this->_sounds_switched[0] = false;
 			this->_clocks[0].restart();
 			this->_sound_front.play();
 		}
 		else
 		{
-			this->_sounds_switched[0] = true;
 			this->_clocks[0].restart();
 			this->_sound_front.play();
-		}	
-}
-
-
-void Game::_front_sound()
-{
-	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Return) && this->_current_background != arene && this->_clocks[0].getElapsedTime().asMilliseconds() > 200)
-		this->_play_front("Sons/b.wav");
-	
-	else if (this->_players[0].is_moving() && this->_clocks[0].getElapsedTime().asMilliseconds() > 800 && this->_current_background != arene )
-		this->_play_front("Sons/footstep.wav");
-
-	else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Z) && this->_clocks[0].getElapsedTime().asMilliseconds() > 300)
-		this->_play_front("Sons/explosion.wav");
-
-	else if (sf::Keyboard::isKeyPressed(sf::Keyboard::A) && this->_clocks[0].getElapsedTime().asMilliseconds() > 100)
-		this->_play_front("Sons/laser.wav");
+		}
+	}
 }
 
 void Game::_manage_sound()
@@ -348,6 +345,8 @@ void Game::_manage_dresseur()
 		this->_players[0].send_dresseur();
 		this->_players[0].receive(this->_dresseurs);
 		this->_players[0].get_dresseur()->move();
+		if(this->_players[0].get_dresseur()->get_position_x() > WINDOW_HEIGHT - SIZE_BLOCK && !_selec_covidmon)
+			this->_players[0].get_dresseur()->set_position_x(WINDOW_HEIGHT - SIZE_BLOCK);
 		this->_manage_covidmon();
 	}
 	if (this->_current_background == arene)

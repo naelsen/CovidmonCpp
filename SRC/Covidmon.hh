@@ -19,6 +19,8 @@ private:
     sf::Texture __texture_pv;
     sf::Sprite __sprite_pv;
     std::vector<sf::Clock> _delai_attaques;
+    std::vector<sf::SoundBuffer> _buffer_attaques;
+    std::vector<sf::Sound> _son_attaques; 
 
     Type _type;
     Attaque_de_loin _attaque_de_loin;
