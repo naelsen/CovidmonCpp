@@ -4,6 +4,8 @@
 #include "Attaque_de_loin.hh"
 #include "Attaque_de_pres.hh"
 
+// Type des Covidmon : 4 possibles
+// Utilisés dans les constructeurs
 typedef enum Type
 {
     Feu,
@@ -57,11 +59,12 @@ public:
     void animate();
     void attaque_de_loin(sf::RenderWindow &, bool);
     void attaque_de_pres(sf::RenderWindow &, bool);
+
+    void operator-=(sf::Uint16);
+    void receive_degat(Covidmon &);    
     void collision_attaque(Covidmon &);
-    void receive_degat(Covidmon &);
     void draw_pv(sf::RenderWindow &);
     void got_a_clic(sf::RenderWindow &);
     void print_name(sf::RenderWindow &);
 
-    void operator-=(sf::Uint16);
 };

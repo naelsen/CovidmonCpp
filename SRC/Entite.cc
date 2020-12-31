@@ -43,16 +43,21 @@ Direction Entite::get_direction() const
     return this->_direction;
 }
 
+// Entier correspondant à la partie de l'image affichée
 sf::Uint16 Entite::get_animation() const
 {
     return this->_animation;
 }
 
+/* Définie ici : le fonctionnement est
+ * est le même dans les sous classes
+*/
 bool Entite::get_choisi() const
 {
     return this->_choisi;
 }
-
+/* Renvoi le fond où se trouve l'entité
+*/
 Bg Entite::get_current_bg() const
 {
     return this->_current_bg;
