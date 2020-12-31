@@ -167,6 +167,7 @@ bool Player::is_moving()
     return false;
 }
 
+// Permet de placer la pokeball quand le joueur a choisi son pokemon
 void Player::pop_pokeball(sf::RenderWindow &window)
 {
     this->_pokeball.set_position_x(this->_dresseur->get_position_x() + SIZE_BLOCK / 2 - SIZE_BLOCK_POKEBALL / 2);
@@ -174,6 +175,7 @@ void Player::pop_pokeball(sf::RenderWindow &window)
     this->_pokeball.draw(window);
 }
 
+// Sert a recevoir les données du joueur adverse qui contre un des dresseurs
 void Player::receive(std::vector<Dresseur> &dresseurs)
 {
     sf::Packet receivePacket;
@@ -184,7 +186,11 @@ void Player::receive(std::vector<Dresseur> &dresseurs)
         Direction d;
         std::string nom;
         Bg current_bg;
+
+        // On charge les variables
         receivePacket >> nom >> dir >> animation >> x >> y >> bg;
+
+        // On converti en Direction
         if (dir == 0)
             d = Down;
         if (dir == 1)
@@ -194,6 +200,7 @@ void Player::receive(std::vector<Dresseur> &dresseurs)
         if (dir == 3)
             d = Up;
 
+        // On converti en Bg
         if (bg == 0)
             current_bg = intro;
         if (bg == 1)
@@ -205,11 +212,13 @@ void Player::receive(std::vector<Dresseur> &dresseurs)
         if (bg == 4)
             current_bg = arene;
 
+        // Si un joueur est déja la alors il n'est pas premier dans l'arene (Ca servira pour les placement a droite et a gauche)
         if (current_bg == arene && this->get_dresseur()->get_current_bg() != arene && this->_first_on_arene)
         {
             this->_first_on_arene = false;
         }
 
+        // On met a jour les informations indispensable du joueur adverse
         for (auto it = dresseurs.begin(); it != dresseurs.end(); it++)
         {
             if (it->get_nom() == nom)
@@ -224,6 +233,7 @@ void Player::receive(std::vector<Dresseur> &dresseurs)
     }
 }
 
+// Sert a recevoir les données du joueur adverse qui contre un des Covidmon
 void Player::receive(std::vector<Covidmon> &Covidmon, sf::RenderWindow &window)
 {
     sf::Packet receivePacket;
@@ -236,10 +246,10 @@ void Player::receive(std::vector<Covidmon> &Covidmon, sf::RenderWindow &window)
         Direction d;
         std::string nom;
         Bg current_bg;
+
+        // On charge les variables
         receivePacket >> nom >> dir >> animation >> x >> y >> bg >> pv_current >> is_attacking_near >> is_attacking_far;
-        //std::cout << nom << " : Attaque de pres : " << is_attacking_near << std::endl;
-        //std::cout << nom << " : Attaque de loin : " << is_attacking_far << std::endl;
-        // On ajoute le covidmon si il est nouveau dans le vector de covidmon
+
         bool push = true;
         for (std::size_t it = 0; it < _covidmon.size(); it++)
         {
@@ -261,18 +271,23 @@ void Player::receive(std::vector<Covidmon> &Covidmon, sf::RenderWindow &window)
 
         if (this->_covidmon.size() == 2)
         {
+            // Le covidmon attaque t il de loin?
             if (is_attacking_far && !this->_covidmon[1]->get_attaque_de_loin().get_est_lancee())
             {
+                // Le pokemon attaque de loin
                 this->_covidmon[1]->get_attaque_de_loin().set_est_lancee(is_attacking_far);
                 this->_covidmon[1]->get_attaque_de_loin().set_just_clicked(true);
             }
+            // Le covidmon attaque t il de pres?
             if (is_attacking_near && !this->_covidmon[1]->get_attaque_de_pres().get_est_lancee())
             {
+                // Le pokemon attaque de pres
                 this->_covidmon[1]->get_attaque_de_pres().set_est_lancee(is_attacking_near);
                 this->_covidmon[1]->get_attaque_de_pres().set_just_clicked(true);
             }
         }
 
+        // On converti en Direction
         if (dir == 0)
             d = Down;
         if (dir == 1)
@@ -282,6 +297,7 @@ void Player::receive(std::vector<Covidmon> &Covidmon, sf::RenderWindow &window)
         if (dir == 3)
             d = Up;
 
+        // On converti en Bg
         if (bg == 0)
             current_bg = intro;
         if (bg == 1)
@@ -293,6 +309,8 @@ void Player::receive(std::vector<Covidmon> &Covidmon, sf::RenderWindow &window)
         if (bg == 4)
             current_bg = arene;
 
+        // On met a jour les informations indispensable du covidmon adverse
+        // qui vont aussi servir a mettre a jour via des fonctions d'autre attributs.
         for (auto it = Covidmon.begin(); it != Covidmon.end(); it++)
         {
             if (it->get_nom() == nom)
@@ -312,6 +330,7 @@ void Player::send_dresseur()
 {
     sf::Packet sendPacket_type;
     sf::Packet sendPacket_data;
+    // Chargement des paquets a envoyer au serveur
     sendPacket_type << "dresseur";
     sendPacket_data << this->_dresseur->get_nom()
                     << this->_dresseur->get_direction()
@@ -319,6 +338,7 @@ void Player::send_dresseur()
                     << this->_dresseur->get_position_x()
                     << this->_dresseur->get_position_y()
                     << this->_dresseur->get_current_bg();
+    // Envoie des paquets
     this->_socket.send(sendPacket_type);
     this->_socket.send(sendPacket_data);
 }
@@ -327,6 +347,7 @@ void Player::send_covidmon()
 {
     sf::Packet sendPacket_type;
     sf::Packet sendPacket_data;
+    // Chargement des paquets a envoyer au serveur
     sendPacket_type << "covidmon";
     sendPacket_data << this->_covidmon[0]->get_nom()
                     << this->_covidmon[0]->get_direction() << this->get_covidmon()[0]->get_animation()
@@ -334,6 +355,7 @@ void Player::send_covidmon()
                     << this->_covidmon[0]->get_current_bg() << this->_covidmon[0]->get_pv_current()
                     << this->_covidmon[0]->get_attaque_de_pres().get_est_lancee()
                     << this->_covidmon[0]->get_attaque_de_loin().get_est_lancee();
+    // Envoie des paquets
     this->_socket.send(sendPacket_type);
     this->_socket.send(sendPacket_data);
 }
@@ -345,8 +367,6 @@ bool Player::is_accepted()
 
 void Player::disconnect()
 {
-    sf::Packet sendPacket;
-    sendPacket << this->_dresseur->get_nom();
     this->_socket.disconnect();
     std::cout << "Deconnexion du serveur !" << std::endl;
 }

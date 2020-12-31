@@ -47,10 +47,10 @@ private:
 	void _draw_bg();
 	void _draw_dresseur();
 	void _draw_covidmon();
-	void _manage();
 	void _back_sound();
 	void _play_front(std::string fichier);
 	void _front_sound();
+	void _manage();
 	void _manage_sound();
 	void _manage_bg();
 	void _manage_dresseur();
