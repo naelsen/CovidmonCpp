@@ -1,47 +1,63 @@
 #include "Covidmon.hh"
-
+/*Constructeur par défaut*/
 Covidmon::Covidmon()
 {
 }
-
+/* Constructeur avec paramètres, les attributs sont
+ * initialisés différemment selon le type (3eme argument)
+ */
 Covidmon::Covidmon(std::string image, std::string nom, Type _type) : Entite(image, nom),
                                                                      _type(_type),
                                                                      _est_vivant(true),
                                                                      _bar(0)
 {
-
-    if (_type == Vol)
+    /* Les images des attaques sont choisi selon le type du covidmon
+     * pv_ current représente les pv actuels, pv_max le pv de base
+     * deux attributs utilisés pour le calcul du %
+     * initialisation de la vitesse (différente selon le type)
+     */
+    switch (_type)
     {
-        this->_attaque_de_loin = Attaque_de_loin("Images/Attaques/lance_vent.png", "Cru-aile");
-        this->_attaque_de_pres = Attaque_de_pres("Images/Attaques/explosion_vent.png");
-        this->_pv_max = 500;
-        this->_pv_current = 500;
-        this->_speed = 4;
+        case  Vol:
+        {
+            this->_attaque_de_loin = Attaque_de_loin("Images/Attaques/lance_vent.png", "Cru-aile");
+            this->_attaque_de_pres = Attaque_de_pres("Images/Attaques/explosion_vent.png");
+            this->_pv_max = 500;
+            this->_pv_current = 500;
+            this->_speed = 4;
+            break;
+        }
+        case  Feu:
+        {
+            this->_attaque_de_loin = Attaque_de_loin("Images/Attaques/lance_feu.png", "Lance flamme");
+            this->_attaque_de_pres = Attaque_de_pres("Images/Attaques/explosion_feu.png");
+            this->_pv_max = 650;
+            this->_pv_current = 650;
+            this->_speed = 3;
+            break;
+        }
+        case  Eau:
+        {
+            this->_attaque_de_loin = Attaque_de_loin("Images/Attaques/lance_eau.png", "Canon à eau");
+            this->_attaque_de_pres = Attaque_de_pres("Images/Attaques/explosion_eau.png");
+            this->_pv_max = 800;
+            this->_pv_current = 800;
+            this->_speed = 3;
+            break;
+        }
+        case  Plante:
+        {
+            this->_attaque_de_loin = Attaque_de_loin("Images/Attaques/lance_plante.png", "Tranche-herbe");
+            this->_attaque_de_pres = Attaque_de_pres("Images/Attaques/explosion_plante.png");
+            this->_pv_max = 800;
+            this->_pv_current = 800;
+            this->_speed = 3;
+            break;
+        }
+        default : break;
     }
-    else if (_type == Feu)
-    {
-        this->_attaque_de_loin = Attaque_de_loin("Images/Attaques/lance_feu.png", "Lance flamme");
-        this->_attaque_de_pres = Attaque_de_pres("Images/Attaques/explosion_feu.png");
-        this->_pv_max = 650;
-        this->_pv_current = 650;
-        this->_speed = 3;
-    }
-    else if (_type == Eau)
-    {
-        this->_attaque_de_loin = Attaque_de_loin("Images/Attaques/lance_eau.png", "Canon à eau");
-        this->_attaque_de_pres = Attaque_de_pres("Images/Attaques/explosion_eau.png");
-        this->_pv_max = 800;
-        this->_pv_current = 800;
-        this->_speed = 3;
-    }
-    else if (_type == Plante)
-    {
-        this->_attaque_de_loin = Attaque_de_loin("Images/Attaques/lance_plante.png", "Tranche-herbe");
-        this->_attaque_de_pres = Attaque_de_pres("Images/Attaques/explosion_plante.png");
-        this->_pv_max = 800;
-        this->_pv_current = 800;
-        this->_speed = 3;
-    }
+    /* Affichage de la barre de vie */
+    
     this->_font.loadFromFile("Images/arial.ttf");
     if (!__texture_pv.loadFromFile("Images/vie2.png"))
     {
