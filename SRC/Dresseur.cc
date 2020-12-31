@@ -1,5 +1,11 @@
 #include "Dresseur.hh"
 
+/*  Crée une instance de dresseur à partir d'un nom
+    et d'une image 
+    Charge le texte pour l'affichage du nom sur la fenêtre
+
+*/
+
 Dresseur::Dresseur(std::string image, std::string nom) : Entite(image, nom)
 {
     this->_font.loadFromFile("Images/arial.ttf");
@@ -10,7 +16,7 @@ Dresseur::Dresseur(std::string image, std::string nom) : Entite(image, nom)
     this->_text.setFillColor(sf::Color::Red);
     this->_text.setPosition(sf::Vector2f(12, 6));
 }
-
+/* Constructeur par copie qui sera utilisé dans Game*/
 Dresseur::Dresseur(Dresseur const &dresseur) : Entite(dresseur)
 {
     this->_font.loadFromFile("Images/arial.ttf");
@@ -26,11 +32,17 @@ Dresseur::~Dresseur()
 {
 }
 
+/* Affecte au Sprite une partie de l'image avec la fonction
+* sf::IntRect(debut horizontale, debut vertical, longueur,hauteur)
+*/
 void Dresseur::animate()
 {
     this->__sprite_image.setTextureRect(sf::IntRect(SIZE_BLOCK * this->_animation, SIZE_BLOCK * this->_direction, SIZE_BLOCK, SIZE_BLOCK));
 }
 
+/* Vérifie si le Dresseur sors de l'ecran 
+ * par comparaiton de position de position 
+ */
 bool Dresseur::is_out()
 {
     if (this->__position_x > WINDOW_WIDTH && this->__position_x < 2 * WINDOW_WIDTH)
@@ -38,6 +50,11 @@ bool Dresseur::is_out()
 
     return false;
 }
+
+
+/* Modifie l'attribut _choisi
+ * par comparaiton de position de position 
+ * avec le curseur au moment du clic */
 
 void Dresseur::got_a_clic(sf::RenderWindow &window)
 {
@@ -57,11 +74,15 @@ void Dresseur::got_a_clic(sf::RenderWindow &window)
     }
 }
 
+/* Affiche le nom du dresseur sur la fenetre
+ * fonction appelée que si _choisi = true  */
 void Dresseur::print_name(sf::RenderWindow &window)
 {
     window.draw(this->_text);
 }
 
+
+/* Fonctions de déplacement */
 void Dresseur::_move_up()
 {
     if (this->_clock.getElapsedTime().asSeconds() > 0.10f)
