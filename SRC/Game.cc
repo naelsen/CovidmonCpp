@@ -398,12 +398,12 @@ void Game::_choisir_dresseur()
 					Player P(*it);
 					this->_players.push_back(P);
 				}
-				if(this->_port != 30001 && this->_IP == "local")
+				else if(this->_port != 30001 && this->_IP == "local")
 				{
 					Player P(*it, this->_port);
 					this->_players.push_back(P);
 				}
-				if(this->_port != 30001 && this->_IP != "local")
+				else if(this->_IP != "local")
 				{
 					Player P(*it, this->_port, this->_IP);
 					this->_players.push_back(P);

@@ -49,6 +49,11 @@ Covidmon::Covidmon(std::string image, std::string nom, Type _type) : Entite(imag
     }
     this->__sprite_pv.setTexture(this->__texture_pv);
     this->__sprite_pv.setScale(sf::Vector2f(0.08f, 0.12f));
+    sf::Clock c1,c2;
+    this->_delai_attaques.push_back(c1);
+    this->_delai_attaques.push_back(c2);
+    this->_delai_attaques[0].restart();
+    this->_delai_attaques[1].restart();
 }
 
 Covidmon::Covidmon(Covidmon const &Covidmon) : Entite(Covidmon),
@@ -130,17 +135,6 @@ void Covidmon::animate()
                                                     SIZE_BLOCK * this->_direction,
                                                     SIZE_BLOCK,
                                                     SIZE_BLOCK));
-    if (sf::Keyboard::isKeyPressed(sf::Keyboard::P))
-    {
-        if (this->_pv_current > 0)
-            this->_pv_current -= 1;
-        else
-        {
-            this->_pv_current = 0;
-            this->set_est_vivant(false);
-            set_position_x(-100);
-        }
-    }
 }
 
 void Covidmon::attaque_de_loin(sf::RenderWindow &window, bool is_my_covidmon)
@@ -158,8 +152,9 @@ void Covidmon::attaque_de_loin(sf::RenderWindow &window, bool is_my_covidmon)
         this->_attaque_de_loin.move();
         this->_attaque_de_loin.animate();
     }
-    else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Space) && is_my_covidmon)
+    else if (sf::Keyboard::isKeyPressed(sf::Keyboard::A) && is_my_covidmon && this->_clock[1].getElapsedTime().asMilliseconds()>400)
     {
+        this->_delai_attaques[1].restart();
         this->_attaque_de_loin.set_est_lancee(true);
         this->_attaque_de_loin.set_just_clicked(true);
     }
@@ -196,8 +191,9 @@ void Covidmon::attaque_de_pres(sf::RenderWindow &window, bool is_my_covidmon)
         this->_attaque_de_pres.draw(window);
         this->_attaque_de_pres.animate();
     }
-    else if (sf::Keyboard::isKeyPressed(sf::Keyboard::D) && is_my_covidmon)
+    else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Z) && is_my_covidmon && this->_delai_attaques[0].getElapsedTime().asMilliseconds()>400)
     {
+        this->_delai_attaques[0].restart();
         this->_attaque_de_pres.set_est_lancee(true);
         this->_attaque_de_pres.set_just_clicked(true);
     }

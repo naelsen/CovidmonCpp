@@ -28,6 +28,7 @@ int main(int argc, char* argv[])
         else
         {
             std::string IP = argv[2];
+            std::cout << "Connecté à l'adresse IP : " <<IP<<std::endl;
             Game game(port,IP);
 			game.run();
         }

@@ -18,6 +18,7 @@ private:
     sf::Font _font;
     sf::Texture __texture_pv;
     sf::Sprite __sprite_pv;
+    std::vector<sf::Clock> _delai_attaques;
 
     Type _type;
     Attaque_de_loin _attaque_de_loin;
