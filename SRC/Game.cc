@@ -215,6 +215,7 @@ void Game::_back_sound()
 				std::cout << "Erreur lors de l'ouverture de Sons/intro.wav" << std::endl;
 			this->_sounds_switched[1] = true;
 			this->_clocks[1].restart();
+			this->_sound_back.setVolume(20);
 			this->_sound_back.play();
 		}
 		else if (this->_clocks[1].getElapsedTime().asSeconds() > 41)
@@ -231,6 +232,7 @@ void Game::_back_sound()
 				std::cout << "Erreur lors de l'ouverture de Sons/menu_and_choix.wav" << std::endl;
 			this->_sounds_switched[1] = false;
 			this->_clocks[1].restart();
+			this->_sound_back.setVolume(20);
 			this->_sound_back.play();
 		}
 		else if (this->_clocks[1].getElapsedTime().asSeconds() > 19)
@@ -246,6 +248,7 @@ void Game::_back_sound()
 			if (!this->_sound_back.openFromFile("Sons/musique_arene1.wav"))
 				std::cout << "Erreur lors de l'ouverture de Sons/musique_arene1.wav" << std::endl;
 			this->_sounds_switched[1] = true;
+			this->_sound_back.setVolume(5);
 			this->_clocks[1].restart();
 			this->_sound_back.play();
 		}
@@ -257,35 +260,38 @@ void Game::_back_sound()
 	}
 }
 
-void Game::_front_sound()
+void Game::_play_front(std::string fichier)
 {
-	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Return) && this->_current_background != arene && this->_clocks[0].getElapsedTime().asMilliseconds() > 200)
-	{
-		if (this->_sounds_switched[0] == false)
-		{
-			if (!this->_sound_front.openFromFile("Sons/b.wav"))
-				std::cout << "Erreur lors de l'ouverture de Sons/b.wav" << std::endl;
-			this->_sounds_switched[0] = true;
-			this->_clocks[0].restart();
-			this->_sound_front.play();
-		}
-	}
-	else if (this->_players[0].is_moving() && this->_clocks[0].getElapsedTime().asMilliseconds() > 800)
-	{
 		if (this->_sounds_switched[0] == true)
 		{
-			if (!this->_sound_front.openFromFile("Sons/footstep.wav"))
-				std::cout << "Erreur lors de l'ouverture de Sons/footstep.wav" << std::endl;
+			if (!this->_sound_front.openFromFile(fichier))
+				std::cout << "Erreur lors de l'ouverture de" << fichier << std::endl;
 			this->_sounds_switched[0] = false;
 			this->_clocks[0].restart();
 			this->_sound_front.play();
 		}
 		else
 		{
+			this->_sounds_switched[0] = true;
 			this->_clocks[0].restart();
 			this->_sound_front.play();
-		}
-	}
+		}	
+}
+
+
+void Game::_front_sound()
+{
+	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Return) && this->_current_background != arene && this->_clocks[0].getElapsedTime().asMilliseconds() > 200)
+		this->_play_front("Sons/b.wav");
+	
+	else if (this->_players[0].is_moving() && this->_clocks[0].getElapsedTime().asMilliseconds() > 800 && this->_current_background != arene )
+		this->_play_front("Sons/footstep.wav");
+
+	else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Z) && this->_clocks[0].getElapsedTime().asMilliseconds() > 300)
+		this->_play_front("Sons/explosion.wav");
+
+	else if (sf::Keyboard::isKeyPressed(sf::Keyboard::A) && this->_clocks[0].getElapsedTime().asMilliseconds() > 100)
+		this->_play_front("Sons/laser.wav");
 }
 
 void Game::_manage_sound()

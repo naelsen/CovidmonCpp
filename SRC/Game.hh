@@ -49,6 +49,7 @@ private:
 	void _draw_covidmon();
 	void _manage();
 	void _back_sound();
+	void _play_front(std::string fichier);
 	void _front_sound();
 	void _manage_sound();
 	void _manage_bg();
