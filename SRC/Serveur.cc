@@ -3,22 +3,31 @@
 Serveur::Serveur() : _port(30001),
                      _done(false)
 {
+    // On prépare le serveur a ecouté sur le port 30001
     if (this->_listener.listen(this->_port) == sf::Socket::Done)
         std::cout << "Server is Ready in the port : " << this->_port << std::endl;
     else
         exit(0);
+
+    // Important de rajouter aux selecteur l'ecouteur, sinon le selecteur ne peut pas attendre
     this->_selector.add(this->_listener);
+
+    // =======
     std::cout << "Nombre joueurs connectés: " << this->_nom_clients.size() << std::endl;
 }
 
 Serveur::Serveur(short int port) : _port(port),
                      _done(false)
 {
+    // On prépare le serveur a ecouté sur le port donné en parametre
     if (this->_listener.listen(this->_port) == sf::Socket::Done)
         std::cout << "Server is Ready in the port : " << this->_port << std::endl;
     else
         exit(0);
+    // Important de rajouter aux selecteur l'ecouteur, sinon le selecteur ne peut pas attendre
     this->_selector.add(this->_listener);
+
+    // =======
     std::cout << "Nombre joueurs connectés: " << this->_nom_clients.size() << std::endl;
 }
 
@@ -38,10 +47,12 @@ void Serveur::set_port(short int p)
 
 void Serveur::run()
 {
+    // Boucle principale du serveur
     while (!this->_done)
     {
         if (this->_selector.wait())
         {
+            // Si le selecteur est pret concernant l'ecouteur, on accepte le client
             if (this->_selector.isReady(this->_listener))
             {
                 this->accept_client();
@@ -58,41 +69,53 @@ void Serveur::accept_client()
 {
     // On reserve une case pour une socket
     sf::TcpSocket *socket = new sf::TcpSocket();
+    // On l'accepte
     this->_listener.accept(*socket);
+    // Ajout au selecteur
     this->_selector.add(*socket);
+    // On accepte temporairement un joueur
     this->_Clients.push_back(socket);
+    // On prépare un paquet (Qui est temporaire) pour recevoir le nom du personnage que le
+    // Client a choisi
     sf::Packet receivePacket;
     bool accepted = true;
-    // Si une nouvelle connexion s'effectue
-
+    // Si regarde si un paquet est pret a etre chargé
     if (socket->receive(receivePacket) == sf::Socket::Done)
     {
-        // On charge le pseudo du joueur dans le paquet
+        // On charge le pseudo du joueur choisi par le Client dans le paquet
         receivePacket >> this->_nom;
+        // On verifie si le joueur a déja été choisi
         if (this->_nom_clients.size() == 1)
         {
             for (std::size_t i = 0; i < _nom_clients.size(); i++)
             {
+                // Si déjà un client possède ce dresseur alors le client 
+                // qui à été accepter temporairement sera enlever du serveur
                 if (this->_nom_clients[i] == this->_nom)
                 {
                     accepted = false;
                 }
             }
         }
+        // Si déjà deux client sont dans le serveur on va enlever du serveur le client 
+        // qui à été accepter temporairement
         else if (this->_nom_clients.size() > 1)
             accepted = false;
-        // On affiche dans le serveur (Mais pas aux joueurs)
+        
+        // On prépare un paquet pour lui informer au joueur si il a été accépter dans le serveur
         sf::Packet sendPacket;
         sendPacket << accepted;
-        // On informe au client qui essaye de se connecter si il est accepter
-        // Il sera accepter si le joueur choisis n'a pas encore ete choisi par quelqu'un d'autre
+
+        // On l'envoie
         this->_Clients[this->_nom_clients.size()]->send(sendPacket);
 
+        // On ajoute le nom du dresseur choisi par le nouveau client (qui n'est plus temporaire du coup)
         if (accepted)
         {
             this->_nom_clients.push_back(this->_nom);
             std::cout << "Un joueur viens de se connecter en choisissant " << this->_nom << std::endl;
         }
+        // On supprime le client du serveur
         else
         {
             std::cout << "Joueur refoulé du serveur" << std::endl;
@@ -106,9 +129,7 @@ void Serveur::action_clients()
 {
     for (std::size_t i = 0; i < this->_Clients.size(); i++)
     {
-        // On regarde si de la donnée est recuperable dans les sockets afin
-        // de ne pas attendre pour rien si on recupere on devra attendre une action
-        // et ca va bloquer le programme
+        // La socket est elle prête a recevoir des information ????
         if (this->_selector.isReady(*this->_Clients[i]))
         {
             this->communication_dresseur(i);
