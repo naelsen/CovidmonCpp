@@ -12,7 +12,7 @@ int main(int argc, char* argv[])
 
 	else if (argc == 2)
 	{
-		short int port = atoi(argv[1]);
+		unsigned int port = atoi(argv[1]);
 		if( port < 1024 || port > 65535){
 			std::cerr << "Ça va pas non ?"<<std::endl;
 		}

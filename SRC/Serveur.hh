@@ -9,7 +9,7 @@ class Serveur
 {
 private:
     int _dir, _bg;
-    short int _port;
+    unsigned int _port;
     bool _done;
     bool _is_attacking_near;
     bool _is_attacking_far;
@@ -26,10 +26,10 @@ private:
 
 public:
     Serveur();
-    Serveur(short int port);
+    Serveur(unsigned int port);
     ~Serveur();
-    short int get_port() const;
-    void set_port(short int p);
+    unsigned int get_port() const;
+    void set_port(unsigned int p);
     void run();
     void accept_client();
     void action_clients();

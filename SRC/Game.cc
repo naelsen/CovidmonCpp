@@ -8,14 +8,14 @@ Game::Game() : _port(30001),
 	this->_build();
 }
 
-Game::Game(short int port) : _port(port),
+Game::Game(unsigned int port) : _port(port),
 							 _IP("local"),
 							 _window(sf::VideoMode(WINDOW_WIDTH, WINDOW_HEIGHT), "LE MONDE D'APRES ...")
 {
 	this->_build();
 }
 
-Game::Game(short int port, std::string IP) : _port(port),
+Game::Game(unsigned int port, std::string IP) : _port(port),
 											 _IP(IP),
 							 				 _window(sf::VideoMode(WINDOW_WIDTH, WINDOW_HEIGHT), "LE MONDE D'APRES ...")
 {

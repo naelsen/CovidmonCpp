@@ -16,7 +16,7 @@ Serveur::Serveur() : _port(30001),
     std::cout << "Nombre joueurs connectés: " << this->_nom_clients.size() << std::endl;
 }
 
-Serveur::Serveur(short int port) : _port(port),
+Serveur::Serveur(unsigned int port) : _port(port),
                      _done(false)
 {
     // On prépare le serveur a ecouté sur le port donné en parametre
@@ -35,12 +35,12 @@ Serveur::~Serveur()
 {
 }
 
-short int Serveur::get_port() const
+unsigned int Serveur::get_port() const
 {
     return this->_port;
 }
 
-void Serveur::set_port(short int p)
+void Serveur::set_port(unsigned int p)
 {
     this->_port = p;
 }

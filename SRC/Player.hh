@@ -25,8 +25,8 @@ private:
 public:
     Player();
     Player(Dresseur &);
-    Player(Dresseur &, short int);
-    Player(Dresseur &, short int, std::string);
+    Player(Dresseur &, unsigned int);
+    Player(Dresseur &, unsigned int, std::string);
 
     Player(Player const &);
     ~Player();

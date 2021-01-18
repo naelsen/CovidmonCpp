@@ -66,8 +66,8 @@ private:
 
 public:
 	Game();
-	Game(short int);
-	Game(short int, std::string);
+	Game(unsigned int);
+	Game(unsigned int, std::string);
 	~Game();
 	void run();
 };
