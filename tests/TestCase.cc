@@ -64,7 +64,7 @@ TEST_CASE("4: Attaques")
   Attaque_de_pres A2("Images/Attaques/explosion_vent.png");
   Attaque_de_loin AC1(A1);
   Attaque_de_pres AC2(A2);
-  REQUIRE(!A1.get_est_lancee());
+  REQUIRE_FALSE(A1.get_est_lancee());
   REQUIRE(A2.get_just_clicked());
   REQUIRE(AC1.get_degats()==A1.get_degats());
   REQUIRE(AC2.get_animation()==A2.get_animation());

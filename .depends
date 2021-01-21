@@ -1,0 +1,23 @@
+Player.o: SRC/Player.cc SRC/Player.hh SRC/Dresseur.hh SRC/Entite.hh \
+ SRC/define.hh SRC/Image.hh SRC/Covidmon.hh SRC/Attaque_de_loin.hh \
+ SRC/Attaque_de_pres.hh
+main_serveur.o: SRC/main_serveur.cc SRC/Serveur.hh SRC/Dresseur.hh \
+ SRC/Entite.hh SRC/define.hh SRC/Image.hh
+Entite.o: SRC/Entite.cc SRC/Entite.hh SRC/define.hh SRC/Image.hh
+Dresseur.o: SRC/Dresseur.cc SRC/Dresseur.hh SRC/Entite.hh SRC/define.hh \
+ SRC/Image.hh
+main.o: SRC/main.cc SRC/Game.hh SRC/define.hh SRC/Dresseur.hh \
+ SRC/Entite.hh SRC/Image.hh SRC/Player.hh SRC/Covidmon.hh \
+ SRC/Attaque_de_loin.hh SRC/Attaque_de_pres.hh
+Covidmon.o: SRC/Covidmon.cc SRC/Covidmon.hh SRC/Entite.hh SRC/define.hh \
+ SRC/Image.hh SRC/Attaque_de_loin.hh SRC/Attaque_de_pres.hh
+Image.o: SRC/Image.cc SRC/Image.hh SRC/define.hh
+Attaque_de_pres.o: SRC/Attaque_de_pres.cc SRC/Attaque_de_pres.hh \
+ SRC/Image.hh SRC/define.hh
+Game.o: SRC/Game.cc SRC/Game.hh SRC/define.hh SRC/Dresseur.hh \
+ SRC/Entite.hh SRC/Image.hh SRC/Player.hh SRC/Covidmon.hh \
+ SRC/Attaque_de_loin.hh SRC/Attaque_de_pres.hh
+Attaque_de_loin.o: SRC/Attaque_de_loin.cc SRC/Attaque_de_loin.hh \
+ SRC/Entite.hh SRC/define.hh SRC/Image.hh
+Serveur.o: SRC/Serveur.cc SRC/Serveur.hh SRC/Dresseur.hh SRC/Entite.hh \
+ SRC/define.hh SRC/Image.hh
