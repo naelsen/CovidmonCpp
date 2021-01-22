@@ -691,13 +691,13 @@ void Game::_build()
 	this->_backgrounds.insert(couple("choix_covidmon", Image("Images/Backgrounds/choix_covidmon.png")));
 	this->_backgrounds.insert(couple("arene", Image("Images/Backgrounds/arene.png")));
 
-	this->_dresseurs.push_back(Dresseur("Images/Personnages/G_charo.png", "Charo"));
+	this->_dresseurs.push_back(Dresseur("Images/Perso_bonus/Aissam.png", "Aissam"));
 	this->_dresseurs.push_back(Dresseur("Images/Personnages/G_tantine.png", "Tantine"));
 	this->_dresseurs.push_back(Dresseur("Images/Personnages/G_tchang.png", "Tchang"));
 	this->_dresseurs.push_back(Dresseur("Images/Personnages/G_zepekenio.png", "Zepekenio"));
 	this->_dresseurs.push_back(Dresseur("Images/Personnages/M_magelan.png", "Magelan"));
 	this->_dresseurs.push_back(Dresseur("Images/Personnages/M_magman.png", "Magman"));
-	this->_dresseurs.push_back(Dresseur("Images/Personnages/M_toto.png", "Toto"));
+	this->_dresseurs.push_back(Dresseur("Images/Perso_bonus/Nael.png", "Nael"));
 	this->_dresseurs.push_back(Dresseur("Images/Personnages/M_zepekenia.png", "Zepekenia"));
 
 	this->_covidmons.push_back(Covidmon("Images/Covidmons/E_galarian.png", "Galarian", Eau));
