@@ -634,6 +634,14 @@ void Game::_placement_dresseur()
 			j++;
 		}
 	}
+	this->_dresseurs[8].set_position_x(60);
+	this->_dresseurs[8].set_position_y(250);
+	this->_dresseurs[8].set_direction(Right);
+	this->_dresseurs[8].set_scale(1.2,1.1);
+	this->_dresseurs[9].set_position_x(60);
+	this->_dresseurs[9].set_position_y(350);
+	this->_dresseurs[9].set_direction(Right);
+	this->_dresseurs[9].set_scale(1.2,1.1);
 }
 
 // Placement sur les cases vertes
@@ -688,18 +696,20 @@ void Game::_build()
 
 	this->_backgrounds.insert(couple("intro", Image("Images/Backgrounds/intro3.png")));
 	this->_backgrounds.insert(couple("menu", Image("Images/Backgrounds/menu.png")));
-	this->_backgrounds.insert(couple("choix_personnage", Image("Images/Backgrounds/choix_personnage.png")));
+	this->_backgrounds.insert(couple("choix_personnage", Image("Images/Backgrounds/choix_personnage2.png")));
 	this->_backgrounds.insert(couple("choix_covidmon", Image("Images/Backgrounds/choix_covidmon.png")));
 	this->_backgrounds.insert(couple("arene", Image("Images/Backgrounds/arene.png")));
 
-	this->_dresseurs.push_back(Dresseur("Images/Perso_bonus/Aissam.png", "Aissam"));
+	this->_dresseurs.push_back(Dresseur("Images/Personnages/G_charo.png", "Charo"));
 	this->_dresseurs.push_back(Dresseur("Images/Personnages/G_tantine.png", "Tantine"));
 	this->_dresseurs.push_back(Dresseur("Images/Personnages/G_tchang.png", "Tchang"));
 	this->_dresseurs.push_back(Dresseur("Images/Personnages/G_zepekenio.png", "Zepekenio"));
 	this->_dresseurs.push_back(Dresseur("Images/Personnages/M_magelan.png", "Magelan"));
 	this->_dresseurs.push_back(Dresseur("Images/Personnages/M_magman.png", "Magman"));
-	this->_dresseurs.push_back(Dresseur("Images/Perso_bonus/Nael.png", "Nael"));
+	this->_dresseurs.push_back(Dresseur("Images/Personnages/M_toto.png", "Toto"));
 	this->_dresseurs.push_back(Dresseur("Images/Personnages/M_zepekenia.png", "Zepekenia"));
+	this->_dresseurs.push_back(Dresseur("Images/Perso_bonus/Nael.png", "Nael"));
+	this->_dresseurs.push_back(Dresseur("Images/Perso_bonus/Aissam.png", "Aissam"));
 
 	this->_covidmons.push_back(Covidmon("Images/Covidmons/E_galarian.png", "Galarian", Eau));
 	this->_covidmons.push_back(Covidmon("Images/Covidmons/E_leviator.png", "Leviator", Eau));
