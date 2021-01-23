@@ -694,9 +694,9 @@ void Game::_build()
 	this->_text.setFillColor(sf::Color::Black);
 	this->_text.setPosition(sf::Vector2f(245, 220));
 
-	this->_backgrounds.insert(couple("intro", Image("Images/Backgrounds/intro3.png")));
+	this->_backgrounds.insert(couple("intro", Image("Images/Backgrounds/intro.png")));
 	this->_backgrounds.insert(couple("menu", Image("Images/Backgrounds/menu.png")));
-	this->_backgrounds.insert(couple("choix_personnage", Image("Images/Backgrounds/choix_personnage2.png")));
+	this->_backgrounds.insert(couple("choix_personnage", Image("Images/Backgrounds/choix_personnage.png")));
 	this->_backgrounds.insert(couple("choix_covidmon", Image("Images/Backgrounds/choix_covidmon.png")));
 	this->_backgrounds.insert(couple("arene", Image("Images/Backgrounds/arene.png")));
 
